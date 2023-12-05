@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-function LayoutContainer({children}) {
+function AppLayout({children}) {
   return (
     <div className="grid grid-cols-5 grid-rows-[80px_minmax(0,1fr)] bg-slate-100 h-screen">
       {children}
@@ -8,8 +8,8 @@ function LayoutContainer({children}) {
   );
 }
 
-LayoutContainer.propTypes = {
+AppLayout.propTypes = {
   children: PropTypes.element,
 };
 
-export default LayoutContainer;
+export default AppLayout;

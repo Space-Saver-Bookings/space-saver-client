@@ -1,15 +1,15 @@
-import LayoutContainer from './layout/LayoutContainer';
+import AppLayout from './layout/AppLayout';
 import Header from './layout/Header';
 import Sidebar from './layout/Sidebar';
-import MainSection from './layout/MainSection';
+import Main from './layout/Main';
 
 function App() {
   return (
-    <LayoutContainer>
+    <AppLayout>
       <Header />
       <Sidebar />
-      <MainSection />
-    </LayoutContainer>
+      <Main />
+    </AppLayout>
   );
 }
 
