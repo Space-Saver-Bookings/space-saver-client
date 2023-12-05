@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 function LayoutContainer({children}) {
-  return <div className="grid grid-cols-2 grid-rows-2">{children}</div>;
+  return <div className="grid grid-cols-5 grid-rows-[80px_minmax(0,1fr)] bg-yellow-200 h-screen">{children}</div>;
 }
 
 LayoutContainer.propTypes = {
