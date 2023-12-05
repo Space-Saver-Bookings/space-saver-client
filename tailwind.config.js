@@ -2,9 +2,13 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      coplette: ['Coplette', 'sans-serif'],
+    },
     extend: {
-      fontFamily: {
-        coplette: ['Coplette', 'sans-serif'],
+      height: {
+        // dynamic viewport height unit
+        screen: '100dvh',
       },
       gridTemplateColumns: {
         // not in use, was an experiment

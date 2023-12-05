@@ -1,4 +1,4 @@
-import { Avatar } from "@mui/material"
+import {Avatar} from '@mui/material';
 
 function stringToColor(string) {
   let hash = 0;
@@ -30,12 +30,12 @@ function stringAvatar(name) {
 }
 
 function Header() {
-    return (
-        <div className="font-coplette col-start-2 col-span-full">
-            <h1>Good %timeOfDay%, %firstName%</h1>
-            <Avatar {...stringAvatar('Alex Holder')}/>
-        </div>
-    )
+  return (
+    <div className="col-span-full col-start-2 flex items-center justify-between px-4 font-coplette text-4xl">
+      <h1>Good %timeOfDay%, %firstName%</h1>
+      <Avatar {...stringAvatar('Alex Holder')} />
+    </div>
+  );
 }
 
-export default Header
+export default Header;
