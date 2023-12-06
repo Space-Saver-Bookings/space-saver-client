@@ -2,11 +2,14 @@ import Divider from '../Divider';
 import StyledNavLink from './StyledNavLink';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import ApartmentRoundedIcon from '@mui/icons-material/ApartmentRounded';
+import MeetingRoomRoundedIcon from '@mui/icons-material/MeetingRoomRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 
 function MainNav() {
   return (
     <nav className="h-full px-10 py-6">
-      <ul className="flex h-full list-none flex-col items-start gap-10">
+      <ul className="flex h-full list-none flex-col items-start gap-6">
         <li>
           <StyledNavLink
             path="/home"
@@ -22,15 +25,27 @@ function MainNav() {
           />
         </li>
         <li>
-          <span>Spaces</span>
+          <StyledNavLink
+            path="/spaces"
+            linkName="Spaces"
+            icon={<ApartmentRoundedIcon />}
+          />
         </li>
         <li>
-          <span>Rooms</span>
+          <StyledNavLink
+            path="/rooms"
+            linkName="Rooms"
+            icon={<MeetingRoomRoundedIcon />}
+          />
         </li>
         <li className="flex grow"></li>
         <Divider />
         <li>
-          <span>Settings</span>
+          <StyledNavLink
+            path="/settings"
+            linkName="Settings"
+            icon={<SettingsRoundedIcon />}
+          />
         </li>
       </ul>
     </nav>
