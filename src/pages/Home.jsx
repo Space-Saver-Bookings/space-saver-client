@@ -1,9 +1,12 @@
+import DashCard from '../components/dashboard/DashCard';
+
 function Home() {
   return (
-    <section className="sm:grid-cols-23 grid h-full sm:grid-rows-18 gap-6">
-      <div className="col-start-1 col-end-8 row-start-1 row-end-[7] rounded-xl bg-yellow-200">
+    <section className="sm:grid-cols-23 sm:grid-rows-18 grid h-full gap-6">
+      <DashCard type="medium" heading="Book Again" />
+      {/* <div className="col-start-1 col-end-8 row-start-1 row-end-[7] rounded-xl bg-yellow-200">
         Book again
-      </div>
+      </div> */}
       <div className="col-span-7 row-start-1 row-end-[7] rounded-xl bg-yellow-200">
         Quick Booking
       </div>
