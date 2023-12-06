@@ -1,9 +1,15 @@
-function Main() {
-    return (
-        <div className=" col-start-2 col-span-full row-start-2 row-span-full p-5">
-            <h2>Main</h2>
-        </div>
-    )
+import PropTypes from 'prop-types';
+
+function Main({children}) {
+  return (
+    <main className=" col-span-full col-start-2 row-span-full row-start-2 p-5">
+      {children}
+    </main>
+  );
 }
 
-export default Main
+Main.propTypes = {
+  children: PropTypes.element,
+};
+
+export default Main;

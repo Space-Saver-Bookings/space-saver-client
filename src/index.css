@@ -10,3 +10,11 @@
 body {
   font-family: 'Poppins', sans-serif;
 }
+
+.active {
+  @apply bg-blue-200;
+}
+
+.nav-hover {
+  @apply transition-all hover:bg-blue-300;
+}
