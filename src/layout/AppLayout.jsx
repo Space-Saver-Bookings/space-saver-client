@@ -1,5 +1,4 @@
 import {Outlet} from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -16,9 +15,5 @@ function AppLayout() {
     </div>
   );
 }
-
-AppLayout.propTypes = {
-  children: PropTypes.element,
-};
 
 export default AppLayout;

@@ -5,8 +5,8 @@ import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 
 function MainNav() {
   return (
-    <nav className="h-full w-full px-10 py-6">
-      <ul className="flex h-full w-full list-none flex-col items-start gap-10">
+    <nav className="h-full px-10 py-6">
+      <ul className="flex h-full list-none flex-col items-start gap-10">
         <li>
           <StyledNavLink
             path="/home"
