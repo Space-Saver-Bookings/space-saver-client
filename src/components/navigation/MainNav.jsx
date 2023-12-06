@@ -1,10 +1,11 @@
+import Divider from '../Divider';
 import StyledNavLink from './StyledNavLink';
 import HomeIcon from '@mui/icons-material/Home';
 
 function MainNav() {
   return (
-    <nav>
-      <ul className="flex h-full list-none flex-col gap-8 bg-slate-400">
+    <nav className="h-full w-full p-7">
+      <ul className="flex h-full list-none flex-col items-center gap-10">
         <li>
           <StyledNavLink path="/home" linkName="Home" icon={<HomeIcon />} />
         </li>
@@ -17,6 +18,8 @@ function MainNav() {
         <li>
           <span>Rooms</span>
         </li>
+        <li className="flex grow"></li>
+        <Divider />
         <li>
           <span>Settings</span>
         </li>

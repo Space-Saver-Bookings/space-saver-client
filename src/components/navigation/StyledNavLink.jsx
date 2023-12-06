@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 
 function StyledNavLink({linkName, icon, path}) {
   return (
-    <NavLink to={path}>
+    <NavLink
+      to={path}
+      className={(isActive) =>
+        `flex items-center hover:bg-blue-400 transition-all ${isActive ? 'bg-blue-100 rounded p-2 pr-20 w-full' : ''}`
+      }
+    >
       {icon}
-      <span>{linkName}</span>
+      <span className="px-3 text-lg">{linkName}</span>
     </NavLink>
   );
 }
