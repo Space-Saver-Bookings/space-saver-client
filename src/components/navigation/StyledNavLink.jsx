@@ -5,9 +5,9 @@ function StyledNavLink({linkName, icon, path}) {
   return (
     <NavLink
       to={path}
-      className={(isActive) =>
-        `flex items-center hover:bg-blue-400 transition-all ${isActive ? 'bg-blue-100 rounded p-2 pr-20 w-full' : ''}`
-      }
+        className={(isActive) =>
+          `flex items-center hover:bg-blue-300 transition-all ${isActive ? 'bg-blue-200 rounded p-2 pr-20 w-[12rem]' : ''}`
+        }
     >
       {icon}
       <span className="px-3 text-lg">{linkName}</span>

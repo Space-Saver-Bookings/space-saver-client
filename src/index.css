@@ -10,3 +10,7 @@
 body {
   font-family: 'Poppins', sans-serif;
 }
+
+.active:hover {
+  @apply p-2 pr-20 w-[12rem];
+}

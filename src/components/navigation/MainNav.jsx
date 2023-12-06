@@ -1,16 +1,25 @@
 import Divider from '../Divider';
 import StyledNavLink from './StyledNavLink';
-import HomeIcon from '@mui/icons-material/Home';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 
 function MainNav() {
   return (
-    <nav className="h-full w-full p-7">
-      <ul className="flex h-full list-none flex-col items-center gap-10">
+    <nav className="h-full w-full px-10 py-6">
+      <ul className="flex h-full w-full list-none flex-col items-start gap-10">
         <li>
-          <StyledNavLink path="/home" linkName="Home" icon={<HomeIcon />} />
+          <StyledNavLink
+            path="/home"
+            linkName="Home"
+            icon={<HomeRoundedIcon />}
+          />
         </li>
         <li>
-          <span>Bookings</span>
+          <StyledNavLink
+            path="/bookings"
+            linkName="Bookings"
+            icon={<CalendarMonthRoundedIcon />}
+          />
         </li>
         <li>
           <span>Spaces</span>
