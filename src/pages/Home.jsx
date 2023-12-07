@@ -13,6 +13,7 @@ function Home() {
       <DashItem
         heading="Quick Booking"
         styling="col-span-7 row-start-1 row-end-[7]"
+        content={<Book roomNumber='3401' date='13/8/23' isBookFor={true} time='13:20pm'/>}
       />
 
       <DashItem
