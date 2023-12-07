@@ -1,4 +1,5 @@
 import DashItem from '../components/dashboard/DashItem';
+import Book from '../features/dashboard/Book';
 
 function Home() {
   return (
@@ -6,6 +7,7 @@ function Home() {
       <DashItem
         heading="Book Again"
         styling="col-start-1 col-end-8 row-start-1 row-end-[7]"
+        content={<Book roomNumber='1802' date='21/11/23'/>}
       />
 
       <DashItem
@@ -23,10 +25,10 @@ function Home() {
         styling="col-start-1 col-end-[15] row-start-7 row-end-[14]"
       />
 
-      <section className="col-start-1 col-end-[15] row-span-5 grid grid-cols-3 items-center gap-5">
-        <DashItem heading="Rooms in use" styling="h-[12.5rem]" />
-        <DashItem heading="Users in rooms" styling="h-[12.5rem]" />
-        <DashItem heading="Most used room" styling="h-[12.5rem]" />
+      <section className="col-start-1 col-end-[15] row-span-5 grid grid-cols-3 gap-5">
+        <DashItem heading="Rooms in use" styling="" />
+        <DashItem heading="Users in rooms" styling="" />
+        <DashItem heading="Most used room" styling="" />
       </section>
     </section>
   );
