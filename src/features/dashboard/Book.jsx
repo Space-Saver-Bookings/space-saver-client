@@ -9,7 +9,7 @@ function Book({roomNumber, date, time, isBookFor}) {
       <p className="font-coplette text-blue-600 text-3xl sm:text-4xl md:text-6xl">
         {roomNumber}
       </p>
-      <p className="mb-1 mt-[.2rem] text-lg text-slate-600">
+      <p className="mb-1 mt-[.2rem] text-lg text-gray-500">
         {isBookFor ? 'Book for' : 'Last booked on'}
       </p>
       <div className={`text-sm ${isBookFor ? 'flex gap-1' : ''}`}>
