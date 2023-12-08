@@ -1,4 +1,9 @@
+import NoMeetingRoomRoundedIcon from '@mui/icons-material/NoMeetingRoomRounded';
+import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
+import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded';
+
 import DashItem from '../components/dashboard/DashItem';
+import Analytic from '../features/dashboard/Analytic';
 import Book from '../features/dashboard/Book';
 
 function Home() {
@@ -7,13 +12,20 @@ function Home() {
       <DashItem
         heading="Book Again"
         styling="col-start-1 col-end-8 row-start-1 row-end-[7]"
-        content={<Book roomNumber='1802' date='21/11/23'/>}
+        content={<Book roomNumber="1802" date="21/11/23" />}
       />
 
       <DashItem
         heading="Quick Booking"
         styling="col-span-7 row-start-1 row-end-[7]"
-        content={<Book roomNumber='3401' date='13/8/23' isBookFor={true} time='13:20pm'/>}
+        content={
+          <Book
+            roomNumber="3401"
+            date="13/8/23"
+            isBookFor={true}
+            time="13:20pm"
+          />
+        }
       />
 
       <DashItem
@@ -27,9 +39,45 @@ function Home() {
       />
 
       <section className="col-start-1 col-end-[15] row-span-5 grid grid-cols-3 gap-5">
-        <DashItem heading="Rooms in use" styling="" />
-        <DashItem heading="Users in rooms" styling="" />
-        <DashItem heading="Most used room" styling="" />
+        <DashItem
+          heading={
+            <NoMeetingRoomRoundedIcon
+              sx={{
+                fontSize: '2.4rem',
+                color: 'rgb(30 64 175)',
+              }}
+            />
+          }
+          content={<Analytic text="Rooms in use" amount={8} />}
+        />
+        <DashItem
+          heading={
+            <PeopleRoundedIcon
+              sx={{
+                fontSize: '2.4rem',
+                color: 'rgb(30 64 175)',
+              }}
+            />
+          }
+          content={<Analytic text="Users in rooms" amount={16} />}
+        />
+        <DashItem
+          heading={
+            <EqualizerRoundedIcon
+              sx={{
+                fontSize: '2.4rem',
+                color: 'rgb(30 64 175)',
+              }}
+            />
+          }
+          content={
+            <Analytic
+              text="Most used room"
+              amount={3023}
+              size="text-6xl"
+            />
+          }
+        />
       </section>
     </section>
   );
