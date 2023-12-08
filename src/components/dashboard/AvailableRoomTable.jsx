@@ -15,7 +15,7 @@ function createData(roomNumber, date, capacity) {
 }
 
 const columns = ['Room #', 'Next Available', 'Capacity'];
-const rows = Array.from(Array(15), () => createData(10310, '28/11/23', 4));
+const rows = Array.from(Array(20), () => createData(10310, '28/11/23', 4));
 
 // const rows = [
 //   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
@@ -27,7 +27,7 @@ function AvailableRoomTable() {
   return (
     <TableContainer
       // component={Paper}
-      sx={{maxHeight: 660}}
+      sx={{maxHeight: 660, px: 1}}
     >
       <Table stickyHeader sx={{minWidth: 350}} aria-label="sticky table">
         <TableHead>
@@ -50,8 +50,9 @@ function AvailableRoomTable() {
           {rows.map((row) => (
             <TableRow
               key={row.roomNumber}
+              className='list-hover'
               sx={{
-                '&:last-child td, &:last-child th': {border: 0},
+                '&:last-child td, &:last-child th': {border: 0, pb: 4},
               }}
             >
               {/* <TableCell component="th" scope="row">

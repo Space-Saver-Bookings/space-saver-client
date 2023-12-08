@@ -23,3 +23,7 @@ body {
 .nav-hover {
   @apply transition-all hover:bg-blue-300 hover:text-black;
 }
+
+.list-hover {
+  @apply hover:bg-blue-300 transition-all cursor-pointer hover:rounded-xl
+}
