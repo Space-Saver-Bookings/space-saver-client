@@ -4,7 +4,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+// import Paper from '@mui/material/Paper';
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return {name, calories, fat, carbs, protein};
@@ -25,8 +25,11 @@ const rows = Array.from(Array(15), () => createData(10310, '28/11/23', 4));
 
 function AvailableRoomTable() {
   return (
-    <TableContainer component={Paper}>
-      <Table stickyHeader sx={{minWidth: 350}} aria-label="simple table">
+    <TableContainer
+      // component={Paper}
+      sx={{maxHeight: 660}}
+    >
+      <Table stickyHeader sx={{minWidth: 350}} aria-label="sticky table">
         <TableHead>
           <TableRow>
             {columns.map((column) => (
@@ -46,7 +49,7 @@ function AvailableRoomTable() {
         <TableBody>
           {rows.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.roomNumber}
               sx={{
                 '&:last-child td, &:last-child th': {border: 0},
               }}
