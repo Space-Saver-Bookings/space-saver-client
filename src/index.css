@@ -12,9 +12,9 @@ body {
 }
 
 .active {
-  @apply bg-blue-200;
+  @apply bg-blue-600 text-white;
 }
 
 .nav-hover {
-  @apply transition-all hover:bg-blue-300;
+  @apply transition-all hover:bg-blue-300 hover:text-black;
 }

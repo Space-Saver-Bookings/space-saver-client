@@ -5,6 +5,7 @@ import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded';
 import DashItem from '../components/dashboard/DashItem';
 import Analytic from '../features/dashboard/Analytic';
 import Book from '../features/dashboard/Book';
+import AvailableRoom from '../features/dashboard/AvailableRoom';
 
 function Home() {
   return (
@@ -30,6 +31,7 @@ function Home() {
 
       <DashItem
         heading="Available Rooms"
+        content={<AvailableRoom/>}
         styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
       />
 
