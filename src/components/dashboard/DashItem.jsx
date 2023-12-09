@@ -12,7 +12,7 @@ function DashItem({heading, styling, content}) {
 
   return (
     <section className={base + ` ${styling}`}>
-      <h3 className="px-2 font-coplette text-xl">{heading}</h3>
+      <h3 className="px-2 font-coplette text-xl py-1">{heading}</h3>
       <section className="h-full overflow-clip mt-[-.6rem]">
         {content}
       </section>

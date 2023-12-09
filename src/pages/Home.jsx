@@ -10,16 +10,18 @@ import UpcomingBookings from '../features/dashboard/UpcomingBookings';
 
 function Home() {
   return (
-    <section className="grid h-full gap-5 sm:grid-cols-23 sm:grid-rows-18">
+    <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
       <DashItem
         heading="Book Again"
-        styling="col-start-1 col-end-8 row-start-1 row-end-[7]"
+        // styling="col-start-1 col-end-8 row-start-1 row-end-[7]"
+        styling="col-start-1 col-end-8 row-span-6"
         content={<Book roomNumber="1802" date="21/11/23" />}
       />
 
       <DashItem
         heading="Quick Booking"
-        styling="col-span-7 row-start-1 row-end-[7]"
+        // styling="col-span-7 row-start-1 row-end-[7]"
+        styling="col-span-7 row-span-6"
         content={
           <Book
             roomNumber="3401"
@@ -52,7 +54,7 @@ function Home() {
               }}
             />
           }
-          content={<Analytic text="Rooms in use" amount={8} />}
+          content={<Analytic text="Rooms in use" data={8} />}
         />
         <DashItem
           heading={
@@ -63,7 +65,7 @@ function Home() {
               }}
             />
           }
-          content={<Analytic text="Users in rooms" amount={16} />}
+          content={<Analytic text="Users in rooms" data={16} />}
         />
         <DashItem
           heading={
@@ -77,7 +79,7 @@ function Home() {
           content={
             <Analytic
               text="Most used room"
-              amount={3023}
+              data={3023}
               size="text-6xl"
             />
           }
