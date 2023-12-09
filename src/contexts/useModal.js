@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import {ModalContext} from './ModalContext';
 
-export function useModal() {
+export default function useModal() {
   const context = useContext(ModalContext);
 
   if (!context) {
