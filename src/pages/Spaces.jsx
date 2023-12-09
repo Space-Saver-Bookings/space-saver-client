@@ -4,10 +4,9 @@ import DashItem from '../components/dashboard/DashItem';
 import useModal from '../contexts/useModal';
 import {Modal} from '@mui/material';
 import ModalBox from '../components/modal/ModalBox';
+import JoinSpaceModalContent from '../features/spaces/JoinSpaceModalContent';
 
 const spaces = Array.from(Array(4), (_, idx) => `Space ${idx + 1}`);
-
-
 
 function Spaces() {
   const {open, handleOpen, handleClose} = useModal();
@@ -65,7 +64,7 @@ function Spaces() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <ModalBox heading='Create Space' />
+            <ModalBox heading="Create Space" />
           </Modal>
         ) : (
           <Modal
@@ -74,7 +73,9 @@ function Spaces() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <ModalBox heading='Join Space'/>
+            <ModalBox
+              content={<JoinSpaceModalContent heading="Join Space" />}
+            />
           </Modal>
         )}
       </section>
