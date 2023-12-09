@@ -7,14 +7,23 @@
   src: url(./assets/fonts/coplette-webfont.woff) format('woff');
 }
 
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
 body {
   font-family: 'Poppins', sans-serif;
 }
 
 .active {
-  @apply bg-blue-200;
+  @apply bg-blue-600 text-white;
 }
 
 .nav-hover {
-  @apply transition-all hover:bg-blue-300;
+  @apply transition-all hover:bg-blue-300 hover:text-black;
+}
+
+.list-hover {
+  @apply hover:bg-blue-300 transition-all cursor-pointer hover:rounded-xl
 }

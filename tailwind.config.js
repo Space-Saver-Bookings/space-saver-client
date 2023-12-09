@@ -11,8 +11,13 @@ export default {
         screen: '100dvh',
       },
       gridTemplateColumns: {
-        // not in use, was an experiment
-        7: 'repeat(7, minmax(0, 1fr))',
+        16: 'repeat(16, minmax(0, 1fr))',
+        23: 'repeat(23, minmax(0, 1fr))',
+        // 23: 'repeat(23, minmax(10px, 1fr))',
+      },
+      gridTemplateRows: {
+        18: 'repeat(18, minmax(0, 1fr))',
+        // 18: 'repeat(18, minmax(10px, 1fr))',
       },
     },
   },
