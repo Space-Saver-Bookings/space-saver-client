@@ -1,4 +1,7 @@
 import {Avatar} from '@mui/material';
+import {usePageHeading} from '../contexts/usePageHeading';
+import {useEffect} from 'react';
+import {useLocation} from 'react-router-dom';
 
 function stringToColor(string) {
   let hash = 0;
@@ -30,10 +33,35 @@ function stringAvatar(name) {
 }
 
 function Header() {
+  const {heading, setHeading} = usePageHeading();
+  const {pathname} = useLocation();
+  const page = pathname.slice(1);
+  useEffect(() => {
+    switch (page) {
+      case 'home':
+        setHeading(`Good Afternoon, Alex!`);
+        break;
+      case 'bookings':
+        setHeading('Bookings');
+        break;
+      case 'spaces':
+        setHeading('Spaces');
+        break;
+      case 'rooms':
+        setHeading('Rooms');
+        break;
+      case 'settings':
+        setHeading('Settings');
+        break;
+      default:
+        setHeading('');
+    }
+  }, [setHeading, page]);
+
   return (
     <div className="col-span-full col-start-2 flex items-center justify-between px-8 font-coplette text-5xl">
       {/* <h1>Good %timeOfDay%, %firstName%</h1> */}
-      <h1 className='tracking-wide'>Good Afternoon, Alex!</h1>
+      <h1 className="tracking-wide">{heading}</h1>
       <Avatar {...stringAvatar('Alex Holder')} />
     </div>
   );

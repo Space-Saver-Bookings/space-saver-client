@@ -8,24 +8,27 @@ import Rooms from './pages/Rooms';
 import Settings from './pages/Settings';
 import LogIn from './pages/LogIn';
 import PageNotFound from './pages/PageNotFound';
+import PageHeadingProvider from './contexts/PageHeadingContext';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          <Route index element={<Navigate replace to="home" />} />
-          <Route path="home" element={<Home />} />
-          <Route path="bookings" element={<Bookings />} />
-          <Route path="spaces" element={<Spaces />} />
-          <Route path="rooms" element={<Rooms />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
+    <PageHeadingProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route index element={<Navigate replace to="home" />} />
+            <Route path="home" element={<Home />} />
+            <Route path="bookings" element={<Bookings />} />
+            <Route path="spaces" element={<Spaces />} />
+            <Route path="rooms" element={<Rooms />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
 
-        <Route path="login" element={<LogIn />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="login" element={<LogIn />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </PageHeadingProvider>
   );
 }
 
