@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,30 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 // import Paper from '@mui/material/Paper';
 
-// function createData(name, calories, fat, carbs, protein) {
-//   return {name, calories, fat, carbs, protein};
-// }
-
-function createData(roomNumber, date, capacity) {
-  return {roomNumber, date, capacity};
-}
-
-const columns = ['Room #', 'Next Available', 'Capacity'];
-const rows = Array.from(Array(20), () => createData(10310, '28/11/23', 4));
-
-// const rows = [
-//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//   createData('Eclair', 262, 16.0, 24, 6.0),
-// ];
-
-function AvailableRoomTable() {
+function DashTableList({height, columns, rows}) {
   return (
     <TableContainer
       // component={Paper}
-      sx={{maxHeight: 660, px: 1}}
+      sx={{maxHeight: {height}, px: 1}}
     >
-      <Table stickyHeader sx={{minWidth: 350}} aria-label="sticky table">
+      <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
             {columns.map((column) => (
@@ -50,17 +35,19 @@ function AvailableRoomTable() {
           {rows.map((row) => (
             <TableRow
               key={row.roomNumber}
-              className='list-hover'
+              className="list-hover"
               sx={{
-                '&:last-child td, &:last-child th': {border: 0, pb: 4},
+                '&:last-child td, &:last-child th': {border: 0, pb: 3},
               }}
             >
-              {/* <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell> */}
-              <TableCell align="center">{row.roomNumber}</TableCell>
+              {Object.values(row).map((item) => (
+                <TableCell key={item} align="center">
+                  {item}
+                </TableCell>
+              ))}
+              {/* <TableCell align="center">{row.roomNumber}</TableCell>
               <TableCell align="center">{row.date}</TableCell>
-              <TableCell align="center">{row.capacity}</TableCell>
+              <TableCell align="center">{row.capacity}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>
@@ -69,4 +56,10 @@ function AvailableRoomTable() {
   );
 }
 
-export default AvailableRoomTable;
+DashTableList.propTypes = {
+  height: PropTypes.number,
+  columns: PropTypes.array,
+  rows: PropTypes.array,
+};
+
+export default DashTableList;

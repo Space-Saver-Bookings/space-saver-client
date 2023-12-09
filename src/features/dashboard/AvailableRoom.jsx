@@ -1,23 +1,18 @@
-import AvailableRoomTable from "../../components/dashboard/AvailableRoomTable";
+import DashTableList from '../../components/dashboard/DashTableList';
 
-function AvailableRoom() {
-    return (
-      <section className="h-full">
-        {/* <div className="flex justify-evenly gap-4">
-          <p>Room #</p>
-          <p>Next Available</p>
-          <p>Capacity</p>
-        </div> */}
-
-        {/* <div className="flex justify-between px-5 mt-2">
-          <p>10310</p>
-          <p>28/11/23</p>
-          <p>4</p>
-        </div> */}
-
-        <AvailableRoomTable/>
-      </section>
-    );
+function createData(roomNumber, date, capacity) {
+  return {roomNumber, date, capacity};
 }
 
-export default AvailableRoom
+const columns = ['Room #', 'Next Available', 'Capacity'];
+const rows = Array.from(Array(15), () => createData(10310, '28/11/23', 4));
+
+function AvailableRoom() {
+  return (
+    <section className="h-full">
+      <DashTableList height={660} columns={columns} rows={rows} />
+    </section>
+  );
+}
+
+export default AvailableRoom;
