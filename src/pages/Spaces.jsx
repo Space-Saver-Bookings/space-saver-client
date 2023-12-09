@@ -5,6 +5,7 @@ import useModal from '../contexts/useModal';
 import {Modal} from '@mui/material';
 import ModalBox from '../components/modal/ModalBox';
 import JoinSpaceModalContent from '../features/spaces/JoinSpaceModalContent';
+import CreateSpaceModalContent from '../features/spaces/CreateSpaceModalContent';
 
 const spaces = Array.from(Array(4), (_, idx) => `Space ${idx + 1}`);
 
@@ -64,7 +65,11 @@ function Spaces() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <ModalBox heading="Create Space" />
+            <ModalBox
+              content={<CreateSpaceModalContent heading="Create New Space" />}
+              height='h-[31.5rem]'
+              width='w-[40rem]'
+            />
           </Modal>
         ) : (
           <Modal
@@ -75,6 +80,8 @@ function Spaces() {
           >
             <ModalBox
               content={<JoinSpaceModalContent heading="Join Space" />}
+              height="h-[14rem]"
+              width="w-[27rem]"
             />
           </Modal>
         )}

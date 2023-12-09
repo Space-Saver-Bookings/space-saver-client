@@ -3,7 +3,7 @@ import Button from '../../components/buttons/Button';
 
 function JoinSpaceModalContent({heading}) {
   return (
-    <section className="mt-[1rem] flex flex-col items-center justify-center gap-5">
+    <>
       <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
       <div className="flex flex-col items-center gap-2">
         <label className="text-lg" htmlFor="">
@@ -15,7 +15,7 @@ function JoinSpaceModalContent({heading}) {
         />
       </div>
       <Button>Join</Button>
-    </section>
+    </>
   );
 }
 

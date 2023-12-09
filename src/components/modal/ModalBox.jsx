@@ -2,27 +2,19 @@ import PropTypes from 'prop-types';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import useModal from '../../contexts/useModal';
 
-// const style = {
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   width: 400,
-//   bgcolor: 'background.paper',
-//   border: '2px solid #000',
-//   boxShadow: 24,
-//   p: 4,
-// };
-
-function ModalBox({content}) {
+function ModalBox({content, width, height}) {
   const {handleClose} = useModal();
 
   return (
-    <div className="absolute left-[50%] top-[50%] h-[14rem] w-[27rem] translate-x-[-50%] translate-y-[-50%]  rounded-lg border-2 bg-slate-100 p-2">
-      {content}
+    <div
+      className={`absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] ${width} ${height} rounded-lg border-2 bg-slate-100 p-2`}
+    >
+      <section className="mt-[1rem] flex flex-col items-center justify-center gap-5">
+        {content}
+      </section>
       <button onClick={handleClose}>
         <CloseRoundedIcon
-          className="absolute right-1 top-1"
+          className="absolute right-1 top-1 hover:bg-slate-200 transition-all rounded-full"
           sx={{fontSize: 30}}
           color="action"
         />
@@ -33,6 +25,8 @@ function ModalBox({content}) {
 
 ModalBox.propTypes = {
   content: PropTypes.element,
+  width: PropTypes.string,
+  height: PropTypes.string,
 };
 
 export default ModalBox;
