@@ -7,7 +7,7 @@ function createData(roomNumber, date, capacity) {
 const columns = ['Room #', 'Next Available', 'Capacity'];
 const rows = Array.from(Array(15), () => createData(10310, '28/11/23', 4));
 
-function AvailableRoom() {
+function AvailableRooms() {
   return (
     <section className="h-full">
       <DashTableList height={660} columns={columns} rows={rows} />
@@ -15,4 +15,4 @@ function AvailableRoom() {
   );
 }
 
-export default AvailableRoom;
+export default AvailableRooms;

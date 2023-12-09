@@ -23,7 +23,7 @@ function DashTableList({height, columns, rows}) {
                 align="center"
                 sx={{
                   color: 'rgb(75 85 99)',
-                  fontSize: '1.05rem',
+                  fontSize: '.98rem',
                 }}
               >
                 {column}
