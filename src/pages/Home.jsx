@@ -3,10 +3,10 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded';
 
 import DashItem from '../components/dashboard/DashItem';
-import Analytic from '../features/dashboard/Analytic';
-import Book from '../features/dashboard/Book';
-import AvailableRooms from '../features/dashboard/AvailableRooms';
-import UpcomingBookings from '../features/dashboard/UpcomingBookings';
+import Analytic from '../features/home/Analytic';
+import Book from '../features/home/Book';
+import AvailableRooms from '../features/home/AvailableRooms';
+import UpcomingBookings from '../features/home/UpcomingBookings';
 
 function Home() {
   return (
@@ -34,13 +34,13 @@ function Home() {
 
       <DashItem
         heading="Available Rooms"
-        content={<AvailableRooms/>}
+        content={<AvailableRooms />}
         styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
       />
 
       <DashItem
         heading="Upcoming Bookings"
-        content={<UpcomingBookings/>}
+        content={<UpcomingBookings />}
         styling="col-start-1 col-end-[15] row-start-7 row-end-[14]"
       />
 
@@ -77,11 +77,7 @@ function Home() {
             />
           }
           content={
-            <Analytic
-              text="Most used room"
-              data={3023}
-              size="text-6xl"
-            />
+            <Analytic text="Most used room" data={3023} size="text-6xl" />
           }
         />
       </section>
