@@ -1,37 +1,42 @@
-import {useState} from 'react';
-import Button from '../components/buttons/Button';
+// import {useState} from 'react';
+// import Button from '../components/buttons/Button';
 import DashItem from '../components/dashboard/DashItem';
-import useModal from '../contexts/useModal';
-import {Modal} from '@mui/material';
-import ModalBox from '../components/modal/ModalBox';
+// import useModal from '../contexts/useModal';
+// import {Modal} from '@mui/material';
+// import ModalBox from '../components/modal/ModalBox';
+import CustomizedMenus from '../components/menu/CustomizedMenus';
 
-const rooms = Array.from(Array(3), (_, idx) => `Space ${idx + 1}`);
-const isAdmin = true;
+const rooms = Array.from(Array(3), (_, idx) => `Room ${idx + 1}`);
+const bookedRooms = {rooms};
+const options = Array.from(Array(8), (_, idx) => `Space ${idx + 1}`);
+options.unshift('Booked Rooms');
+// const isAdmin = true;
 
 function Rooms() {
-  const {open, handleOpen, handleClose} = useModal();
-  const [toggle, setToggle] = useState(false);
+  //   const {open, handleOpen, handleClose} = useModal();
+  //   const [toggle, setToggle] = useState(false);
 
-  function handleToggle() {
-    setToggle((toggled) => !toggled);
-  }
-  
+  //   function handleToggle() {
+  //     setToggle((toggled) => !toggled);
+  //   }
+
   return (
     <section className="flex flex-col gap-6">
-        {/* TODO: this toggle should be a dropdown instead, will comeback in the future to implement
+      {/* TODO: this toggle should be a dropdown instead, will comeback in the future to implement
                   with data from server
         */}
       <div className="flex justify-center">
-        <Button onClick={handleToggle}>
+        {/* <Button onClick={handleToggle}>
           {toggle ? 'Space 1' : 'Booked rooms'}
-        </Button>
+        </Button> */}
+        <CustomizedMenus options={options} />
       </div>
 
       {/* TODO: Fix flex card item alignment, not with justify-center, figure something out
                 might be an issue with the section or main container
       */}
       <section className="flex flex-wrap gap-5">
-        {rooms.map((room) => (
+        {bookedRooms.rooms.map((room) => (
           <DashItem
             key={room}
             styling="w-[20rem] h-[14.5rem]"
@@ -40,7 +45,7 @@ function Rooms() {
           />
         ))}
 
-        {toggle && isAdmin && (
+        {/* {toggle && isAdmin && (
           <Button noStyle={true} onClick={handleOpen}>
             <DashItem
               styling="w-[20rem] h-[14.5rem]"
@@ -65,7 +70,7 @@ function Rooms() {
               width="w-[40rem]"
             />
           </Modal>
-        )}
+        )} */}
       </section>
     </section>
   );
