@@ -1,8 +1,8 @@
 import {useState} from 'react';
-import Button from '../components/buttons/Button';
+// import Button from '../components/buttons/Button';
 import DashItem from '../components/dashboard/DashItem';
 import useModal from '../contexts/useModal';
-import {Modal} from '@mui/material';
+import {Button, Modal} from '@mui/material';
 import ModalBox from '../components/modal/ModalBox';
 import JoinSpaceModalContent from '../features/spaces/JoinSpaceModalContent';
 import CreateSpaceModalContent from '../features/spaces/CreateSpaceModalContent';
@@ -23,7 +23,7 @@ function Spaces() {
   return (
     <section className="flex flex-col gap-6">
       <div className="flex justify-center">
-        <Button onClick={handleToggle}>
+        <Button variant='contained' onClick={handleToggle}>
           {toggle ? 'Owned Spaces' : 'Joined Spaces'}
         </Button>
       </div>
@@ -46,23 +46,23 @@ function Spaces() {
         ))}
 
         {toggle ? (
-          <Button noStyle={true} onClick={handleOpen}>
+          <button onClick={handleOpen}>
             <DashItem
               styling="w-[20rem] h-[14.5rem]"
               heading="Create Space +"
               bgColor="bg-slate-300"
               headingStyling="self-center my-auto"
             />
-          </Button>
+          </button>
         ) : (
-          <Button noStyle={true} onClick={handleOpen}>
+          <button onClick={handleOpen}>
             <DashItem
               styling="w-[20rem] h-[14.5rem]"
               heading="Join Space +"
               bgColor="bg-slate-300"
               headingStyling="self-center my-auto"
             />
-          </Button>
+          </button>
         )}
 
         {open && toggle ? (
