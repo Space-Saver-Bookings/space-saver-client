@@ -6,6 +6,7 @@ import Capacity from '../features/space/Capacity';
 import Description from '../features/space/Description';
 import {createData} from '../helpers/createData';
 import {AddRounded} from '@mui/icons-material';
+import { spaceDropdownOptions } from '../features/space/SpaceDropdownOptions';
 
 function Space() {
   // TODO: A nice to have to figure out a way for users to navigate back to spaces easily eg. header back to btn
@@ -38,12 +39,16 @@ function Space() {
         heading="Access Code"
         styling="col-start-1 col-end-8 row-span-5"
         content={<AccessCode accessCode={57493} />}
+        isDropdown={isAdmin}
+        dropdownOptions={spaceDropdownOptions.accessCode}
       />
 
       <DashItem
         heading="Capacity"
         styling="col-span-7 row-span-5"
         content={<Capacity roomsCount={25} peopleCount={85} />}
+        isDropdown={isAdmin}
+        dropdownOptions={spaceDropdownOptions.capacity}
       />
 
       <DashItem
@@ -52,6 +57,8 @@ function Space() {
           isAdmin ? 'row-end-[17]' : 'row-span-full'
         } row-start-1 rounded-xl`}
         content={<ListContent columns={roomsColumn} rows={roomsRow} />}
+        isDropdown={isAdmin}
+        dropdownOptions={spaceDropdownOptions.rooms}
       />
 
       {isAdmin && (
@@ -76,8 +83,10 @@ function Space() {
         styling={`col-start-1 col-end-[15] ${
           isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
         }`}
-        isScroll={true}
+        isScroll
         content={<Description descriptionText={descriptionText} />}
+        isDropdown={isAdmin}
+        dropdownOptions={spaceDropdownOptions.description}
       />
 
       <DashItem
@@ -88,6 +97,8 @@ function Space() {
             : 'row-start-[11] row-span-full'
         }`}
         content={<ListContent columns={usersColumn} rows={usersRow} />}
+        isDropdown={isAdmin}
+        dropdownOptions={spaceDropdownOptions.users}
       />
     </section>
   );

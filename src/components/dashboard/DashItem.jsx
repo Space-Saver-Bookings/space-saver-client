@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import DropdownMenu from '../menu/DropdownMenu';
 
 function DashItem({
   heading,
@@ -7,6 +8,8 @@ function DashItem({
   bgColor,
   headingStyling,
   isScroll,
+  isDropdown,
+  dropdownOptions,
 }) {
   const base = `flex flex-col p-2 gap-5 rounded-xl border-2 ${
     bgColor ? `${bgColor} border-gray-300` : 'border-slate-200 bg-white'
@@ -23,7 +26,15 @@ function DashItem({
 
   return (
     <section className={base + ` ${styling}`}>
-      <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
+      {isDropdown ? (
+        <div className="flex justify-between">
+          <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
+          {/* TODO: options will be an object with the name of the option and a handler as a property */}
+          <DropdownMenu options={dropdownOptions} />
+        </div>
+      ) : (
+        <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
+      )}
       {content && (
         <section
           className={`mt-[-1.2rem] h-full ${
@@ -45,6 +56,8 @@ DashItem.propTypes = {
   bgColor: PropTypes.string,
   headingStyling: PropTypes.string,
   isScroll: PropTypes.bool,
+  isDropdown: PropTypes.bool,
+  dropdownOptions: PropTypes.array,
 };
 
 export default DashItem;
