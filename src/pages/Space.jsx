@@ -3,7 +3,6 @@ import ListContent from '../components/dashboard/ListContent';
 import AccessCode from '../features/space/AccessCode';
 import Capacity from '../features/space/Capacity';
 import Description from '../features/space/Description';
-import Rooms from '../features/space/Rooms';
 import {createData} from '../helpers/createData';
 
 function Space() {
@@ -20,6 +19,12 @@ function Space() {
 
   const usersRow = Array.from(Array(10), () =>
     createData('John Doe', 'johndoe@gmail.com', '28/11/23', 'Web Developer')
+  );
+
+  const roomsColumn = ['Room #', 'Next Available', 'Capacity'];
+
+  const roomsRow = Array.from(Array(15), () =>
+    createData(10310, '28/11/23', 4)
   );
 
   return (
@@ -39,7 +44,7 @@ function Space() {
       <DashItem
         heading="Rooms"
         styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
-        content={<Rooms />}
+        content={<ListContent columns={roomsColumn} rows={roomsRow}/>}
       />
 
       <DashItem
@@ -52,7 +57,7 @@ function Space() {
       <DashItem
         heading="Users"
         styling="col-start-1 col-end-[15] row-start-[11] row-span-full"
-        content={<ListContent columns={usersColumn} rows={usersRow} height={260} />}
+        content={<ListContent columns={usersColumn} rows={usersRow} />}
       />
     </section>
   );

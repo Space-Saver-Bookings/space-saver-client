@@ -14,7 +14,6 @@ function DashTableList({height, columns, rows}) {
     <TableContainer
       // component={Paper}
       sx={{maxHeight: '100%', px: 1}}
-      // sx={{height: 'auto', px: 1, overflow: 'scroll'}}
     >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>

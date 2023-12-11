@@ -26,7 +26,7 @@ function DashItem({
       <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
       {content && (
         <section
-          className={`mt-[-.6rem] h-full ${
+          className={`mt-[-1.2rem] h-full ${
             isScroll ? 'overflow-scroll' : 'overflow-clip'
           }`}
         >
