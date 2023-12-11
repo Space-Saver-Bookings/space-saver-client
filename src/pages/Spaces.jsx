@@ -87,7 +87,7 @@ function Spaces() {
           >
             <ModalBox
               content={<JoinSpaceModalContent heading="Join Space" />}
-              height="h-[14rem]"
+              height="h-[14.2rem]"
               width="w-[27rem]"
             />
           </Modal>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import Button from '../../components/buttons/Button';
-import {TextField} from '@mui/material';
+// import Button from '../../components/buttons/Button';
+import {Button, TextField} from '@mui/material';
 
 function CreateSpaceModalContent({heading}) {
   return (
@@ -63,8 +63,8 @@ function CreateSpaceModalContent({heading}) {
       </div>
       {/* <div className='flex grow'></div> */}
       <div className='ml-auto flex gap-4 mr-5'>
-        <Button>Cancel</Button>
-        <Button>Create New Space</Button>
+        <Button variant='contained' color='error'>Cancel</Button>
+        <Button variant='contained'>Create New Space</Button>
       </div>
     </>
   );
