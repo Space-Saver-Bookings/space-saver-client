@@ -1,9 +1,11 @@
+import {Button} from '@mui/material';
 import DashItem from '../components/dashboard/DashItem';
 import ListContent from '../components/dashboard/ListContent';
 import AccessCode from '../features/space/AccessCode';
 import Capacity from '../features/space/Capacity';
 import Description from '../features/space/Description';
 import {createData} from '../helpers/createData';
+import {AddRounded} from '@mui/icons-material';
 
 function Space() {
   // TODO: Add fecthing logic to dynamically display content of each space
@@ -27,6 +29,8 @@ function Space() {
     createData(10310, '28/11/23', 4)
   );
 
+  const isAdmin = !true;
+
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
       <DashItem
@@ -43,20 +47,45 @@ function Space() {
 
       <DashItem
         heading="Rooms"
-        styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
-        content={<ListContent columns={roomsColumn} rows={roomsRow}/>}
+        styling={`col-span-full col-start-[15] ${
+          isAdmin ? 'row-end-[17]' : 'row-span-full'
+        } row-start-1 rounded-xl`}
+        content={<ListContent columns={roomsColumn} rows={roomsRow} />}
       />
+
+      {isAdmin && (
+        <>
+          <section className="col-span-full col-start-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
+            <Button variant="contained" startIcon={<AddRounded />}>
+              Add New Room
+            </Button>
+          </section>
+
+          <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
+            <Button variant="contained" startIcon={<AddRounded />}>
+              Add New User
+            </Button>
+          </section>
+        </>
+      )}
 
       <DashItem
         heading="Description"
-        styling="col-start-1 col-end-[15] row-start-6 row-span-5"
+        // styling="col-start-1 col-end-[15] row-start-6 row-span-4"
+        styling={`col-start-1 col-end-[15] ${
+          isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
+        }`}
         isScroll={true}
         content={<Description descriptionText={descriptionText} />}
       />
 
       <DashItem
         heading="Users"
-        styling="col-start-1 col-end-[15] row-start-[11] row-span-full"
+        styling={`col-start-1 col-end-[15] ${
+          isAdmin
+            ? 'row-start-[10] row-end-[17]'
+            : 'row-start-[11] row-span-full'
+        }`}
         content={<ListContent columns={usersColumn} rows={usersRow} />}
       />
     </section>
