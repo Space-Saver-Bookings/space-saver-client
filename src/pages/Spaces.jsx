@@ -6,8 +6,7 @@ import {Modal} from '@mui/material';
 import ModalBox from '../components/modal/ModalBox';
 import JoinSpaceModalContent from '../features/spaces/JoinSpaceModalContent';
 import CreateSpaceModalContent from '../features/spaces/CreateSpaceModalContent';
-
-const spaces = Array.from(Array(4), (_, idx) => `Space ${idx + 1}`);
+import {Link} from 'react-router-dom';
 
 function Spaces() {
   const {open, handleOpen, handleClose} = useModal();
@@ -16,6 +15,10 @@ function Spaces() {
   function handleToggle() {
     setToggle((toggled) => !toggled);
   }
+
+  // Hard coded spaces
+  const spaces = Array.from(Array(4), (_, idx) => `Space ${idx + 1}`);
+
 
   return (
     <section className="flex flex-col gap-6">
@@ -29,13 +32,17 @@ function Spaces() {
                 might be an issue with the section or main container
       */}
       <section className="flex flex-wrap gap-5">
-        {spaces.map((space) => (
-          <DashItem
-            key={space}
-            styling="w-[20rem] h-[14.5rem]"
-            heading={space}
-            headingStyling="self-center my-auto"
-          />
+
+        {spaces.map((space, index) => (
+          // TODO: space should be an object, where you grab the spaceId
+          <Link to={`/spaces/${space}/${index+1}`} key={space}>
+            <DashItem
+              key={space}
+              styling="w-[20rem] h-[14.5rem]"
+              heading={space}
+              headingStyling="self-center my-auto"
+            />
+          </Link>
         ))}
 
         {toggle ? (
@@ -67,8 +74,8 @@ function Spaces() {
           >
             <ModalBox
               content={<CreateSpaceModalContent heading="Create New Space" />}
-              height='h-[31.5rem]'
-              width='w-[40rem]'
+              height="h-[31.5rem]"
+              width="w-[40rem]"
             />
           </Modal>
         ) : (

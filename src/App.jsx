@@ -10,6 +10,7 @@ import LogIn from './pages/LogIn';
 import PageNotFound from './pages/PageNotFound';
 import PageHeadingProvider from './contexts/PageHeadingContext';
 import ModalProvider from './contexts/ModalContext';
+import Space from './pages/Space';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="home" element={<Home />} />
               <Route path="bookings" element={<Bookings />} />
               <Route path="spaces" element={<Spaces />} />
+              <Route path='spaces/:spaceName/:spaceId' element={<Space/>}/>
               <Route path="rooms" element={<Rooms />} />
               <Route path="settings" element={<Settings />} />
             </Route>

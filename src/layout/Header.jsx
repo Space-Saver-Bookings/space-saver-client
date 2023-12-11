@@ -35,9 +35,20 @@ function stringAvatar(name) {
 function Header() {
   const {heading, setHeading} = usePageHeading();
   const {pathname} = useLocation();
-  const page = pathname.slice(1);
+  const pathnameArr = pathname.split('/');
+  let pageHeading;
+
+  console.log(pathnameArr);
+
+  if (pathnameArr.length <= 2) {
+    pageHeading = pathname.slice(1);
+    console.log(pageHeading);
+  } else if (pathnameArr.length > 2) {
+    pageHeading = decodeURI(pathname.split('/').at(2));
+  }
+
   useEffect(() => {
-    switch (page) {
+    switch (pageHeading) {
       case 'home':
         setHeading(`Good Afternoon, Alex!`);
         break;
@@ -54,9 +65,9 @@ function Header() {
         setHeading('Settings');
         break;
       default:
-        setHeading('');
+        setHeading(pageHeading);
     }
-  }, [setHeading, page]);
+  }, [setHeading, pageHeading]);
 
   return (
     <div className="col-span-full col-start-2 flex items-center justify-between px-8 font-coplette text-5xl">
