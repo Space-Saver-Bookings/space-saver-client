@@ -16,14 +16,14 @@ function Spaces() {
     setToggle((toggled) => !toggled);
   }
 
+  // TODO: think about how to fetch and render joined vs owned spaces
   // Hard coded spaces
   const spaces = Array.from(Array(4), (_, idx) => `Space ${idx + 1}`);
-
 
   return (
     <section className="flex flex-col gap-6">
       <div className="flex justify-center">
-        <Button variant='contained' onClick={handleToggle}>
+        <Button variant="contained" onClick={handleToggle}>
           {toggle ? 'Owned Spaces' : 'Joined Spaces'}
         </Button>
       </div>
@@ -32,10 +32,11 @@ function Spaces() {
                 might be an issue with the section or main container
       */}
       <section className="flex flex-wrap gap-5">
-
+        
+        {/* TODO: think about how to fetch and render joined vs owned spaces */}
         {spaces.map((space, index) => (
           // TODO: space should be an object, where you grab the spaceId
-          <Link to={`/spaces/${space}/${index+1}`} key={space}>
+          <Link to={`/spaces/${space}/${index + 1}`} key={space}>
             <DashItem
               key={space}
               styling="w-[20rem] h-[14.5rem]"
@@ -44,7 +45,6 @@ function Spaces() {
             />
           </Link>
         ))}
-
         {toggle ? (
           <button onClick={handleOpen}>
             <DashItem
@@ -64,7 +64,6 @@ function Spaces() {
             />
           </button>
         )}
-
         {open && toggle ? (
           <Modal
             open={open}

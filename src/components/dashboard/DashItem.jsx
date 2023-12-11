@@ -27,7 +27,7 @@ function DashItem({
       {content && (
         <section
           className={`mt-[-1.2rem] h-full ${
-            isScroll ? 'overflow-scroll' : 'overflow-clip'
+            isScroll ? 'overflow-y-scroll' : 'overflow-clip'
           }`}
         >
           {content}

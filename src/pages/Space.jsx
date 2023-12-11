@@ -8,6 +8,7 @@ import {createData} from '../helpers/createData';
 import {AddRounded} from '@mui/icons-material';
 
 function Space() {
+  // TODO: A nice to have to figure out a way for users to navigate back to spaces easily eg. header back to btn
   // TODO: Add fecthing logic to dynamically display content of each space
   // Use the space ID from the url param to fetch the correct & desired space
 
@@ -29,7 +30,7 @@ function Space() {
     createData(10310, '28/11/23', 4)
   );
 
-  const isAdmin = !true;
+  const isAdmin = true;
 
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
