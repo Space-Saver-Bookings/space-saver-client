@@ -38,11 +38,11 @@ function Header() {
   const pathnameArr = pathname.split('/');
   let pageHeading;
 
-  console.log(pathnameArr);
+  // console.log(pathnameArr);
 
   if (pathnameArr.length <= 2) {
     pageHeading = pathname.slice(1);
-    console.log(pageHeading);
+    // console.log(pageHeading);
   } else if (pathnameArr.length > 2) {
     pageHeading = decodeURI(pathname.split('/').at(2));
   }

@@ -1,4 +1,4 @@
-import {Button} from '@mui/material';
+import {Button, Modal} from '@mui/material';
 import DashItem from '../components/dashboard/DashItem';
 import ListContent from '../components/dashboard/ListContent';
 import AccessCode from '../features/space/AccessCode';
@@ -6,9 +6,15 @@ import Capacity from '../features/space/Capacity';
 import Description from '../features/space/Description';
 import {createData} from '../helpers/createData';
 import {AddRounded} from '@mui/icons-material';
-import { spaceDropdownOptions } from '../features/space/SpaceDropdownOptions';
+import {spaceDropdownOptions} from '../features/space/SpaceDropdownOptions';
+import {useAssignHandler} from '../features/space/useAssignHandler.js';
+import useModal from '../contexts/useModal.js';
+import ModalBox from '../components/modal/ModalBox.jsx';
+import ShareCodeModalContent from '../features/space/ShareCodeModalContent.jsx';
 
 function Space() {
+  const {open, handleOpen, handleClose} = useModal();
+
   // TODO: A nice to have to figure out a way for users to navigate back to spaces easily eg. header back to btn
   // TODO: Add fecthing logic to dynamically display content of each space
   // Use the space ID from the url param to fetch the correct & desired space
@@ -32,6 +38,8 @@ function Space() {
   );
 
   const isAdmin = true;
+
+  useAssignHandler(handleOpen);
 
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
@@ -100,6 +108,21 @@ function Space() {
         isDropdown={isAdmin}
         dropdownOptions={spaceDropdownOptions.users}
       />
+
+      {open && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox
+            content={<ShareCodeModalContent heading="Share Access Code" />}
+            height="h-[14.2rem]"
+            width="w-[27rem]"
+          />
+        </Modal>
+      )}
     </section>
   );
 }

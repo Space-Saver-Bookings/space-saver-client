@@ -49,7 +49,8 @@ function DropdownMenu({options}) {
             // TODO: another handler will be added with its own actions
             onClick={() => {
               handleClose();
-              option.handler();
+              option.handleOpen();
+              option.modal();
             }}
           >
             {option.name}

@@ -2,47 +2,35 @@ export const spaceDropdownOptions = {
   accessCode: [
     {
       name: 'Share Access Code',
-      handler() {
-        console.log('Action');
-      },
+      handleOpen: null,
     },
     {
       name: 'Edit Access Code',
-      handler() {
-        console.log('Action');
-      },
+      handleOpen: null,
     },
   ],
   capacity: [
     {
       name: 'Edit Capacity',
-      handler() {
-        console.log('Action');
-      },
+      handleOpen: null,
     },
   ],
   rooms: [
     {
       name: 'Edit Rooms',
-      handler() {
-        console.log('Action');
-      },
+      handleOpen: null,
     },
   ],
   description: [
     {
       name: 'Edit Description',
-      handler() {
-        console.log('Action');
-      },
+      handleOpen: null,
     },
   ],
   users: [
     {
       name: 'Edit Users',
-      handler() {
-        console.log('Action');
-      },
+      handleOpen: null,
     },
   ],
 };
