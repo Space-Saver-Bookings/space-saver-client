@@ -11,9 +11,10 @@ import {useAssignHandler} from '../features/space/useAssignHandler.js';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import ShareCodeModalContent from '../features/space/ShareCodeModalContent.jsx';
+import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
 
 function Space() {
-  const {open, handleOpen, handleClose} = useModal();
+  const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
 
   // TODO: A nice to have to figure out a way for users to navigate back to spaces easily eg. header back to btn
   // TODO: Add fecthing logic to dynamically display content of each space
@@ -39,7 +40,26 @@ function Space() {
 
   const isAdmin = true;
 
-  useAssignHandler(handleOpen);
+  useAssignHandler(handleOpen, setModalName);
+
+  const renderModalContent = () => {
+    switch (modalName) {
+      case 'Share Access Code':
+        return <ShareCodeModalContent heading="Share Access Code" />;
+      case 'Edit Access Code':
+        return <EditCodeModalContent heading="Edit Access Code" />;
+      case 'Edit Capacity':
+        return 'something';
+      case 'Edit Rooms':
+        return 'something';
+      case 'Edit Description':
+        return 'something';
+      case 'Edit Users':
+        return 'something';
+      default:
+        return null;
+    }
+  };
 
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
@@ -117,7 +137,7 @@ function Space() {
           aria-describedby="modal-modal-description"
         >
           <ModalBox
-            content={<ShareCodeModalContent heading="Share Access Code" />}
+            content={renderModalContent()}
             height="h-[14.2rem]"
             width="w-[27rem]"
           />
