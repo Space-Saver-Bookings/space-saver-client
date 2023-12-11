@@ -9,10 +9,12 @@ import TableRow from '@mui/material/TableRow';
 // import Paper from '@mui/material/Paper';
 
 function DashTableList({height, columns, rows}) {
+  console.log(height)
   return (
     <TableContainer
       // component={Paper}
-      sx={{maxHeight: {height}, px: 1}}
+      sx={{maxHeight: '100%', px: 1}}
+      // sx={{height: 'auto', px: 1, overflow: 'scroll'}}
     >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>

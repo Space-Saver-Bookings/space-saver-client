@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types';
 
-function DashItem({heading, styling, content, bgColor, headingStyling}) {
+function DashItem({
+  heading,
+  styling,
+  content,
+  bgColor,
+  headingStyling,
+  isScroll,
+}) {
   const base = `flex flex-col p-2 gap-5 rounded-xl border-2 ${
     bgColor ? `${bgColor} border-gray-300` : 'border-slate-200 bg-white'
   } shadow-xl`;
@@ -18,7 +25,11 @@ function DashItem({heading, styling, content, bgColor, headingStyling}) {
     <section className={base + ` ${styling}`}>
       <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
       {content && (
-        <section className="mt-[-.6rem] h-full overflow-clip">
+        <section
+          className={`mt-[-.6rem] h-full ${
+            isScroll ? 'overflow-scroll' : 'overflow-clip'
+          }`}
+        >
           {content}
         </section>
       )}
@@ -33,6 +44,7 @@ DashItem.propTypes = {
   content: PropTypes.element,
   bgColor: PropTypes.string,
   headingStyling: PropTypes.string,
+  isScroll: PropTypes.bool,
 };
 
 export default DashItem;
