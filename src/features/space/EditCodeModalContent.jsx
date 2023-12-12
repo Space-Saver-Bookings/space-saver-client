@@ -5,7 +5,7 @@ function EditCodeModalContent({heading}) {
   return (
     <>
       <h4 className="mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-2 w-60">
         <label className="text-lg" htmlFor="">
           Edit Access Code
         </label>

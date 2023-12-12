@@ -12,6 +12,9 @@ import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import ShareCodeModalContent from '../features/space/ShareCodeModalContent.jsx';
 import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
+import EditDescriptionModalContent from '../features/space/EditDescriptionModalContent.jsx';
+import EditCapacityModalContent from '../features/space/EditCapcityModalContent.jsx';
+import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
 
 function Space() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
@@ -26,10 +29,63 @@ function Space() {
   const descriptionText =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend placerat malesuada. Etiam vitae justo maximus, vestibulum velit eu, mattis nibh. Ut rhoncus nibh id neque tempus, id fringilla velit ullamcorper. Aliquam fermentum vestibulum libero in porttitor. Mauris et rhoncus mi. Donec ac efficitur arcu. Ut ex leo, elementum ac varius posuere, sollicitudin suscipit nulla.';
 
-  const usersColumn = ['Name', 'Email', 'Date Added', 'Position'];
+  const usersViewColumn = ['Name', 'Email', 'Date Added', 'Position'];
 
-  const usersRow = Array.from(Array(10), () =>
+  const usersViewRow = Array.from(Array(10), () =>
     createData('John Doe', 'johndoe@gmail.com', '28/11/23', 'Web Developer')
+  );
+
+  // const usersEditColumn = [
+  //   'First Name',
+  //   'Last Name',
+  //   'Email',
+  //   'Date Joined',
+  //   'Post Code',
+  //   'Position',
+  // ];
+
+  // const usersEditRows = Array.from(Array(10), (_, idx) =>
+  //   createData(
+  //     `${idx + 1}`,
+  //     'John',
+  //     'Doe',
+  //     'johndoe@gmail.com',
+  //     '28/11/23',
+  //     2001,
+  //     'Web Developer'
+  //   )
+  // );
+
+  function createUsersData(
+    id,
+    firstName,
+    lastName,
+    email,
+    dateJoined,
+    postCode,
+    position
+  ) {
+    return {
+      id,
+      firstName,
+      lastName,
+      email,
+      dateJoined,
+      postCode,
+      position,
+    };
+  }
+
+  const usersEditRows = Array.from(Array(13), (_, idx) =>
+    createUsersData(
+      Number(`${idx + 1}`),
+      'John',
+      'Doe',
+      'johndoe@gmail.com',
+      '28/11/23',
+      2001,
+      'Web Developer'
+    )
   );
 
   const roomsColumn = ['Room #', 'Next Available', 'Capacity'];
@@ -49,13 +105,19 @@ function Space() {
       case 'Edit Access Code':
         return <EditCodeModalContent heading="Edit Access Code" />;
       case 'Edit Capacity':
-        return 'something';
-      case 'Edit Rooms':
+        return <EditCapacityModalContent heading="Edit Capacity" />;
+      case 'View All Rooms':
+        // TODO: Link to rooms
         return 'something';
       case 'Edit Description':
-        return 'something';
+        return <EditDescriptionModalContent heading="Edit Description" />;
       case 'Edit Users':
-        return 'something';
+        return (
+          <EditUsersModalContent
+            heading="Edit Users"
+            rows={usersEditRows}
+          />
+        );
       default:
         return null;
     }
@@ -124,12 +186,28 @@ function Space() {
             ? 'row-start-[10] row-end-[17]'
             : 'row-start-[11] row-span-full'
         }`}
-        content={<ListContent columns={usersColumn} rows={usersRow} />}
+        content={<ListContent columns={usersViewColumn} rows={usersViewRow} />}
         isDropdown={isAdmin}
         dropdownOptions={spaceDropdownOptions.users}
       />
 
-      {open && (
+      {/* {modalName === 'Edit Users' &&
+        open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <ModalBox
+              content={renderModalContent()}
+              height="h-auto"
+              width="w-[60rem]"
+            />
+          </Modal>
+        )} */}
+
+      {modalName !== 'Edit Users' && open ? (
         <Modal
           open={open}
           onClose={handleClose}
@@ -138,8 +216,21 @@ function Space() {
         >
           <ModalBox
             content={renderModalContent()}
-            height="h-[14.2rem]"
-            width="w-[27rem]"
+            height="h-auto"
+            width="w-[30rem]"
+          />
+        </Modal>
+      ) : (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox
+            content={renderModalContent()}
+            height="h-[35.5rem]"
+            width="w-[60rem]"
           />
         </Modal>
       )}

@@ -17,7 +17,7 @@ export const spaceDropdownOptions = {
   ],
   rooms: [
     {
-      name: 'Edit Rooms',
+      name: 'View All Rooms',
       handleOpen: null,
     },
   ],

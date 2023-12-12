@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 // import Paper from '@mui/material/Paper';
 
 function DashTableList({height, columns, rows}) {
+  // TODO: get rid of the height + update components that uses it
   console.log(height)
   return (
     <TableContainer
