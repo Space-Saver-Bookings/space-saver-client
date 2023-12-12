@@ -1,5 +1,6 @@
 // import {useState} from 'react';
 // import Button from '../components/buttons/Button';
+import {Link} from 'react-router-dom';
 import DashItem from '../components/dashboard/DashItem';
 // import useModal from '../contexts/useModal';
 // import {Modal} from '@mui/material';
@@ -19,7 +20,8 @@ function Rooms() {
   const bookedRooms = {
     name: 'Booked Rooms',
     rooms: Array.from(
-      Array(Math.trunc(Math.random() * 5) + 1),
+      // Array(Math.trunc(Math.random() * 5) + 1),
+      Array(4),
       (_, idx) => `Room ${idx + 1}`
     ),
   };
@@ -28,13 +30,14 @@ function Rooms() {
   const spaces = Array.from(Array(8), (_, idx) => ({
     name: `Space ${idx + 1}`,
     rooms: Array.from(
-      Array(Math.trunc(Math.random() * 5) + 1),
+      // Array(Math.trunc(Math.random() * 5) + 1),
+      Array(3),
       (_, idx) => `Room ${idx + 1}`
     ),
   }));
 
   const options = [bookedRooms, ...spaces];
-  console.log(options);
+  // console.log(options);
   // options.unshift(bookedRooms);
 
   const {menuOption} = useMenuOptionStore();
@@ -57,24 +60,15 @@ function Rooms() {
        */}
 
       <section className="flex flex-wrap gap-5">
-        {/* {options.map((option) =>
-          option.rooms.map((room) => (
+        {currentOption.rooms.map((room, idx) => (
+          <Link to={`/rooms/${room}/${idx + 1}`} key={room}>
             <DashItem
               key={room}
               styling="w-[20rem] h-[14.5rem]"
               heading={room}
               headingStyling="self-center my-auto"
             />
-          ))
-        )} */}
-
-        {currentOption.rooms.map((room) => (
-          <DashItem
-            key={room}
-            styling="w-[20rem] h-[14.5rem]"
-            heading={room}
-            headingStyling="self-center my-auto"
-          />
+          </Link>
         ))}
 
         {/* {toggle && isAdmin && (
