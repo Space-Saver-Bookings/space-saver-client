@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 function Book({roomNumber, date, time, isBookFor}) {
   return (
-    <section className="flex h-[10rem] flex-col items-center mt-[-.4rem]">
+    <section className="flex h-[10rem] flex-col items-center">
       <h4 className="font-coplette text-xl text-blue-800 sm:text-2xl md:text-3xl">
         Room
       </h4>

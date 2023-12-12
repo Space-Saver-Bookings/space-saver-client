@@ -1,6 +1,16 @@
 import PropTypes from 'prop-types';
+import DropdownMenu from '../menu/DropdownMenu';
 
-function DashItem({heading, styling, content, bgColor, headingStyling}) {
+function DashItem({
+  heading,
+  styling,
+  content,
+  bgColor,
+  headingStyling,
+  isScroll,
+  isDropdown,
+  dropdownOptions,
+}) {
   const base = `flex flex-col p-2 gap-5 rounded-xl border-2 ${
     bgColor ? `${bgColor} border-gray-300` : 'border-slate-200 bg-white'
   } shadow-xl`;
@@ -16,9 +26,21 @@ function DashItem({heading, styling, content, bgColor, headingStyling}) {
 
   return (
     <section className={base + ` ${styling}`}>
-      <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
+      {isDropdown ? (
+        <div className="flex justify-between">
+          <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
+          {/* TODO: options will be an object with the name of the option and a handler as a property */}
+          <DropdownMenu options={dropdownOptions} />
+        </div>
+      ) : (
+        <h3 className={baseHeading + ` ${headingStyling}`}>{heading}</h3>
+      )}
       {content && (
-        <section className="mt-[-.6rem] h-full overflow-clip">
+        <section
+          className={`mt-[-1.2rem] h-full ${
+            isScroll ? 'overflow-y-scroll' : 'overflow-clip'
+          }`}
+        >
           {content}
         </section>
       )}
@@ -33,6 +55,9 @@ DashItem.propTypes = {
   content: PropTypes.element,
   bgColor: PropTypes.string,
   headingStyling: PropTypes.string,
+  isScroll: PropTypes.bool,
+  isDropdown: PropTypes.bool,
+  dropdownOptions: PropTypes.array,
 };
 
 export default DashItem;
