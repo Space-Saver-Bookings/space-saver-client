@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 // import FileCopyIcon from '@mui/icons-material/FileCopy';
 // import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import useMenuOptionStore from '../../features/rooms/menuOptionStore';
 
 const ITEM_HEIGHT = 42;
 
@@ -64,7 +65,8 @@ const StyledMenu = styled((props) => (
 
 export default function CustomizedMenus({options}) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [MenuOption, setMenuOption] = useState('Booked Rooms');
+  // const [MenuOption, setMenuOption] = useState('Booked Rooms');
+  const {menuOption, setMenuOption} = useMenuOptionStore();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -91,7 +93,7 @@ export default function CustomizedMenus({options}) {
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
       >
-        {MenuOption}
+        {menuOption}
       </Button>
       <StyledMenu
         id="demo-customized-menu"
@@ -104,14 +106,14 @@ export default function CustomizedMenus({options}) {
       >
         {options.map((option) => (
           <MenuItem
-            key={option}
+            key={option.name}
             onClick={() => {
               handleClose();
-              handleOption(option);
+              handleOption(option.name);
             }}
             disableRipple
           >
-            {option}
+            {option.name}
           </MenuItem>
         ))}
       </StyledMenu>
