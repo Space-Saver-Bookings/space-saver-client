@@ -50,7 +50,7 @@ function DropdownMenu({options}) {
             onClick={() => {
               handleClose();
               option.handleOpen();
-              option.modal();
+              // option.modal();
             }}
           >
             {option.name}
