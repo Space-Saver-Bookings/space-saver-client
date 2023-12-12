@@ -15,12 +15,12 @@ export const spaceDropdownOptions = {
       handleOpen: null,
     },
   ],
-  rooms: [
-    {
-      name: 'View All Rooms',
-      handleOpen: null,
-    },
-  ],
+  // rooms: [
+  //   {
+  //     name: 'View All Rooms',
+  //     handleOpen: null,
+  //   },
+  // ],
   description: [
     {
       name: 'Edit Description',
@@ -30,7 +30,7 @@ export const spaceDropdownOptions = {
   users: [
     {
       name: 'Edit Users',
-      handleOpen: null,
+      handleNavigate: null,
     },
   ],
 };

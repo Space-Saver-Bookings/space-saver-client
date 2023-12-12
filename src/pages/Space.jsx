@@ -15,26 +15,12 @@ import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
 import EditDescriptionModalContent from '../features/space/EditDescriptionModalContent.jsx';
 import EditCapacityModalContent from '../features/space/EditCapcityModalContent.jsx';
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
-// import {useState} from 'react';
 import AddNewUserModalContent from '../features/space/AddNewUserModalContent.jsx';
 import AddNewRoomModalContent from '../features/space/AddNewRoomModalContent.jsx';
+import { Navigate } from 'react-router-dom';
 
 function Space() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
-  // const [userBtn, setUserBtn] = useState(false);
-  // const [roomBtn, setRoomBtn] = useState(false);
-
-  // function handleNewUser() {
-  //   setUserBtn(true);
-  //   setRoomBtn(false);
-  //   handleOpen();
-  // }
-
-  // function handleNewRoom() {
-  //   setRoomBtn(true);
-  //   setUserBtn(false);
-  //   handleOpen();
-  // }
 
   function handleNewUser() {
     setModalName('Add New User');
@@ -44,6 +30,10 @@ function Space() {
   function handleNewRoom() {
     setModalName('Add New Room');
     handleOpen();
+  }
+
+  function handleNavigate() {
+    return <Navigate to='/rooms'/>
   }
 
   // TODO: A nice to have to figure out a way for users to navigate back to spaces easily eg. header back to btn
@@ -123,7 +113,7 @@ function Space() {
 
   const isAdmin = true;
 
-  useAssignHandler(handleOpen, setModalName);
+  useAssignHandler(handleOpen, setModalName, handleNavigate);
 
   const renderModalContent = () => {
     switch (modalName) {
@@ -133,9 +123,9 @@ function Space() {
         return <EditCodeModalContent heading="Edit Access Code" />;
       case 'Edit Capacity':
         return <EditCapacityModalContent heading="Edit Capacity" />;
-      case 'View All Rooms':
-        // TODO: Link to rooms
-        return 'something';
+      // case 'View All Rooms':
+      //   // TODO: Link to rooms
+      //   return 'something';
       case 'Edit Description':
         return <EditDescriptionModalContent heading="Edit Description" />;
       case 'Edit Users':
@@ -175,8 +165,8 @@ function Space() {
           isAdmin ? 'row-end-[17]' : 'row-span-full'
         } row-start-1 rounded-xl`}
         content={<ListContent columns={roomsColumn} rows={roomsRow} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.rooms}
+        // isDropdown={isAdmin}
+        // dropdownOptions={spaceDropdownOptions.rooms}
       />
 
       {isAdmin && (
@@ -226,52 +216,6 @@ function Space() {
         isDropdown={isAdmin}
         dropdownOptions={spaceDropdownOptions.users}
       />
-
-      {/* {modalName === 'Edit Users' &&
-        open && (
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <ModalBox
-              content={renderModalContent()}
-              height="h-auto"
-              width="w-[60rem]"
-            />
-          </Modal>
-        )} */}
-
-      {/* {userBtn && open && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox
-            content={<AddNewUserModalContent heading="Add New User" />}
-            height="h-auto"
-            width="w-[30rem]"
-          />
-        </Modal>
-      )}
-
-      {roomBtn && open && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox
-            content={<AddNewRoomModalContent heading="Add New Room" />}
-            height="h-auto"
-            width="w-[30rem]"
-          />
-        </Modal>
-      )} */}
 
       {modalName !== 'Edit Users' && open ? (
         <Modal

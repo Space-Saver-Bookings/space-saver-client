@@ -9,7 +9,9 @@ export function useAssignHandler(handleOpen, setModalName) {
           (option.handleOpen = () => {
             setModalName(option.name);
             handleOpen();
-          })
+          }
+          
+          )
       );
     });
     // spaceDropdownOptions.accessCode[0].handleOpen = () => handleOpen();
