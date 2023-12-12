@@ -15,9 +15,36 @@ import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
 import EditDescriptionModalContent from '../features/space/EditDescriptionModalContent.jsx';
 import EditCapacityModalContent from '../features/space/EditCapcityModalContent.jsx';
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
+// import {useState} from 'react';
+import AddNewUserModalContent from '../features/space/AddNewUserModalContent.jsx';
+import AddNewRoomModalContent from '../features/space/AddNewRoomModalContent.jsx';
 
 function Space() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
+  // const [userBtn, setUserBtn] = useState(false);
+  // const [roomBtn, setRoomBtn] = useState(false);
+
+  // function handleNewUser() {
+  //   setUserBtn(true);
+  //   setRoomBtn(false);
+  //   handleOpen();
+  // }
+
+  // function handleNewRoom() {
+  //   setRoomBtn(true);
+  //   setUserBtn(false);
+  //   handleOpen();
+  // }
+
+  function handleNewUser() {
+    setModalName('Add New User');
+    handleOpen();
+  }
+
+  function handleNewRoom() {
+    setModalName('Add New Room');
+    handleOpen();
+  }
 
   // TODO: A nice to have to figure out a way for users to navigate back to spaces easily eg. header back to btn
   // TODO: Add fecthing logic to dynamically display content of each space
@@ -113,11 +140,12 @@ function Space() {
         return <EditDescriptionModalContent heading="Edit Description" />;
       case 'Edit Users':
         return (
-          <EditUsersModalContent
-            heading="Edit Users"
-            rows={usersEditRows}
-          />
+          <EditUsersModalContent heading="Edit Users" rows={usersEditRows} />
         );
+      case 'Add New User':
+        return <AddNewUserModalContent heading="Add New User" />;
+      case 'Add New Room':
+        return <AddNewRoomModalContent heading="Add New Room" />;
       default:
         return null;
     }
@@ -154,13 +182,21 @@ function Space() {
       {isAdmin && (
         <>
           <section className="col-span-full col-start-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
-            <Button variant="contained" startIcon={<AddRounded />}>
+            <Button
+              variant="contained"
+              startIcon={<AddRounded />}
+              onClick={handleNewRoom}
+            >
               Add New Room
             </Button>
           </section>
 
           <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
-            <Button variant="contained" startIcon={<AddRounded />}>
+            <Button
+              variant="contained"
+              startIcon={<AddRounded />}
+              onClick={handleNewUser}
+            >
               Add New User
             </Button>
           </section>
@@ -206,6 +242,36 @@ function Space() {
             />
           </Modal>
         )} */}
+
+      {/* {userBtn && open && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox
+            content={<AddNewUserModalContent heading="Add New User" />}
+            height="h-auto"
+            width="w-[30rem]"
+          />
+        </Modal>
+      )}
+
+      {roomBtn && open && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox
+            content={<AddNewRoomModalContent heading="Add New Room" />}
+            height="h-auto"
+            width="w-[30rem]"
+          />
+        </Modal>
+      )} */}
 
       {modalName !== 'Edit Users' && open ? (
         <Modal
