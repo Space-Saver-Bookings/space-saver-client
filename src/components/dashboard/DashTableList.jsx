@@ -6,11 +6,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import {Tooltip} from '@mui/material';
 // import Paper from '@mui/material/Paper';
 
-function DashTableList({height, columns, rows}) {
+function DashTableList({height, columns, rows, toolTipTitle}) {
   // TODO: get rid of the height + update components that uses it
-  console.log(height)
+  console.log(height);
   return (
     <TableContainer
       // component={Paper}
@@ -35,22 +36,24 @@ function DashTableList({height, columns, rows}) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow
-              key={row.roomNumber}
-              className="list-hover"
-              sx={{
-                '&:last-child td, &:last-child th': {border: 0, pb: 3},
-              }}
-            >
-              {Object.values(row).map((item) => (
-                <TableCell key={item} align="center">
-                  {item}
-                </TableCell>
-              ))}
-              {/* <TableCell align="center">{row.roomNumber}</TableCell>
+            <Tooltip key={row.roomNumber} title={toolTipTitle}>
+              <TableRow
+                key={row.roomNumber}
+                className="list-hover"
+                sx={{
+                  '&:last-child td, &:last-child th': {border: 0, pb: 3},
+                }}
+              >
+                {Object.values(row).map((item) => (
+                  <TableCell key={item} align="center">
+                    {item}
+                  </TableCell>
+                ))}
+                {/* <TableCell align="center">{row.roomNumber}</TableCell>
               <TableCell align="center">{row.date}</TableCell>
-              <TableCell align="center">{row.capacity}</TableCell> */}
-            </TableRow>
+            <TableCell align="center">{row.capacity}</TableCell> */}
+              </TableRow>
+            </Tooltip>
           ))}
         </TableBody>
       </Table>
@@ -62,6 +65,7 @@ DashTableList.propTypes = {
   height: PropTypes.number,
   columns: PropTypes.array,
   rows: PropTypes.array,
+  toolTipTitle: PropTypes.string,
 };
 
 export default DashTableList;

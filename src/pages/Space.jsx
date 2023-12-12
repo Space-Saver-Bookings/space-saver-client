@@ -164,7 +164,7 @@ function Space() {
         styling={`col-span-full col-start-[15] ${
           isAdmin ? 'row-end-[17]' : 'row-span-full'
         } row-start-1 rounded-xl`}
-        content={<ListContent columns={roomsColumn} rows={roomsRow} />}
+        content={<ListContent columns={roomsColumn} rows={roomsRow} toolTipTitle="Go to Room" />}
         // isDropdown={isAdmin}
         // dropdownOptions={spaceDropdownOptions.rooms}
       />
