@@ -1,16 +1,12 @@
 // import {useState} from 'react';
 // import Button from '../components/buttons/Button';
+import {Link} from 'react-router-dom';
 import DashItem from '../components/dashboard/DashItem';
 // import useModal from '../contexts/useModal';
 // import {Modal} from '@mui/material';
 // import ModalBox from '../components/modal/ModalBox';
 import CustomizedMenus from '../components/menu/CustomizedMenus';
-
-const rooms = Array.from(Array(3), (_, idx) => `Room ${idx + 1}`);
-const bookedRooms = {rooms};
-const options = Array.from(Array(8), (_, idx) => `Space ${idx + 1}`);
-options.unshift('Booked Rooms');
-// const isAdmin = true;
+import useMenuOptionStore from '../features/rooms/menuOptionStore';
 
 function Rooms() {
   //   const {open, handleOpen, handleClose} = useModal();
@@ -20,11 +16,39 @@ function Rooms() {
   //     setToggle((toggled) => !toggled);
   //   }
 
+  // const rooms = Array.from(Array(3), (_, idx) => `Room ${idx + 1}`);
+  const bookedRooms = {
+    name: 'Booked Rooms',
+    rooms: Array.from(
+      // Array(Math.trunc(Math.random() * 5) + 1),
+      Array(4),
+      (_, idx) => `Room ${idx + 1}`
+    ),
+  };
+
+  // const spaces = Array.from(Array(8), (_, idx) => `Space ${idx + 1}`);
+  const spaces = Array.from(Array(8), (_, idx) => ({
+    name: `Space ${idx + 1}`,
+    rooms: Array.from(
+      // Array(Math.trunc(Math.random() * 5) + 1),
+      Array(3),
+      (_, idx) => `Room ${idx + 1}`
+    ),
+  }));
+
+  const options = [bookedRooms, ...spaces];
+  // console.log(options);
+  // options.unshift(bookedRooms);
+
+  const {menuOption} = useMenuOptionStore();
+  const currentOption = options.find((option) => option.name === menuOption);
+
+  // const isAdmin = true;
+
   return (
     <section className="flex flex-col gap-6">
-      {/* TODO: this toggle should be a dropdown instead, will comeback in the future to implement
-                  with data from server
-        */}
+      {/* TODO: this toggle should be a dropdown instead, will comeback in the future to implement with data from server
+       */}
       <div className="flex justify-center">
         {/* <Button onClick={handleToggle}>
           {toggle ? 'Space 1' : 'Booked rooms'}
@@ -32,17 +56,19 @@ function Rooms() {
         <CustomizedMenus options={options} />
       </div>
 
-      {/* TODO: Fix flex card item alignment, not with justify-center, figure something out
-                might be an issue with the section or main container
-      */}
+      {/* TODO: Fix flex card item alignment, not with justify-center, figure something out might be an issue with the section or main container
+       */}
+
       <section className="flex flex-wrap gap-5">
-        {bookedRooms.rooms.map((room) => (
-          <DashItem
-            key={room}
-            styling="w-[20rem] h-[14.5rem]"
-            heading={room}
-            headingStyling="self-center my-auto"
-          />
+        {currentOption.rooms.map((room, idx) => (
+          <Link to={`/rooms/${room}/${idx + 1}`} key={room}>
+            <DashItem
+              key={room}
+              styling="w-[20rem] h-[14.5rem]"
+              heading={room}
+              headingStyling="self-center my-auto"
+            />
+          </Link>
         ))}
 
         {/* {toggle && isAdmin && (

@@ -11,6 +11,7 @@ import PageNotFound from './pages/PageNotFound';
 import PageHeadingProvider from './contexts/PageHeadingContext';
 import ModalProvider from './contexts/ModalContext';
 import Space from './pages/Space';
+import Room from './pages/Room';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="spaces" element={<Spaces />} />
               <Route path='spaces/:spaceName/:spaceId' element={<Space/>}/>
               <Route path="rooms" element={<Rooms />} />
+              <Route path='rooms/:roomName/:roomId' element={<Room/>}/>
               <Route path="settings" element={<Settings />} />
             </Route>
 
