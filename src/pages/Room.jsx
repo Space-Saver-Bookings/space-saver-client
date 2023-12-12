@@ -6,8 +6,6 @@ import AccessCode from '../features/space/AccessCode';
 import Capacity from '../features/space/Capacity';
 import Description from '../features/space/Description';
 import {createData} from '../helpers/createData';
-import {AddRounded} from '@mui/icons-material';
-import {spaceDropdownOptions} from '../features/space/SpaceDropdownOptions';
 import {useAssignHandler} from '../features/space/useAssignHandler.js';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
@@ -19,6 +17,9 @@ import ModalBox from '../components/modal/ModalBox.jsx';
 // import AddNewUserModalContent from '../features/space/AddNewUserModalContent.jsx';
 // import AddNewRoomModalContent from '../features/space/AddNewRoomModalContent.jsx';
 import {Navigate} from 'react-router-dom';
+import BookNow from '../features/room/BookNow.jsx';
+import RoomNumber from '../features/room/RoomNumber.jsx';
+import CapacityRoom from '../features/room/CapacityRoom.jsx';
 
 function Room() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
@@ -35,8 +36,10 @@ function Room() {
   const usersViewRow = Array.from(Array(9), () =>
     createData('John Doe', 'johndoe@gmail.com', 'Guest', 'Web Developer')
   );
-    
-  usersViewRow.unshift(createData('John Doe', 'johndoe@gmail.com', 'Resever', 'Web Developer'))
+
+  usersViewRow.unshift(
+    createData('John Doe', 'johndoe@gmail.com', 'Resever', 'Web Developer')
+  );
 
   const roomsColumn = ['Date', 'Time', 'Duration'];
 
@@ -78,24 +81,20 @@ function Room() {
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
       <DashItem
         heading="Book Now"
-        styling="col-start-1 col-end-10 row-span-5"
-        content={<AccessCode accessCode={57493} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.accessCode}
+        styling="col-start-1 col-end-11 row-span-5"
+        content={<BookNow date='30/11/23' time={'4:20pm'}/>}
       />
 
       <DashItem
         heading="Room #"
-        styling="col-span-6 row-span-5"
-        content={<Capacity roomsCount={25} peopleCount={85} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.capacity}
+        styling="col-span-5 row-span-5"
+        content={<RoomNumber roomNumber='1569A'/>}
       />
 
       <DashItem
         heading="Availabilities"
         styling={`col-span-full col-start-[16] ${
-          isAdmin ? 'row-end-[17]' : 'row-span-full'
+          isAdmin ? 'row-end-[19]' : 'row-span-full'
         } row-start-1 rounded-xl`}
         content={
           <ListContent
@@ -104,29 +103,17 @@ function Room() {
             toolTipTitle="Go to Room"
           />
         }
-        // isDropdown={isAdmin}
-        // dropdownOptions={spaceDropdownOptions.rooms}
       />
 
       {isAdmin && (
         <>
-          <section className="col-span-full col-start-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
-            <Button
-              variant="contained"
-              startIcon={<AddRounded />}
-              // onClick={handleNewRoom}
-            >
-              Add New Room
-            </Button>
-          </section>
-
           <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
             <Button
               variant="contained"
-              startIcon={<AddRounded />}
+              // startIcon={<AddRounded />}
               // onClick={handleNewUser}
             >
-              Add New User
+              Edit Room
             </Button>
           </section>
         </>
@@ -135,33 +122,29 @@ function Room() {
       <DashItem
         heading="Description"
         // styling="col-start-1 col-end-[15] row-start-6 row-span-4"
-        styling={`col-start-1 col-end-[10] ${
-          isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
+        styling={`col-start-1 col-end-[11] ${
+          isAdmin ? 'row-start-6 row-span-5' : 'row-start-6 row-span-5'
         }`}
         isScroll
         content={<Description descriptionText={descriptionText} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.description}
       />
 
       <DashItem
         heading="Capacity"
-        styling="col-span-6 row-span-5"
-        content={<Capacity roomsCount={25} peopleCount={85} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.capacity}
+        styling="col-span-5 row-span-5"
+        content={<CapacityRoom capacityAmount={10}/>}
       />
 
       <DashItem
         heading="Current Users"
         styling={`col-start-1 col-end-[16] ${
           isAdmin
-            ? 'row-start-[10] row-end-[17]'
+            ? 'row-start-[11] row-end-[17]'
             : 'row-start-[11] row-span-full'
         }`}
         content={<ListContent columns={usersViewColumn} rows={usersViewRow} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.users}
+        // isDropdown={isAdmin}
+        // dropdownOptions={spaceDropdownOptions.users}
       />
 
       {/* {modalName !== 'Edit Users' && open ? (
