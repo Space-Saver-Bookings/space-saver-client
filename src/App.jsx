@@ -14,6 +14,7 @@ import Space from './pages/Space';
 import Room from './pages/Room';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="settings" element={<Settings />} />
               </Route>
 
+              <Route path="register" element={<Register />} />
               <Route path="login" element={<LogIn />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>

@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import desktopLogo from '../assets/logo/ss-logo.png';
 import Divider from './Divider';
 
-function LogoDesktop() {
+function LogoDesktop({NoDivider}) {
   return (
     <div>
       <img
@@ -9,9 +10,13 @@ function LogoDesktop() {
         alt="SpaceSaver desktop logo"
         className="mt-[-3rem]"
       />
-      <Divider/>
+      {!NoDivider && <Divider />}
     </div>
   );
 }
+
+LogoDesktop.propTypes = {
+  NoDivider: PropTypes.bool,
+};
 
 export default LogoDesktop;

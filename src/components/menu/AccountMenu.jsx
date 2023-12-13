@@ -38,7 +38,7 @@ export default function AccountMenu({name}) {
             aria-expanded={open ? 'true' : undefined}
           >
             {/* <Avatar sx={{width: 32, height: 32}} {...stringAvatar(name)} /> */}
-            <Avatar {...stringAvatar(name)} />
+            <Avatar {...stringAvatar(name)} className="shadow-lg" />
           </IconButton>
         </Tooltip>
       </Box>
