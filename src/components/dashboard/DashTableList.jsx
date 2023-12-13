@@ -15,7 +15,7 @@ function DashTableList({height, columns, rows, toolTipTitle}) {
   return (
     <TableContainer
       // component={Paper}
-      sx={{maxHeight: '100%', px: 1}}
+      sx={{maxHeight: '100%', }}
     >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
