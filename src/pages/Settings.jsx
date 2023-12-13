@@ -1,12 +1,25 @@
-import {Button} from '@mui/material';
+import {Button, Modal} from '@mui/material';
 import SettingsForm from '../features/settings/SettingsForm';
 import {useState} from 'react';
+import ConfirmModal from '../components/modal/ConfirmModal';
+import ModalBox from '../components/modal/ModalBox';
+import useModal from '../contexts/useModal';
 
 function Settings() {
+  const {open, handleClose, handleOpen} = useModal();
   const [toggle, setToggle] = useState(false);
 
   function handleToggle() {
     setToggle((toggle) => !toggle);
+  }
+
+  function handleNo() {
+    handleClose();
+  }
+
+  // TODO: Logic for deleting account
+  function handleYes() {
+    handleClose();
   }
 
   return (
@@ -14,14 +27,15 @@ function Settings() {
       <SettingsForm disabled={!toggle} />
 
       {toggle ? (
-        <div className='flex gap-8'>
-          <Button variant="contained" color="error">
+        <div className="flex gap-8">
+          <Button variant="contained" color="error" onClick={handleOpen}>
             Delete Account
           </Button>
-          <Button variant='outlined' color='error' onClick={handleToggle}>
+          <Button variant="outlined" color="error" onClick={handleToggle}>
             Cancel
           </Button>
-          <Button variant='contained' onClick={handleToggle}>
+          {/* TODO: the handler will change for confiming settings */}
+          <Button variant="contained" onClick={handleToggle}>
             Confirm
           </Button>
         </div>
@@ -29,6 +43,21 @@ function Settings() {
         <Button variant="contained" onClick={handleToggle}>
           Edit
         </Button>
+      )}
+
+      {open && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox
+            content={<ConfirmModal heading="Are you sure?" handleNo={handleNo} handleYes={handleYes} />}
+            height="h-auto"
+            width="w-[20rem]"
+          />
+        </Modal>
       )}
     </section>
   );
