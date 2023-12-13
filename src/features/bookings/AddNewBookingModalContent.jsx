@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 // import Button from '../../components/buttons/Button';
 import {Button, TextField} from '@mui/material';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 
 function AddNewBookingModalContent({heading}) {
   return (
     <>
       <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <div className="flex w-72 flex-col items-center gap-1">
+      <div className="flex w-72 flex-col items-center gap-2">
         <label className="self-start text-lg" htmlFor="">
           Booking Title
         </label>
@@ -23,42 +25,15 @@ function AddNewBookingModalContent({heading}) {
         <label className="self-start text-lg" htmlFor="">
           Date
         </label>
-        <TextField
-          required
-          // defaultValue="Space Name"
-          id="outlined-basic"
-          label="required"
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{mb: '0.5rem'}}
-        />
+        <DatePicker label="required*" />
         <label className="self-start text-lg" htmlFor="">
           Start Time
         </label>
-        <TextField
-          required
-          // defaultValue="Space Name"
-          id="outlined-basic"
-          label="required"
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{mb: '0.5rem'}}
-        />
+        <TimePicker label="required*" />
         <label className="self-start text-lg" htmlFor="">
           End Time
         </label>
-        <TextField
-          required
-          // defaultValue="Space Name"
-          id="outlined-basic"
-          label="required"
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{mb: '0.5rem'}}
-        />
+        <TimePicker label="required*" />
         <label className="self-start text-lg" htmlFor="">
           Notes
         </label>
