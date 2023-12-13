@@ -17,21 +17,21 @@ function Bookings() {
     setToggle((t) => !t);
   }
 
-  const roomsColumn = ['Room #', 'Next Available', 'Capacity'];
+  const roomsColumn = ['Booking #', 'Start', 'End'];
 
   const roomsRow = Array.from(Array(15), () =>
-    createData(10310, '28/11/23', 4)
+    createData(20346, '12:00pm', '1:00pm')
   );
 
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
-      <div className="col-start-1 col-end-[15] row-span-1 flex flex-col items-center justify-center">
+      <div className="col-start-1 col-end-[16] row-span-1 flex flex-col items-center justify-center">
         <Button variant="contained" onClick={handleToggle}>
           {toggle ? 'My Bookings' : 'All Bookings'}
         </Button>
       </div>
 
-      <section className="col-start-1 col-end-[15] row-span-full row-start-2 bg-white border-2 rounded-xl shadow-xl">
+      <section className="col-start-1 col-end-[16] row-span-full row-start-2 bg-white border-2 rounded-xl shadow-xl">
         {/* TODO: Calendar logic is separated into its own component */}
         <Calendar/>
       </section>
@@ -39,7 +39,7 @@ function Bookings() {
       <DashItem
         heading="Upcoming Bookings"
         content={<ListContent columns={roomsColumn} rows={roomsRow} />}
-        styling="col-span-full col-start-[15] row-end-[17] row-start-1 rounded-xl"
+        styling="col-span-full col-start-[16] row-end-[17] row-start-1 rounded-xl"
       />
 
       {open && (
@@ -53,13 +53,13 @@ function Bookings() {
         </Modal>
       )}
 
-      <div className="col-span-full col-start-[15] row-span-2 row-start-[17] flex flex-col items-center justify-center">
+      <div className="col-span-full col-start-[16] row-span-2 row-start-[17] flex flex-col items-center justify-center">
         <Button
           variant="contained"
           startIcon={<AddRounded />}
           onClick={handleOpen}
         >
-          Add New Room
+          Add New Booking
         </Button>
       </div>
     </section>

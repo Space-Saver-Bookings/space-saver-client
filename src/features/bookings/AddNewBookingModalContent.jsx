@@ -54,7 +54,7 @@ function AddNewBookingModalContent({heading}) {
         <Button variant="contained" color="error">
           Cancel
         </Button>
-        <Button variant="contained">Book</Button>
+        <Button variant="contained">Confirm Booking</Button>
       </div>
     </>
   );
