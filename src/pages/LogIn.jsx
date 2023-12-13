@@ -4,6 +4,7 @@ import LogoDesktop from '../components/LogoDesktop';
 
 function LogIn() {
   return (
+    // TODO: Finish off responsive for mobile and tablet views
     <main className="flex h-screen flex-col items-center justify-center gap-6 bg-slate-100">
       <div className="flex h-[.1rem] w-[23rem] flex-col justify-center">
         <LogoDesktop NoDivider />
@@ -12,8 +13,8 @@ function LogIn() {
       <section className="flex h-auto w-[40rem] flex-col gap-3 rounded-xl border-2 bg-white px-9 py-10 shadow-xl">
         <h2 className="font-coplette text-4xl">Sign in to your account</h2>
         <p className="text-[1.05rem] text-gray-700">
-          To access the awesome features SpaceSaver has to offer, join now to
-          start managing spaces.
+          To access the awesome features SpaceSaver has to offer, login to start
+          managing spaces or book rooms to streamline your workday.
         </p>
 
         <div className="mb-5 mt-5 flex h-20 flex-col gap-2">
@@ -44,7 +45,10 @@ function LogIn() {
         </div>
 
         <div className="mb-4">
-          <Button variant="contained" size='large'>Sign in to account</Button>
+            {/* TODO: Add logic for hitting login endpoint */}
+          <Button variant="contained" size="large">
+            Sign in to account
+          </Button>
         </div>
 
         <div>
