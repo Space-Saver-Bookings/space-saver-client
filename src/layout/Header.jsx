@@ -4,49 +4,14 @@ import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import AccountMenu from '../components/menu/AccountMenu';
 
-// TODO: Move these functions to a helpers folder?
-// function stringToColor(string) {
-//   let hash = 0;
-//   let i;
-
-//   /* eslint-disable no-bitwise */
-//   for (i = 0; i < string.length; i += 1) {
-//     hash = string.charCodeAt(i) + ((hash << 5) - hash);
-//   }
-
-//   let color = '#';
-
-//   for (i = 0; i < 3; i += 1) {
-//     const value = (hash >> (i * 8)) & 0xff;
-//     color += `00${value.toString(16)}`.slice(-2);
-//   }
-//   /* eslint-enable no-bitwise */
-
-//   return color;
-// }
-
-// function stringAvatar(name) {
-//   return {
-//     sx: {
-//       bgcolor: stringToColor(name),
-//     },
-//     children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-//   };
-// }
-
 function Header() {
   const {heading, setHeading} = usePageHeading();
   const {pathname} = useLocation();
   const pathnameArr = pathname.split('/');
   let pageHeading;
 
-  const name = 'Alex Holder';
-
-  // function handleStringAvatar() {
-  //   return stringAvatar(name);
-  // }
-
-  // console.log(pathnameArr);
+  const fullName = 'Alex Holder';
+  const firstName = fullName.split(' ').at(0);
 
   if (pathnameArr.length <= 2) {
     pageHeading = pathname.slice(1);
@@ -58,7 +23,7 @@ function Header() {
   useEffect(() => {
     switch (pageHeading) {
       case 'home':
-        setHeading(`Good Afternoon, Alex!`);
+        setHeading(`Good Afternoon, ${firstName}!`);
         break;
       case 'bookings':
         setHeading('Bookings');
@@ -75,14 +40,14 @@ function Header() {
       default:
         setHeading(pageHeading);
     }
-  }, [setHeading, pageHeading]);
+  }, [setHeading, pageHeading, firstName]);
 
   return (
     <div className="col-span-full col-start-2 flex items-center justify-between px-8 font-coplette text-5xl">
       {/* <h1>Good %timeOfDay%, %firstName%</h1> */}
       <h1 className="tracking-wide">{heading}</h1>
       {/* <Avatar {...stringAvatar('Alex Holder')} /> */}
-      <AccountMenu name={name} />
+      <AccountMenu name={fullName} />
     </div>
   );
 }
