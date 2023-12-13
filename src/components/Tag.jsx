@@ -4,7 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 
-export default function Tag({options, placeholder, isMultiple}) {
+export default function Tag({options, placeholder, isMultiple, isDisabled}) {
   return (
     <Stack spacing={3} sx={{width: 290}}>
       <Autocomplete
@@ -30,6 +30,7 @@ export default function Tag({options, placeholder, isMultiple}) {
             label="required*"
             placeholder={placeholder}
             // size='small'
+            disabled={isDisabled}
           />
         )}
       />
@@ -41,4 +42,5 @@ Tag.propTypes = {
   options: PropTypes.array,
   placeholder: PropTypes.string,
   isMultiple: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };

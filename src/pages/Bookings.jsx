@@ -8,6 +8,7 @@ import {createData} from '../helpers/createData.js';
 import {useState} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
 import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
+// import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
@@ -49,7 +50,8 @@ function Bookings() {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <ModalBox content={<AddNewBookingModalContent heading='Add New Booking'/>} height="h-auto" width="w-[38rem]" />
+          <ModalBox content={<AddNewBookingModalContent heading='Add New Booking' handleClose={handleClose}/>} height="h-auto" width="w-[38rem]" />
+          {/* <ModalBox content={<EditBookingModalContent heading='Booking Details' handleClose={handleClose}/>} height="h-auto" width="w-[38rem]" /> */}
         </Modal>
       )}
 
