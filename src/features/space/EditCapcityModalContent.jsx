@@ -41,7 +41,7 @@ function EditCapacityModalContent({heading}) {
         <Button variant="contained" color="error">
           Cancel
         </Button>
-        <Button variant="contained">Create New Space</Button>
+        <Button variant="contained">Confirm</Button>
       </div>
     </>
   );

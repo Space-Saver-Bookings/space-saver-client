@@ -5,7 +5,7 @@ import Description from '../features/space/Description';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import BookNow from '../features/room/BookNow.jsx';
-import RoomNumber from '../features/room/RoomNumber.jsx';
+import RoomName from '../features/room/RoomName.jsx';
 import CapacityRoom from '../features/room/CapacityRoom.jsx';
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
 import EditRoomModalContent from '../features/room/EditRoomModalContent.jsx';
@@ -23,10 +23,11 @@ function Room() {
     return handleOpen();
   }
 
+  const roomName = '1569A';
+  const capacityAmount = 10;
+
   const descriptionText =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend placerat malesuada. Etiam vitae justo maximus, vestibulum velit eu, mattis nibh. Ut rhoncus nibh id neque tempus, id fringilla velit ullamcorper. Aliquam fermentum vestibulum libero in porttitor. Mauris et rhoncus mi. Donec ac efficitur arcu. Ut ex leo, elementum ac varius posuere, sollicitudin suscipit nulla.';
-
-  
 
   function createUsersData(
     id,
@@ -62,8 +63,6 @@ function Room() {
 
   const isAdmin = true;
 
-  // useAssignHandler(handleOpen, setModalName);
-
   const renderModalContent = () => {
     switch (modalName) {
       case 'Edit Users':
@@ -71,7 +70,7 @@ function Room() {
       case 'Edit Room':
         return <EditRoomModalContent heading="Edit Room" />;
       default:
-        return null;
+        return new Error('Incorrect modalName');
     }
   };
 
@@ -80,13 +79,13 @@ function Room() {
       <DashItem
         heading="Book Now"
         styling="col-start-1 col-end-11 row-span-5"
-        content={<BookNow date="30/11/23" time={'4:20pm'} />}
+        content={<BookNow />}
       />
 
       <DashItem
-        heading="Room #"
+        heading="Room"
         styling="col-span-5 row-span-5"
-        content={<RoomNumber roomNumber="1569A" />}
+        content={<RoomName roomName={roomName} />}
       />
 
       <DashItem
@@ -97,7 +96,7 @@ function Room() {
         content={
           <ListContent
             contentType='roomAvailabilities'
-            toolTipTitle="Go to Room"
+            toolTipTitle="Go to bookings"
           />
         }
       />
@@ -107,7 +106,6 @@ function Room() {
           <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
             <Button
               variant="contained"
-              // startIcon={<AddRounded />}
               onClick={handleEditRoom}
             >
               Edit Room
@@ -118,7 +116,6 @@ function Room() {
 
       <DashItem
         heading="Description"
-        // styling="col-start-1 col-end-[15] row-start-6 row-span-4"
         styling={`col-start-1 col-end-[11] ${
           isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
         }`}
@@ -129,7 +126,7 @@ function Room() {
       <DashItem
         heading="Capacity"
         styling={`col-span-5 ${isAdmin ? 'row-span-4' : 'row-span-5'}`}
-        content={<CapacityRoom capacityAmount={10} />}
+        content={<CapacityRoom capacityAmount={capacityAmount} />}
       />
 
       <DashItem
@@ -154,7 +151,7 @@ function Room() {
           <ModalBox
             content={renderModalContent()}
             height="h-auto"
-            width="w-[30rem]"
+            width="w-auto"
           />
         </Modal>
       ) : (
@@ -167,7 +164,7 @@ function Room() {
           <ModalBox
             content={renderModalContent()}
             height="h-[35.5rem]"
-            width="w-[60rem]"
+            width="w-[63rem]"
           />
         </Modal>
       )}

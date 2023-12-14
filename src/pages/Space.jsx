@@ -103,7 +103,7 @@ function Space() {
       case 'Add New Room':
         return <AddNewRoomModalContent heading="Add New Room" />;
       default:
-        throw new Error('Modal name is incorrect.');
+        return new Error('Modal name is incorrect.');
     }
   };
 
@@ -206,7 +206,7 @@ function Space() {
           <ModalBox
             content={renderModalContent()}
             height="h-[35.5rem]"
-            width="w-[60rem]"
+            width="w-[63rem]"
           />
         </Modal>
       )}
