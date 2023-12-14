@@ -17,7 +17,6 @@ function CreateSpaceModalContent({heading}) {
           id="outlined-basic"
           label="required"
           variant="outlined"
-          size="small"
           fullWidth
           sx={{mb: '0.5rem'}}
         />
@@ -44,12 +43,11 @@ function CreateSpaceModalContent({heading}) {
           id="outlined-basic"
           label="required"
           variant="outlined"
-          size="small"
           fullWidth
           sx={{mb: '0.5rem'}}
         />
         <label className="self-start text-lg" htmlFor="">
-          Details
+          Description
         </label>
         <TextField
           required

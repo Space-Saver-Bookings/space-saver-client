@@ -117,6 +117,10 @@ function EditBookingModalContent({heading, handleClose}) {
       {toggle ? (
         <div className="ml-auto mr-5 flex gap-4">
           <Button variant="contained" color="error" onClick={handleClose}>
+            Remove Booking
+          </Button>
+          {/* TODO: add nested modal */}
+          <Button variant="outlined" color="error" onClick={handleToggle}>
             Cancel
           </Button>
           {/* TODO: change this to process and submit form */}

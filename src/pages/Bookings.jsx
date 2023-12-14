@@ -6,8 +6,8 @@ import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import {useState} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
-import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
-// import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
+// import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
+import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
@@ -44,7 +44,7 @@ function Bookings() {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <ModalBox
+          {/* <ModalBox
             content={
               <AddNewBookingModalContent
                 heading="Add New Booking"
@@ -53,10 +53,10 @@ function Bookings() {
             }
             height="h-auto"
             width="w-[38rem]"
-          />
+          /> */}
           {/* TODO: this was used to check the modal through the add new booking btn, 
           but it should come from clicking on a booking on the upcoming bookings list */}
-          {/* <ModalBox
+          <ModalBox
             content={
               <EditBookingModalContent
                 heading="Booking Details"
@@ -65,7 +65,7 @@ function Bookings() {
             }
             height="h-auto"
             width="w-[38rem]"
-          /> */}
+          />
         </Modal>
       )}
 

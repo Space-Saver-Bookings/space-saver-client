@@ -25,9 +25,8 @@ function AddNewBookingModalContent({heading, handleClose}) {
     <>
       <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
       <div className="flex w-[35rem] flex-col items-center gap-3 px-8">
-        
-        <div className="flex gap-3 w-full">
-          <div className="flex flex-col w-[16rem]">
+        <div className="flex w-full gap-3">
+          <div className="flex w-[16rem] flex-col gap-1">
             <label className="self-start text-lg" htmlFor="">
               Booking Title
             </label>
@@ -41,30 +40,30 @@ function AddNewBookingModalContent({heading, handleClose}) {
             />
           </div>
 
-          <div className="flex flex-col w-[15rem]">
+          <div className="flex w-[15rem] flex-col gap-1">
             {/* TODO: Change these to MUI form and label components? */}
             <label className="self-start text-lg" htmlFor="">
               Room
             </label>
-            <Tag options={roomOptions}/>
+            <Tag options={roomOptions} />
           </div>
         </div>
 
         <div className="flex gap-3">
-          <div className="mt-1 flex flex-col gap-2">
+          <div className="mt-1 flex flex-col gap-1">
             <label className="self-start text-lg" htmlFor="">
               Date
             </label>
             <DatePicker label="required*" className="self-start" />
           </div>
 
-          <div className="mt-1 flex flex-col gap-2">
+          <div className="mt-1 flex flex-col gap-1">
             <label className="self-start text-lg" htmlFor="">
               Start Time
             </label>
             <TimePicker label="required*" className="w-[8.5rem] self-start" />
           </div>
-          <div className="mt-1 flex flex-col gap-2">
+          <div className="mt-1 flex flex-col gap-1">
             <label className="self-start text-lg" htmlFor="">
               End Time
             </label>
@@ -72,25 +71,29 @@ function AddNewBookingModalContent({heading, handleClose}) {
           </div>
         </div>
 
-        <label className="self-start text-lg" htmlFor="">
-          Invite Users
-        </label>
-        <Tag options={userOptions} isMultiple />
+        <div className="flex w-full flex-col gap-1">
+          <label className="self-start text-lg" htmlFor="">
+            Invite Users
+          </label>
+          <Tag options={userOptions} isMultiple />
+        </div>
 
-        <label className="self-start text-lg" htmlFor="">
-          Description
-        </label>
-        <TextField
-          required
-          // defaultValue="Space Name"
-          id="outlined-basic"
-          label="required"
-          variant="outlined"
-          fullWidth
-          sx={{mb: '0.5rem'}}
-          multiline
-          maxRows={6}
-        />
+        <div className="flex w-full flex-col gap-1">
+          <label className="self-start text-lg" htmlFor="">
+            Description
+          </label>
+          <TextField
+            required
+            // defaultValue="Space Name"
+            id="outlined-basic"
+            label="required"
+            variant="outlined"
+            fullWidth
+            sx={{mb: '0.5rem'}}
+            multiline
+            maxRows={6}
+          />
+        </div>
       </div>
 
       <div className="ml-auto mr-5 flex gap-4">
