@@ -38,7 +38,7 @@ function ListContent({toolTipTitle, contentType}) {
         createData(10310, 'Booking with...', '28/11/23', '12:00pm', '1hr', 2)
       );
       break;
-    case 'activeBookings':
+    case 'upcomingBookingsShort':
       columns = ['Booking', 'Start', 'End'];
       rows = Array.from(Array(15), () =>
         createData(20346, '12:00pm', '1:00pm')

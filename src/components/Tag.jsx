@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 
 export default function Tag({options, placeholder, isMultiple, isDisabled}) {
   return (
-    <Stack spacing={3} sx={{width: 290}}>
+    <Stack spacing={3} sx={{width: '100%'}}>
       <Autocomplete
         multiple={isMultiple}
         id="tags-filled"
