@@ -11,7 +11,6 @@ function SettingsForm({isDisabled}) {
           <label htmlFor="">First Name</label>
           <TextField
             required
-            // defaultValue="Space Name"
             id="outlined-basic"
             label="required"
             variant="outlined"
@@ -24,7 +23,6 @@ function SettingsForm({isDisabled}) {
           <label htmlFor="">Last Name</label>
           <TextField
             required
-            // defaultValue="Space Name"
             id="outlined-basic"
             label="required"
             variant="outlined"
@@ -38,7 +36,6 @@ function SettingsForm({isDisabled}) {
         <label htmlFor="">Your email</label>
         <TextField
           required
-          // defaultValue="Space Name"
           id="outlined-basic"
           label="required"
           variant="outlined"
@@ -52,7 +49,6 @@ function SettingsForm({isDisabled}) {
         <label htmlFor="">Your password</label>
         <TextField
           required
-          // defaultValue="Space Name"
           id="outlined-basic"
           label="required"
           variant="outlined"
@@ -67,7 +63,6 @@ function SettingsForm({isDisabled}) {
           <label htmlFor="">Country</label>
           <TextField
             required
-            // defaultValue="Space Name"
             id="outlined-basic"
             label="required"
             variant="outlined"
@@ -80,7 +75,6 @@ function SettingsForm({isDisabled}) {
           <label htmlFor="">Post Code</label>
           <TextField
             required
-            // defaultValue="Space Name"
             id="outlined-basic"
             label="required"
             variant="outlined"
@@ -94,7 +88,6 @@ function SettingsForm({isDisabled}) {
         <label htmlFor="">Position</label>
         <TextField
           required
-          // defaultValue="Space Name"
           id="outlined-basic"
           label="required"
           variant="outlined"
