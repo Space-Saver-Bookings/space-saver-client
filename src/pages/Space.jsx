@@ -14,7 +14,7 @@ import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
 import EditDescriptionModalContent from '../features/space/EditDescriptionModalContent.jsx';
 import EditCapacityModalContent from '../features/space/EditCapcityModalContent.jsx';
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
-import AddNewRoomModalContent from '../features/space/AddNewRoomModalContent.jsx';
+import AddNewRoomModalContent from '../components/modal/AddNewRoomModalContent.jsx';
 import ConfirmModal from '../components/modal/ConfirmModal.jsx';
 
 function Space() {
@@ -99,7 +99,7 @@ function Space() {
         );
       case 'Remove Space':
         // TODO: Figure out handling yes/no logic
-        return <ConfirmModal heading='Are you sure?' />;
+        return <ConfirmModal heading="Are you sure?" />;
       case 'Add New Room':
         return <AddNewRoomModalContent heading="Add New Room" />;
       default:
@@ -149,7 +149,7 @@ function Space() {
           <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
             <Button
               variant="contained"
-              color='error'
+              color="error"
               startIcon={<RemoveRounded />}
               onClick={handleRemoveSpace}
             >
