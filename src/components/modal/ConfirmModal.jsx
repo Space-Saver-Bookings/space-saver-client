@@ -5,6 +5,7 @@ function ConfirmModal({heading, handleNo, handleYes}) {
   return (
     <>
       <h4 className="mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
+      <p>This action cannot be undone.</p>
 
       <div className='flex gap-6 mt-2 mb-[-1rem]'>
         <Button variant="contained" color="error" onClick={handleNo}>

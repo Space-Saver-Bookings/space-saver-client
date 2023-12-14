@@ -34,7 +34,7 @@ function Spaces() {
       <section className="flex flex-wrap gap-5">
         {/* TODO: think about how to fetch and render joined vs owned spaces */}
         {spaces.map((space, index) => (
-          // TODO: space should be an object, where you grab the spaceId
+          // TODO: space should be an object, where you grab the spaceId, change this later
           <Link to={`/spaces/${space}/${index + 1}`} key={space}>
             <DashItem
               key={space}

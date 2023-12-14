@@ -17,7 +17,7 @@ function ListContent({toolTipTitle, contentType}) {
         createData('28/11/23', '4:19pm', '1hr')
       );
       break;
-    case 'users':
+    case 'spaceUsers':
       columns = ['Name', 'Email', 'Date Added', 'Position'];
       rows = Array.from(Array(10), () =>
         createData('John Doe', 'johndoe@gmail.com', '28/11/23', 'Web Developer')

@@ -6,7 +6,7 @@ function EditCapacityModalContent({heading}) {
     <>
       <h4 className="mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
       <div className="flex w-64 items-center justify-center gap-8">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="text-lg" htmlFor="">
             Rooms
           </label>
@@ -16,12 +16,11 @@ function EditCapacityModalContent({heading}) {
             id="outlined-basic"
             label="amount"
             variant="outlined"
-            size="small"
             fullWidth
             // sx={{mb: '0.5rem'}}
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <label className="text-lg" htmlFor="">
             People
           </label>
@@ -31,7 +30,6 @@ function EditCapacityModalContent({heading}) {
             id="outlined-basic"
             label="amount"
             variant="outlined"
-            size="small"
             fullWidth
             // sx={{mb: '0.5rem'}}
           />
@@ -39,7 +37,7 @@ function EditCapacityModalContent({heading}) {
       </div>
 
       {/* <Button variant="contained">Confirm</Button> */}
-      <div className="mx-auto pl-10 pt-3 mb-[-1.2rem] flex gap-4">
+      <div className="mx-auto pl-7 pt-3 mb-[-1rem] flex gap-4">
         <Button variant="contained" color="error">
           Cancel
         </Button>

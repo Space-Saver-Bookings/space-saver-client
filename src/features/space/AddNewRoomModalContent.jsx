@@ -45,11 +45,11 @@ function AddNewRoomModalContent({heading}) {
           fullWidth
           sx={{mb: '0.5rem'}}
           multiline
-          maxRows={8}
+          maxRows={6}
         />
       </div>
-      {/* <div className='flex grow'></div> */}
-      <div className="ml-auto mr-5 flex gap-4">
+      
+      <div className="ml-auto mr-5 flex gap-4 mb-[-1rem]">
         <Button variant="contained" color="error">
           Cancel
         </Button>
