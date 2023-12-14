@@ -13,10 +13,6 @@ function Settings() {
     setToggle((toggle) => !toggle);
   }
 
-  function handleNo() {
-    handleClose();
-  }
-
   // TODO: Logic for deleting account
   function handleYes() {
     handleClose();
@@ -24,7 +20,7 @@ function Settings() {
 
   return (
     <section className="flex h-full flex-col items-center justify-center gap-8">
-      <SettingsForm disabled={!toggle} />
+      <SettingsForm isDisabled={!toggle} />
 
       {toggle ? (
         <div className="flex gap-8">
@@ -53,9 +49,9 @@ function Settings() {
           aria-describedby="modal-modal-description"
         >
           <ModalBox
-            content={<ConfirmModal heading="Are you sure?" handleNo={handleNo} handleYes={handleYes} />}
+            content={<ConfirmModal heading="Are you sure?" handleYes={handleYes} />}
             height="h-auto"
-            width="w-[20rem]"
+            width="w-auto"
           />
         </Modal>
       )}
