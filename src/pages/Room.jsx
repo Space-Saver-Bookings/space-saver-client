@@ -2,7 +2,6 @@ import {Button, Modal} from '@mui/material';
 import DashItem from '../components/dashboard/DashItem';
 import ListContent from '../components/dashboard/ListContent';
 import Description from '../features/space/Description';
-import {createData} from '../helpers/createData';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import BookNow from '../features/room/BookNow.jsx';
@@ -27,21 +26,7 @@ function Room() {
   const descriptionText =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend placerat malesuada. Etiam vitae justo maximus, vestibulum velit eu, mattis nibh. Ut rhoncus nibh id neque tempus, id fringilla velit ullamcorper. Aliquam fermentum vestibulum libero in porttitor. Mauris et rhoncus mi. Donec ac efficitur arcu. Ut ex leo, elementum ac varius posuere, sollicitudin suscipit nulla.';
 
-  const usersViewColumn = ['Name', 'Email', 'Type', 'Position'];
-
-  const usersViewRow = Array.from(Array(9), () =>
-    createData('John Doe', 'johndoe@gmail.com', 'Guest', 'Web Developer')
-  );
-
-  usersViewRow.unshift(
-    createData('John Doe', 'johndoe@gmail.com', 'Resever', 'Web Developer')
-  );
-
-  const roomsColumn = ['Date', 'Time', 'Duration'];
-
-  const roomsRow = Array.from(Array(15), () =>
-    createData('28/11/23', '4:19pm', '1hr')
-  );
+  
 
   function createUsersData(
     id,
@@ -111,8 +96,7 @@ function Room() {
         } row-start-1 rounded-xl`}
         content={
           <ListContent
-            columns={roomsColumn}
-            rows={roomsRow}
+            contentType='roomAvailabilities'
             toolTipTitle="Go to Room"
           />
         }
@@ -155,7 +139,7 @@ function Room() {
             ? 'row-start-[10] row-end-[17]'
             : 'row-start-[11] row-span-full'
         }`}
-        content={<ListContent columns={usersViewColumn} rows={usersViewRow} />}
+        content={<ListContent contentType='roomUsers' />}
         isDropdown={isAdmin}
         dropdownOptions={[{name: 'Edit Users', handleOpen: handleEditUsers}]}
       />

@@ -1,4 +1,4 @@
-import DashTableList from '../../components/dashboard/DashTableList';
+import DashTableList from '../../../components/dashboard/DashTableList';
 
 function createData(roomNumber, title, date, time, duration, attendees) {
   return {roomNumber, title, date, time, duration, attendees};

@@ -4,7 +4,6 @@ import ListContent from '../components/dashboard/ListContent';
 import {AddRounded} from '@mui/icons-material';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
-import {createData} from '../helpers/createData.js';
 import {useState} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
 import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
@@ -18,11 +17,7 @@ function Bookings() {
     setToggle((t) => !t);
   }
 
-  const roomsColumn = ['Booking #', 'Start', 'End'];
-
-  const roomsRow = Array.from(Array(15), () =>
-    createData(20346, '12:00pm', '1:00pm')
-  );
+  
 
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
@@ -39,7 +34,7 @@ function Bookings() {
 
       <DashItem
         heading="Upcoming Bookings"
-        content={<ListContent columns={roomsColumn} rows={roomsRow} />}
+        content={<ListContent contentType='activeBookings' />}
         styling="col-span-full col-start-[16] row-end-[17] row-start-1 rounded-xl"
       />
 

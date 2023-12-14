@@ -5,42 +5,34 @@ import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded';
 import DashItem from '../components/dashboard/DashItem';
 import Analytic from '../features/home/Analytic';
 import Book from '../features/home/Book';
-import AvailableRooms from '../features/home/AvailableRooms';
-import UpcomingBookings from '../features/home/UpcomingBookings';
+import ListContent from '../components/dashboard/ListContent';
 
 function Home() {
   return (
+    // SECTION AS GRID CONTAINER
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
+      {/* DASH ITEMS AS GRID ITEMS */}
       <DashItem
         heading="Book Again"
-        // styling="col-start-1 col-end-8 row-start-1 row-end-[7]"
         styling="col-start-1 col-end-8 row-span-6"
-        content={<Book roomNumber="1802" date="21/11/23" />}
+        content={<Book />}
       />
 
       <DashItem
         heading="Quick Booking"
-        // styling="col-span-7 row-start-1 row-end-[7]"
         styling="col-span-7 row-span-6"
-        content={
-          <Book
-            roomNumber="3401"
-            date="13/8/23"
-            isBookFor={true}
-            time="13:20pm"
-          />
-        }
+        content={<Book isQuickBooking />}
       />
 
       <DashItem
         heading="Available Rooms"
-        content={<AvailableRooms />}
+        content={<ListContent contentType="rooms" toolTipTitle="Go to room" />}
         styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
       />
 
       <DashItem
         heading="Upcoming Bookings"
-        content={<UpcomingBookings />}
+        content={<ListContent contentType='upcomingBookings'/>}
         styling="col-start-1 col-end-[15] row-start-7 row-end-[14]"
       />
 
@@ -54,8 +46,9 @@ function Home() {
               }}
             />
           }
-          content={<Analytic text="Rooms in use" data={8} />}
+          content={<Analytic text="Rooms in use" />}
         />
+
         <DashItem
           heading={
             <PeopleRoundedIcon
@@ -65,8 +58,9 @@ function Home() {
               }}
             />
           }
-          content={<Analytic text="Users in rooms" data={16} />}
+          content={<Analytic text="Users in rooms" />}
         />
+
         <DashItem
           heading={
             <EqualizerRoundedIcon
@@ -77,7 +71,7 @@ function Home() {
             />
           }
           content={
-            <Analytic text="Most used room" data={3023} size="text-6xl" />
+            <Analytic text="Most used room" size="text-6xl" />
           }
         />
       </section>

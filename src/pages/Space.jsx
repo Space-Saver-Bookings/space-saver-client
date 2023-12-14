@@ -4,7 +4,6 @@ import ListContent from '../components/dashboard/ListContent';
 import AccessCode from '../features/space/AccessCode';
 import Capacity from '../features/space/Capacity';
 import Description from '../features/space/Description';
-import {createData} from '../helpers/createData';
 import {AddRounded} from '@mui/icons-material';
 import {spaceDropdownOptions} from '../features/space/SpaceDropdownOptions';
 import {useAssignHandler} from '../features/space/useAssignHandler.js';
@@ -46,33 +45,6 @@ function Space() {
   const descriptionText =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend placerat malesuada. Etiam vitae justo maximus, vestibulum velit eu, mattis nibh. Ut rhoncus nibh id neque tempus, id fringilla velit ullamcorper. Aliquam fermentum vestibulum libero in porttitor. Mauris et rhoncus mi. Donec ac efficitur arcu. Ut ex leo, elementum ac varius posuere, sollicitudin suscipit nulla.';
 
-  const usersViewColumn = ['Name', 'Email', 'Date Added', 'Position'];
-
-  const usersViewRow = Array.from(Array(10), () =>
-    createData('John Doe', 'johndoe@gmail.com', '28/11/23', 'Web Developer')
-  );
-
-  // const usersEditColumn = [
-  //   'First Name',
-  //   'Last Name',
-  //   'Email',
-  //   'Date Joined',
-  //   'Post Code',
-  //   'Position',
-  // ];
-
-  // const usersEditRows = Array.from(Array(10), (_, idx) =>
-  //   createData(
-  //     `${idx + 1}`,
-  //     'John',
-  //     'Doe',
-  //     'johndoe@gmail.com',
-  //     '28/11/23',
-  //     2001,
-  //     'Web Developer'
-  //   )
-  // );
-
   function createUsersData(
     id,
     firstName,
@@ -105,13 +77,7 @@ function Space() {
     )
   );
 
-  const roomsColumn = ['Room #', 'Next Available', 'Capacity'];
-
-  const roomsRow = Array.from(Array(15), () =>
-    createData(10310, '28/11/23', 4)
-  );
-
-  const isAdmin = true;
+  const isAdmin = !true;
 
   useAssignHandler(handleOpen, setModalName, handleNavigate);
 
@@ -124,7 +90,7 @@ function Space() {
       case 'Edit Capacity':
         return <EditCapacityModalContent heading="Edit Capacity" />;
       // case 'View All Rooms':
-      //   // TODO: Link to rooms
+        // TODO: Link to rooms
       //   return 'something';
       case 'Edit Description':
         return <EditDescriptionModalContent heading="Edit Description" />;
@@ -164,7 +130,7 @@ function Space() {
         styling={`col-span-full col-start-[15] ${
           isAdmin ? 'row-end-[17]' : 'row-span-full'
         } row-start-1 rounded-xl`}
-        content={<ListContent columns={roomsColumn} rows={roomsRow} toolTipTitle="Go to Room" />}
+        content={<ListContent contentType='rooms' toolTipTitle="Go to Room" />}
         // isDropdown={isAdmin}
         // dropdownOptions={spaceDropdownOptions.rooms}
       />
@@ -195,7 +161,6 @@ function Space() {
 
       <DashItem
         heading="Description"
-        // styling="col-start-1 col-end-[15] row-start-6 row-span-4"
         styling={`col-start-1 col-end-[15] ${
           isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
         }`}
@@ -212,7 +177,7 @@ function Space() {
             ? 'row-start-[10] row-end-[17]'
             : 'row-start-[11] row-span-full'
         }`}
-        content={<ListContent columns={usersViewColumn} rows={usersViewRow} />}
+        content={<ListContent contentType='users' />}
         isDropdown={isAdmin}
         dropdownOptions={spaceDropdownOptions.users}
       />
