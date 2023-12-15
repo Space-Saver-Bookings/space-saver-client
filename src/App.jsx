@@ -15,33 +15,61 @@ import Room from './pages/Room';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import Register from './pages/Register';
+import {AuthProvider} from './contexts/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <ModalProvider>
-        <PageHeadingProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<AppLayout />}>
-                <Route index element={<Navigate replace to="home" />} />
-                <Route path="home" element={<Home />} />
-                <Route path="bookings" element={<Bookings />} />
-                <Route path="spaces" element={<Spaces />} />
-                <Route path="spaces/:spaceName/:spaceId" element={<Space />} />
-                <Route path="rooms" element={<Rooms />} />
-                <Route path="rooms/:roomName/:roomId" element={<Room />} />
-                <Route path="settings" element={<Settings />} />
-              </Route>
+    <AuthProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ModalProvider>
+          <PageHeadingProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route element={<AppLayout />}>
+                  <Route index element={<Navigate replace to="home" />} />
+                  <Route path="home" element={<Home />} />
+                  <Route path="bookings" element={<Bookings />} />
+                  <Route path="spaces" element={<Spaces />} />
+                  <Route
+                    path="spaces/:spaceName/:spaceId"
+                    element={<Space />}
+                  />
+                  <Route path="rooms" element={<Rooms />} />
+                  <Route path="rooms/:roomName/:roomId" element={<Room />} />
+                  <Route path="settings" element={<Settings />} />
+                </Route>
 
-              <Route path="register" element={<Register />} />
-              <Route path="login" element={<LogIn />} />
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </PageHeadingProvider>
-      </ModalProvider>
-    </LocalizationProvider>
+                <Route path="register" element={<Register />} />
+                <Route path="login" element={<LogIn />} />
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </BrowserRouter>
+
+            <Toaster
+              position="top-center"
+              gutter={12}
+              containerStyle={{margin: '8px'}}
+              toastOptions={{
+                success: {
+                  duration: 3000,
+                },
+                error: {
+                  duration: 5000,
+                },
+                style: {
+                  fontSize: '16px',
+                  maxWidth: '400px',
+                  padding: '16px 24px',
+                  // backgroundColor: 'var(--color-grey-0)',
+                  // color: 'var(--color-grey-700)',
+                },
+              }}
+            />
+          </PageHeadingProvider>
+        </ModalProvider>
+      </LocalizationProvider>
+    </AuthProvider>
   );
 }
 
