@@ -2,16 +2,29 @@ import {Button, TextField} from '@mui/material';
 import {Link} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
+import api from '../services/axios';
+// import useAuth from '../contexts/useAuth';
 
 function LogIn() {
+  // const {login} = useAuth();
+
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = async (data) => {
     console.log('Submitted');
+    // console.log(typeof data);
+    try {
+      const res = await api.post('/users/login', data);
+      console.log(res);
+      const jwt = res.data;
+      console.log(jwt);
+    } catch (err) {
+      console.error('Login error:', err.response || err);
+    }
   };
 
   return (
@@ -23,7 +36,9 @@ function LogIn() {
 
       <section className="flex h-auto w-[40rem] flex-col gap-3 rounded-xl border-2 bg-white px-9 py-10 shadow-xl">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="font-coplette text-4xl mb-3">Sign in to your account</h2>
+          <h2 className="mb-3 font-coplette text-4xl">
+            Sign in to your account
+          </h2>
           <p className="text-[1.05rem] text-gray-700">
             To access the awesome features SpaceSaver has to offer, login to
             start managing spaces or book rooms to streamline your workday.
@@ -65,6 +80,7 @@ function LogIn() {
             render={({field}) => (
               <div className="mb-8 flex h-20 flex-col gap-2">
                 <label htmlFor="password">Your password</label>
+                {/* TODO: update password field to hide */}
                 <TextField
                   {...field}
                   error={!!errors.password}
@@ -81,7 +97,7 @@ function LogIn() {
 
           <div className="mb-4">
             {/* TODO: Add logic for hitting login endpoint */}
-            <Button variant="contained" size="large" type='submit'>
+            <Button variant="contained" size="large" type="submit">
               Sign in to account
             </Button>
           </div>
