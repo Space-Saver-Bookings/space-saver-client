@@ -1,12 +1,14 @@
 import {Button, TextField} from '@mui/material';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
 import api from '../services/axios';
 import useAuth from '../contexts/useAuth';
+import toast from 'react-hot-toast';
 
 function LogIn() {
   const {login} = useAuth();
+  const navigate = useNavigate();
 
   const {
     control,
@@ -21,10 +23,23 @@ function LogIn() {
       const {
         data: {jwt},
       } = await api.post('/users/login', data);
-      // console.log(jwt);
+      console.log('Login successful');
       login(jwt);
+      navigate('/home');
     } catch (err) {
-      console.error('Login error:', err.response || err);
+      if (err.response) {
+        console.error('Login error:', err.response || err);
+
+        if (err.response.status === 500) {
+          toast.error(
+            'An error occurred on the server. Please try again later.'
+          );
+        } else if (err.response.status === 409) {
+          toast.error('The email address you entered is already registered.');
+        } else {
+          toast.error('Failed to login: ' + err.response.data.message);
+        }
+      }
     }
   };
 

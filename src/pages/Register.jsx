@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
 import api from '../services/axios';
+import toast from 'react-hot-toast';
 
 function Register() {
   const {
@@ -18,16 +19,18 @@ function Register() {
       // const {data: userDetails} = await api.post('/users/register', data);
       const res = await api.post('/users/register', data);
       console.log('Register successful:', res);
+      // TODO: either redirect to login or straight to app
+      // toast.success('Register successful!');
     } catch (err) {
       if (err.response) {
         console.error('Register error:', err);
 
         if (err.response.status === 500) {
-          alert('An error occurred on the server. Please try again later.');
+          toast.error('An error occurred on the server. Please try again later.');
         } else if (err.response.status === 409) {
-          alert('The email address you entered is already registered.');
+          toast.error('The email address you entered is already registered.');
         } else {
-          alert('Failed to register: ' + err.response.data.message);
+          toast.error('Failed to register: ' + err.response.data.message);
         }
       }
     }
