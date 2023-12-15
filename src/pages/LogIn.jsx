@@ -1,5 +1,6 @@
 import {Button, TextField} from '@mui/material';
-import {Link, useNavigate} from 'react-router-dom';
+// import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
 import api from '../services/axios';
@@ -8,7 +9,7 @@ import toast from 'react-hot-toast';
 
 function LogIn() {
   const {login} = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const {
     control,
@@ -24,8 +25,9 @@ function LogIn() {
         data: {jwt},
       } = await api.post('/users/login', data);
       console.log('Login successful');
+      console.log(jwt)
       login(jwt);
-      navigate('/home');
+      // navigate('/home');
     } catch (err) {
       if (err.response) {
         console.error('Login error:', err.response || err);

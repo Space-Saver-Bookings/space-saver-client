@@ -14,7 +14,11 @@ export function AuthProvider({children}) {
   const login = (token) => {
     // TODO: userId or user details required in jwt token or add userId in response along with jwt
     const decodedToken = jwtDecode(token);
-    console.log(decodedToken);
+    console.log(decodedToken)
+    const nestedToken = decodedToken.data;
+    const decodedNestedToken = jwtDecode(nestedToken);
+
+    console.log(decodedNestedToken);
     setAuth({isAuthenticated: true, token});
   };
 
