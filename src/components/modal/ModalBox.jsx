@@ -9,7 +9,7 @@ function ModalBox({content, width, height}) {
     <div
       className={`absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] ${width} ${height} rounded-lg border-2 bg-slate-100 p-2 overflow-y-auto`}
     >
-      <section className="mt-[1rem] flex flex-col items-center justify-center gap-5">
+      <section className="mt-[1rem] flex flex-col items-center justify-center gap-5 px-14">
         {content}
       </section>
       <button onClick={handleClose}>

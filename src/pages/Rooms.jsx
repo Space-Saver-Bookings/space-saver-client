@@ -1,20 +1,14 @@
-// import {useState} from 'react';
-// import Button from '../components/buttons/Button';
 import {Link} from 'react-router-dom';
 import DashItem from '../components/dashboard/DashItem';
-// import useModal from '../contexts/useModal';
-// import {Modal} from '@mui/material';
-// import ModalBox from '../components/modal/ModalBox';
+import useModal from '../contexts/useModal';
+import {Modal} from '@mui/material';
+import ModalBox from '../components/modal/ModalBox';
 import CustomizedMenus from '../components/menu/CustomizedMenus';
 import useMenuOptionStore from '../features/rooms/menuOptionStore';
+import AddNewRoomModalContent from '../components/modal/AddNewRoomModalContent';
 
 function Rooms() {
-  //   const {open, handleOpen, handleClose} = useModal();
-  //   const [toggle, setToggle] = useState(false);
-
-  //   function handleToggle() {
-  //     setToggle((toggled) => !toggled);
-  //   }
+  const {open, handleOpen, handleClose} = useModal();
 
   // const rooms = Array.from(Array(3), (_, idx) => `Room ${idx + 1}`);
   const bookedRooms = {
@@ -30,7 +24,6 @@ function Rooms() {
   const spaces = Array.from(Array(8), (_, idx) => ({
     name: `Space ${idx + 1}`,
     rooms: Array.from(
-      // Array(Math.trunc(Math.random() * 5) + 1),
       Array(3),
       (_, idx) => `Room ${idx + 1}`
     ),
@@ -38,21 +31,15 @@ function Rooms() {
 
   const options = [bookedRooms, ...spaces];
   // console.log(options);
-  // options.unshift(bookedRooms);
 
   const {menuOption} = useMenuOptionStore();
   const currentOption = options.find((option) => option.name === menuOption);
 
-  // const isAdmin = true;
+  const isAdmin = true;
 
   return (
     <section className="flex flex-col gap-6">
-      {/* TODO: this toggle should be a dropdown instead, will comeback in the future to implement with data from server
-       */}
       <div className="flex justify-center">
-        {/* <Button onClick={handleToggle}>
-          {toggle ? 'Space 1' : 'Booked rooms'}
-        </Button> */}
         <CustomizedMenus options={options} />
       </div>
 
@@ -71,18 +58,18 @@ function Rooms() {
           </Link>
         ))}
 
-        {/* {toggle && isAdmin && (
-          <Button noStyle={true} onClick={handleOpen}>
+        {isAdmin && menuOption !== 'Booked Rooms' && (
+          <button onClick={handleOpen}>
             <DashItem
               styling="w-[20rem] h-[14.5rem]"
               heading="Create room +"
               bgColor="bg-slate-300"
               headingStyling="self-center my-auto"
             />
-          </Button>
+          </button>
         )}
 
-        {open && toggle && (
+        {open && (
           <Modal
             open={open}
             onClose={handleClose}
@@ -91,12 +78,12 @@ function Rooms() {
             aria-describedby="modal-modal-description"
           >
             <ModalBox
-              // content={}
-              height="h-[31.5rem]"
-              width="w-[40rem]"
+              content={<AddNewRoomModalContent heading="Add New Room" />}
+              height="h-auto"
+              width="w-auto"
             />
           </Modal>
-        )} */}
+        )}
       </section>
     </section>
   );

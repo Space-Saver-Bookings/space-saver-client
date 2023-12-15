@@ -1,5 +1,4 @@
 import {useState} from 'react';
-// import Button from '../components/buttons/Button';
 import DashItem from '../components/dashboard/DashItem';
 import useModal from '../contexts/useModal';
 import {Button, Modal} from '@mui/material';
@@ -16,7 +15,7 @@ function Spaces() {
     setToggle((toggled) => !toggled);
   }
 
-  // TODO: think about how to fetch and render joined vs owned spaces
+  // TODO: think about how to fetch and render joined vs owned spaces (use toggle?)
   // Hard coded spaces
   const spaces = Array.from(Array(4), (_, idx) => `Space ${idx + 1}`);
 
@@ -31,11 +30,11 @@ function Spaces() {
       {/* TODO: Fix flex card item alignment, not with justify-center, figure something out
                 might be an issue with the section or main container
       */}
+      {/* TODO: This might be a grid container rather than flex, fix this last */}
       <section className="flex flex-wrap gap-5">
-        
         {/* TODO: think about how to fetch and render joined vs owned spaces */}
         {spaces.map((space, index) => (
-          // TODO: space should be an object, where you grab the spaceId
+          // TODO: space should be an object, where you grab the spaceId, change this later
           <Link to={`/spaces/${space}/${index + 1}`} key={space}>
             <DashItem
               key={space}
@@ -45,6 +44,8 @@ function Spaces() {
             />
           </Link>
         ))}
+
+        {/* CONDITIONAL BTNS */}
         {toggle ? (
           <button onClick={handleOpen}>
             <DashItem
@@ -64,6 +65,8 @@ function Spaces() {
             />
           </button>
         )}
+        
+        {/* CONDITIONAL MODALS */}
         {open && toggle ? (
           <Modal
             open={open}
@@ -73,8 +76,8 @@ function Spaces() {
           >
             <ModalBox
               content={<CreateSpaceModalContent heading="Create New Space" />}
-              height="h-[31.5rem]"
-              width="w-[40rem]"
+              height="h-auto"
+              width="w-[30rem]"
             />
           </Modal>
         ) : (
@@ -86,7 +89,7 @@ function Spaces() {
           >
             <ModalBox
               content={<JoinSpaceModalContent heading="Join Space" />}
-              height="h-[14.2rem]"
+              height="h-auto"
               width="w-[27rem]"
             />
           </Modal>

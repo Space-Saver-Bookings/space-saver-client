@@ -11,17 +11,17 @@ function AddNewUserModalContent({heading}) {
         </label>
         <TextField
           required
-          // defaultValue="Space Name"
           id="outlined-basic"
           label="email"
           variant="outlined"
-          size="small"
           fullWidth
-          // sx={{mb: '0.5rem'}}
+          sx={{mb: '0.5rem'}}
         />
       </div>
 
-      <Button variant="contained">Add User</Button>
+      <div className='mb-[-1rem]'>
+        <Button variant="contained">Add User</Button>
+      </div>
     </>
   );
 }

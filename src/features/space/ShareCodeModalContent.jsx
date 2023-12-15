@@ -5,7 +5,7 @@ function ShareCodeModalContent({heading}) {
   return (
     <>
       <h4 className="mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <div className="flex flex-col items-center gap-2 w-72">
+      <div className="flex w-72 flex-col items-center gap-1">
         <label className="text-lg" htmlFor="">
           User Email
         </label>
@@ -15,13 +15,15 @@ function ShareCodeModalContent({heading}) {
           id="outlined-basic"
           label="email"
           variant="outlined"
-          size="small"
           fullWidth
-          // sx={{mb: '0.5rem'}}
+          sx={{mb: '0.5rem'}}
         />
       </div>
 
-      <Button variant="contained">Share</Button>
+      <div className="mb-[-1rem]">
+        {/* TODO: change this to process and submit form */}
+        <Button variant="contained">Share</Button>
+      </div>
     </>
   );
 }

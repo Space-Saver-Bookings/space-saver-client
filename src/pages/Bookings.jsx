@@ -4,11 +4,10 @@ import ListContent from '../components/dashboard/ListContent';
 import {AddRounded} from '@mui/icons-material';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
-import {createData} from '../helpers/createData.js';
 import {useState} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
-import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
-// import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
+// import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
+import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
@@ -18,12 +17,6 @@ function Bookings() {
     setToggle((t) => !t);
   }
 
-  const roomsColumn = ['Booking #', 'Start', 'End'];
-
-  const roomsRow = Array.from(Array(15), () =>
-    createData(20346, '12:00pm', '1:00pm')
-  );
-
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
       <div className="col-start-1 col-end-[16] row-span-1 flex flex-col items-center justify-center">
@@ -32,14 +25,15 @@ function Bookings() {
         </Button>
       </div>
 
-      <section className="col-start-1 col-end-[16] row-span-full row-start-2 bg-white border-2 rounded-xl shadow-xl">
+      <section className="col-start-1 col-end-[16] row-span-full row-start-2 rounded-xl border-2 bg-white shadow-xl">
         {/* TODO: Calendar logic is separated into its own component */}
-        <Calendar/>
+        <Calendar />
       </section>
 
+      {/* TODO: figure out how to open a modal when a user clicks on an upcoming booking */}
       <DashItem
         heading="Upcoming Bookings"
-        content={<ListContent columns={roomsColumn} rows={roomsRow} />}
+        content={<ListContent contentType="upcomingBookingsShort" />}
         styling="col-span-full col-start-[16] row-end-[17] row-start-1 rounded-xl"
       />
 
@@ -50,12 +44,33 @@ function Bookings() {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <ModalBox content={<AddNewBookingModalContent heading='Add New Booking' handleClose={handleClose}/>} height="h-auto" width="w-[38rem]" />
-          {/* <ModalBox content={<EditBookingModalContent heading='Booking Details' handleClose={handleClose}/>} height="h-auto" width="w-[38rem]" /> */}
+          {/* <ModalBox
+            content={
+              <AddNewBookingModalContent
+                heading="Add New Booking"
+                handleClose={handleClose}
+              />
+            }
+            height="h-auto"
+            width="w-[38rem]"
+          /> */}
+          {/* TODO: this was used to check the modal through the add new booking btn, 
+          but it should come from clicking on a booking on the upcoming bookings list */}
+          <ModalBox
+            content={
+              <EditBookingModalContent
+                heading="Booking Details"
+                handleClose={handleClose}
+              />
+            }
+            height="h-auto"
+            width="w-[38rem]"
+          />
         </Modal>
       )}
 
       <div className="col-span-full col-start-[16] row-span-2 row-start-[17] flex flex-col items-center justify-center">
+        {/* TODO: change this to process and submit add new booking form */}
         <Button
           variant="contained"
           startIcon={<AddRounded />}

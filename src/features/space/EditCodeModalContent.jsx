@@ -5,7 +5,7 @@ function EditCodeModalContent({heading}) {
   return (
     <>
       <h4 className="mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <div className="flex flex-col items-center gap-2 w-60">
+      <div className="flex w-72 flex-col items-center gap-1">
         <label className="text-lg" htmlFor="">
           Edit Access Code
         </label>
@@ -15,13 +15,14 @@ function EditCodeModalContent({heading}) {
           id="outlined-basic"
           label="access code"
           variant="outlined"
-          size="small"
           fullWidth
-          // sx={{mb: '0.5rem'}}
+          sx={{mb: '0.5rem'}}
         />
       </div>
 
-      <Button variant="contained">Confirm</Button>
+      <div className="mb-[-1rem]">
+        <Button variant="contained">Confirm</Button>
+      </div>
     </>
   );
 }

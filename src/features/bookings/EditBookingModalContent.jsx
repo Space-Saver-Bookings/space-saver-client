@@ -7,6 +7,7 @@ import Tag from '../../components/Tag';
 import {useState} from 'react';
 
 function EditBookingModalContent({heading, handleClose}) {
+  // TODO: Figure out react hook form with this modal
   const [toggle, setToggle] = useState(false);
 
   function handleToggle() {
@@ -31,36 +32,44 @@ function EditBookingModalContent({heading, handleClose}) {
   return (
     <>
       <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <div className="flex w-72 flex-col items-center gap-2">
-        <label className="self-start text-lg" htmlFor="">
-          Booking Title
-        </label>
-        <TextField
-          required
-          // defaultValue="Space Name"
-          id="outlined-basic"
-          label="required"
-          variant="outlined"
-          // TODO: Figure out which size to choose
-          // size="small"
-          fullWidth
-          sx={{mb: '0.5rem'}}
-          disabled={!toggle}
-        />
-        {/* TODO: Change these to MUI form and label components */}
-        <label className="self-start text-lg" htmlFor="">
-          Room
-        </label>
-        <Tag options={roomOptions} isDisabled={!toggle} />
-        <label className="self-start text-lg" htmlFor="">
-          Date
-        </label>
-        <DatePicker
-          label="required*"
-          className="self-start"
-          disabled={!toggle}
-        />
+      <div className="flex w-full flex-col items-center gap-2 px-8">
+        <div className="flex w-full gap-3">
+          <div className="flex w-[16rem] flex-col">
+            <label className="self-start text-lg" htmlFor="">
+              Booking Title
+            </label>
+            <TextField
+              required
+              // defaultValue="Space Name"
+              id="outlined-basic"
+              label="required"
+              variant="outlined"
+              fullWidth
+              disabled={!toggle}
+            />
+          </div>
+
+          <div className="flex w-[15rem] flex-col">
+            {/* TODO: Change these to MUI form and label components? */}
+            <label className="self-start text-lg" htmlFor="">
+              Room
+            </label>
+            <Tag options={roomOptions} isDisabled={!toggle} />
+          </div>
+        </div>
+
         <div className="flex gap-3">
+          <div className="mt-1 flex flex-col gap-2">
+            <label className="self-start text-lg" htmlFor="">
+              Date
+            </label>
+            <DatePicker
+              label="required*"
+              className="self-start"
+              disabled={!toggle}
+            />
+          </div>
+
           <div className="mt-1 flex flex-col gap-2">
             <label className="self-start text-lg" htmlFor="">
               Start Time
@@ -82,10 +91,12 @@ function EditBookingModalContent({heading, handleClose}) {
             />
           </div>
         </div>
+
         <label className="self-start text-lg" htmlFor="">
           Invite Users
         </label>
         <Tag options={userOptions} isMultiple isDisabled={!toggle} />
+
         <label className="self-start text-lg" htmlFor="">
           Description
         </label>
@@ -98,7 +109,7 @@ function EditBookingModalContent({heading, handleClose}) {
           fullWidth
           sx={{mb: '0.5rem'}}
           multiline
-          maxRows={8}
+          maxRows={6}
           disabled={!toggle}
         />
       </div>
@@ -106,9 +117,14 @@ function EditBookingModalContent({heading, handleClose}) {
       {toggle ? (
         <div className="ml-auto mr-5 flex gap-4">
           <Button variant="contained" color="error" onClick={handleClose}>
+            Remove Booking
+          </Button>
+          {/* TODO: add nested modal */}
+          <Button variant="outlined" color="error" onClick={handleToggle}>
             Cancel
           </Button>
-          <Button variant="contained">Confirm Booking</Button>
+          {/* TODO: change this to process and submit form */}
+          <Button variant="contained">Confirm Edit</Button>
         </div>
       ) : (
         <div className="flex gap-4">

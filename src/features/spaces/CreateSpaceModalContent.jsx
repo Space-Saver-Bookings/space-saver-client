@@ -7,7 +7,7 @@ function CreateSpaceModalContent({heading}) {
   return (
     <>
       <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <div className="flex flex-col items-center gap-1 w-72">
+      <div className="flex w-full flex-col items-center gap-1 px-8">
         <label className="self-start text-lg" htmlFor="">
           Space Name
         </label>
@@ -17,11 +17,11 @@ function CreateSpaceModalContent({heading}) {
           id="outlined-basic"
           label="required"
           variant="outlined"
-          size="small"
           fullWidth
           sx={{mb: '0.5rem'}}
         />
-        <label className="self-start text-lg" htmlFor="">
+        {/* TODO: confirm is server generates access code */}
+        {/* <label className="self-start text-lg" htmlFor="">
           Access Code
         </label>
         <TextField
@@ -33,7 +33,7 @@ function CreateSpaceModalContent({heading}) {
           size="small"
           fullWidth
           sx={{mb: '0.5rem'}}
-        />
+        /> */}
         <label className="self-start text-lg" htmlFor="">
           Capacity
         </label>
@@ -43,16 +43,14 @@ function CreateSpaceModalContent({heading}) {
           id="outlined-basic"
           label="required"
           variant="outlined"
-          size="small"
           fullWidth
           sx={{mb: '0.5rem'}}
         />
         <label className="self-start text-lg" htmlFor="">
-          Details
+          Description
         </label>
         <TextField
           required
-          // defaultValue="Space Name"
           id="outlined-basic"
           label="required"
           variant="outlined"
@@ -63,9 +61,13 @@ function CreateSpaceModalContent({heading}) {
         />
       </div>
       {/* <div className='flex grow'></div> */}
-      <div className='ml-auto flex gap-4 mr-5'>
-        <Button variant='contained' color='error'>Cancel</Button>
-        <Button variant='contained'>Create New Space</Button>
+      <div className="mb-[-1rem] ml-auto mr-5 flex gap-4">
+        <Button variant="contained" color="error">
+          Cancel
+        </Button>
+        {/* TODO: change this to process and submit */}
+        {/* TODO: either they get redirected to their new space or a modal pop ups displaying the access code */}
+        <Button variant="contained">Create New Space</Button>
       </div>
     </>
   );

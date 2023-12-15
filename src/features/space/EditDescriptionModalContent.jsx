@@ -5,7 +5,7 @@ function EditDescriptionModalContent({heading}) {
   return (
     <>
       <h4 className="mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <div className="flex flex-col items-center gap-2 w-96">
+      <div className="flex w-96 flex-col items-center gap-1">
         <label className="text-lg" htmlFor="">
           Description
         </label>
@@ -15,14 +15,16 @@ function EditDescriptionModalContent({heading}) {
           id="outlined-basic"
           label="description"
           variant="outlined"
-          size="small"
           fullWidth
           multiline
           maxRows={8}
-          // sx={{mb: '0.5rem'}}
+          sx={{mb: '0.5rem'}}
         />
       </div>
-      <Button variant="contained">Confirm</Button>
+
+      <div className="mb-[-1rem]">
+        <Button variant="contained">Confirm</Button>
+      </div>
     </>
   );
 }
