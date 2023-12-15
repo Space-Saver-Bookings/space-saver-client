@@ -1,3 +1,4 @@
+import {jwtDecode} from 'jwt-decode';
 import PropTypes from 'prop-types';
 import {createContext, useState} from 'react';
 
@@ -7,15 +8,18 @@ export function AuthProvider({children}) {
   const [auth, setAuth] = useState({
     isAuthenticated: false,
     token: null,
-    user: null,
+    // user: null,
   });
 
-  const login = (token, user) => {
-    setAuth({isAuthenticated: true, token, user});
+  const login = (token) => {
+    // TODO: userId or user details required in jwt token or add userId in response along with jwt
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken);
+    setAuth({isAuthenticated: true, token});
   };
 
   const logout = () => {
-    setAuth({isAuthenticated: false, token: null, user: null});
+    setAuth({isAuthenticated: false, token: null});
   };
 
   return (
