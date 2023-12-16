@@ -1,13 +1,12 @@
 import {useEffect} from 'react';
-import useAuth from '../auth/useAuth';
 import {setAuthToken} from '../services/api';
 
 const useAuthToken = () => {
-  const {token} = useAuth();
-
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log('useAuthToken effect running with token:', token);
     setAuthToken(token);
-  }, [token]);
+  }, []);
 };
 
 export default useAuthToken;

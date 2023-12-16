@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
 import useModal from '../../contexts/useModal';
-// import api from '../../services/api';
-// import toast from 'react-hot-toast';
+import api from '../../services/api';
+import toast from 'react-hot-toast';
 import {Controller, useForm} from 'react-hook-form';
 
 function CreateSpaceModalContent({heading}) {
@@ -23,29 +23,31 @@ function CreateSpaceModalContent({heading}) {
     });
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log('Submitted');
     console.log(data);
 
-    // TODO: when jwt is sorted
-    // try {
-    //   const res = await api.post(`/spaces`, data);
-    //   console.log(res);
-    // } catch (err) {
-    //   if (err.response) {
-    //     console.error('Booking error:', err.response || err);
+    // console.log('default headers:', api.defaults.headers);
 
-    //     if (err.response.status === 500) {
-    //       toast.error(
-    //         'An error occurred on the server. Please try again later.'
-    //       );
-    //     } else if (err.response.status === 401) {
-    //       toast.error('Unauthorised.');
-    //     } else {
-    //       toast.error('Failed to create space: ' + err.response.data.message);
-    //     }
-    //   }
-    // }
+    // TODO: when jwt is sorted
+    try {
+      const res = await api.post(`/spaces`, data);
+      console.log(res);
+    } catch (err) {
+      if (err.response) {
+        console.error('Booking error:', err.response || err);
+
+        if (err.response.status === 500) {
+          toast.error(
+            'An error occurred on the server. Please try again later.'
+          );
+        } else if (err.response.status === 401) {
+          toast.error('Unauthorised.');
+        } else {
+          toast.error('Failed to create space: ' + err.response.data.message);
+        }
+      }
+    }
   };
 
   return (

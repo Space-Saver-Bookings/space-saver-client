@@ -4,10 +4,10 @@ export const spaceDropdownOptions = {
       name: 'Share Access Code',
       handleOpen: null,
     },
-    {
-      name: 'Edit Access Code',
-      handleOpen: null,
-    },
+    // {
+    //   name: 'Edit Access Code',
+    //   handleOpen: null,
+    // },
   ],
   capacity: [
     {

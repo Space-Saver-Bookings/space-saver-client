@@ -5,10 +5,11 @@ const api = axios.create({
 });
 
 export function setAuthToken(token) {
+  console.log('setAuthToken called with token:', token);
   if (token) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    api.defaults.headers.common['jwt'] = token;
   } else {
-    delete api.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common['jwt'];
   }
 }
 
