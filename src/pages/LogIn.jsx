@@ -3,8 +3,8 @@ import {Button, TextField} from '@mui/material';
 import {Link} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
-import api from '../services/axios';
-import useAuth from '../contexts/useAuth';
+import api from '../services/api';
+import useAuth from '../auth/useAuth';
 import toast from 'react-hot-toast';
 
 function LogIn() {
@@ -25,7 +25,7 @@ function LogIn() {
         data: {jwt},
       } = await api.post('/users/login', data);
       console.log('Login successful');
-      console.log(jwt)
+      console.log(jwt);
       login(jwt);
       // navigate('/home');
     } catch (err) {

@@ -3,7 +3,7 @@ import {Autocomplete, Button, TextField} from '@mui/material';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import {Controller, useForm} from 'react-hook-form';
-import api from '../../services/axios';
+import api from '../../services/api';
 import toast from 'react-hot-toast';
 
 function AddNewBookingModalContent({heading, handleClose}) {

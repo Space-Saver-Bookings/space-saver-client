@@ -15,10 +15,11 @@ import Room from './pages/Room';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import Register from './pages/Register';
-import {AuthProvider} from './contexts/AuthContext';
-import { Toaster } from 'react-hot-toast';
+import {AuthProvider} from './auth/AuthContext';
+import {Toaster} from 'react-hot-toast';
 
 function App() {
+
   return (
     <AuthProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
