@@ -1,10 +1,13 @@
 import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
+import useModal from '../../contexts/useModal';
 // import api from '../../services/api';
 // import toast from 'react-hot-toast';
 import {Controller, useForm} from 'react-hook-form';
 
 function CreateSpaceModalContent({heading}) {
+  const {handleClose} = useModal();
+
   const {
     control,
     handleSubmit,
@@ -96,7 +99,7 @@ function CreateSpaceModalContent({heading}) {
           name="capacity"
           control={control}
           defaultValue=""
-          rules={{required: 'Space name is required'}}
+          rules={{required: 'Capacity is required'}}
           render={({field}) => (
             <>
               <label className="self-start text-lg" htmlFor="capacity">
@@ -142,7 +145,7 @@ function CreateSpaceModalContent({heading}) {
           )}
         />
         <div className="mb-[-1rem] ml-auto mr-5 mt-3 flex w-[19rem] gap-4">
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" onClick={handleClose}>
             Cancel
           </Button>
           {/* TODO: either they get redirected to their new space or a modal pop ups displaying the access code */}
