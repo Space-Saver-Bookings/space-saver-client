@@ -1,38 +1,46 @@
 import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
 import {Controller, useForm} from 'react-hook-form';
-import toast from 'react-hot-toast';
-import api from '../../services/api';
+// import toast from 'react-hot-toast';
+// import api from '../../services/api';
 
 function JoinSpaceModalContent({heading}) {
   const {
     control,
     handleSubmit,
+    reset,
     formState: {errors},
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const handleReset = () => {
+    reset({
+      code: '',
+    });
+  };
+
+  const onSubmit = (data) => {
     console.log('Submitted');
     console.log(data);
 
-    try {
-      const res = await api.post(`/spaces/code/${data.code}`);
-      console.log(res);
-    } catch (err) {
-      if (err.response) {
-        console.error('Booking error:', err.response || err);
+    // TODO: when jwt is sorted
+    // try {
+    //   const res = await api.post(`/spaces/code/${data.code}`);
+    //   console.log(res);
+    // } catch (err) {
+    //   if (err.response) {
+    //     console.error('Booking error:', err.response || err);
 
-        if (err.response.status === 500) {
-          toast.error(
-            'An error occurred on the server. Please try again later.'
-          );
-        } else if (err.response.status === 401) {
-          toast.error('Unauthorised.');
-        } else {
-          toast.error('Failed to join space: ' + err.response.data.message);
-        }
-      }
-    }
+    //     if (err.response.status === 500) {
+    //       toast.error(
+    //         'An error occurred on the server. Please try again later.'
+    //       );
+    //     } else if (err.response.status === 401) {
+    //       toast.error('Unauthorised.');
+    //     } else {
+    //       toast.error('Failed to join space: ' + err.response.data.message);
+    //     }
+    //   }
+    // }
   };
 
   return (
@@ -40,6 +48,7 @@ function JoinSpaceModalContent({heading}) {
       <h4 className="mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
       <form
         onSubmit={handleSubmit(onSubmit)}
+        onReset={handleReset}
         className="flex w-[17rem] flex-col items-center gap-2"
       >
         <Controller
