@@ -56,7 +56,7 @@ function AddNewRoomModalContent({heading}) {
       <form
         onSubmit={handleSubmit(onSubmit)}
         onReset={handleReset}
-        className="flex w-72 flex-col items-center gap-1"
+        className="flex w-[23rem] flex-col items-center gap-1"
       >
         <Controller
           name="roomName"
