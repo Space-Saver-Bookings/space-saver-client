@@ -17,9 +17,9 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import Register from './pages/Register';
 import {AuthProvider} from './auth/AuthContext';
 import {Toaster} from 'react-hot-toast';
+import ProtectedRoute from './auth/ProtectedRoute';
 
 function App() {
-
   return (
     <AuthProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -29,16 +29,62 @@ function App() {
               <Routes>
                 <Route element={<AppLayout />}>
                   <Route index element={<Navigate replace to="home" />} />
-                  <Route path="home" element={<Home />} />
-                  <Route path="bookings" element={<Bookings />} />
-                  <Route path="spaces" element={<Spaces />} />
+                  <Route
+                    path="home"
+                    element={
+                      <ProtectedRoute>
+                        <Home />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="bookings"
+                    element={
+                      <ProtectedRoute>
+                        <Bookings />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="spaces"
+                    element={
+                      <ProtectedRoute>
+                        <Spaces />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="spaces/:spaceName/:spaceId"
-                    element={<Space />}
+                    element={
+                      <ProtectedRoute>
+                        <Space />
+                      </ProtectedRoute>
+                    }
                   />
-                  <Route path="rooms" element={<Rooms />} />
-                  <Route path="rooms/:roomName/:roomId" element={<Room />} />
-                  <Route path="settings" element={<Settings />} />
+                  <Route
+                    path="rooms"
+                    element={
+                      <ProtectedRoute>
+                        <Rooms />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="rooms/:roomName/:roomId"
+                    element={
+                      <ProtectedRoute>
+                        <Room />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="settings"
+                    element={
+                      <ProtectedRoute>
+                        <Settings />
+                      </ProtectedRoute>
+                    }
+                  />
                 </Route>
 
                 <Route path="register" element={<Register />} />

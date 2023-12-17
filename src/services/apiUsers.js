@@ -10,7 +10,7 @@ export async function loginUser(login, navigate, data) {
     login(jwt);
     // console.log('default headers:', api.defaults.headers);
     navigate('/');
-    toast.success('Successfully logged in! Welcome to SpaceSaver.')
+    toast.success('Logged in! Welcome to SpaceSaver.');
   } catch (err) {
     if (err.response) {
       console.error('Login error:', err.response || err);
@@ -24,3 +24,5 @@ export async function loginUser(login, navigate, data) {
     }
   }
 }
+
+

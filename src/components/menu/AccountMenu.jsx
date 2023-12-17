@@ -11,10 +11,13 @@ import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import Box from '@mui/material/Box';
 import {useNavigate} from 'react-router-dom';
+import {logoutUser} from '../../auth/logoutUser';
+import useAuth from '../../auth/useAuth';
 
 export default function AccountMenu({name}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const {logout} = useAuth();
   const navigate = useNavigate();
 
   const handleClick = (event) => {
@@ -37,6 +40,7 @@ export default function AccountMenu({name}) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
+            {/* TODO: saved in case for future implementation */}
             {/* <Avatar sx={{width: 32, height: 32}} {...stringAvatar(name)} /> */}
             <Avatar {...stringAvatar(name)} className="shadow-lg" />
           </IconButton>
@@ -86,6 +90,7 @@ export default function AccountMenu({name}) {
           <Avatar /> My account
         </MenuItem>
         <Divider />
+        {/* TODO: saved in case for future implementation */}
         {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />
@@ -93,8 +98,12 @@ export default function AccountMenu({name}) {
           Settings
         </MenuItem> */}
 
-        {/* TODO: Add logout logic later on*/}
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            logoutUser(logout, navigate);
+          }}
+        >
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
