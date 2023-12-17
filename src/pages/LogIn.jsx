@@ -24,9 +24,9 @@ function LogIn() {
         data: {jwt},
       } = await api.post('/users/login', data);
       console.log('Login successful');
-      console.log(jwt);
+      // console.log(jwt);
       login(jwt);
-      console.log('default headers:', api.defaults.headers);
+      // console.log('default headers:', api.defaults.headers);
       navigate('/');
     } catch (err) {
       if (err.response) {
@@ -114,7 +114,6 @@ function LogIn() {
           />
 
           <div className="mb-4">
-            {/* TODO: Add logic for hitting login endpoint */}
             <Button variant="contained" size="large" type="submit">
               Sign in to account
             </Button>

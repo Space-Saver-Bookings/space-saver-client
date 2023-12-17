@@ -4,7 +4,7 @@ import {setAuthToken} from '../services/api';
 const useAuthToken = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('useAuthToken effect running with token:', token);
+    // console.log('useAuthToken effect running with token:', token);
     setAuthToken(token);
   }, []);
 };

@@ -30,7 +30,8 @@ function AddNewRoomModalContent({heading}) {
 
     // TODO: when jwt is sorted
     try {
-      const res = await api.post(`/spaces`, data);
+      // TODO: the space id is required in the request body
+      const res = await api.post(`/rooms`, data);
       console.log(res);
     } catch (err) {
       if (err.response) {
