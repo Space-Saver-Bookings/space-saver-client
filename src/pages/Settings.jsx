@@ -1,4 +1,4 @@
-import {Button, Modal} from '@mui/material';
+import {Modal} from '@mui/material';
 import SettingsForm from '../features/settings/SettingsForm';
 import {useState} from 'react';
 import ConfirmModal from '../components/modal/ConfirmModal';
@@ -6,7 +6,7 @@ import ModalBox from '../components/modal/ModalBox';
 import useModal from '../contexts/useModal';
 
 function Settings() {
-  const {open, handleClose, handleOpen} = useModal();
+  const {open, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);
 
   function handleToggle() {
@@ -20,26 +20,9 @@ function Settings() {
 
   return (
     <section className="flex h-full flex-col items-center justify-center gap-8">
-      <SettingsForm isDisabled={!toggle} />
+      <SettingsForm isDisabled={!toggle} onToggle={handleToggle} isToggle={toggle} />
 
-      {toggle ? (
-        <div className="flex gap-8">
-          <Button variant="contained" color="error" onClick={handleOpen}>
-            Delete Account
-          </Button>
-          <Button variant="outlined" color="error" onClick={handleToggle}>
-            Cancel
-          </Button>
-          {/* TODO: the handler will change for confiming settings */}
-          <Button variant="contained" onClick={handleToggle}>
-            Confirm
-          </Button>
-        </div>
-      ) : (
-        <Button variant="contained" onClick={handleToggle}>
-          Edit
-        </Button>
-      )}
+      
 
       {open && (
         <Modal
@@ -49,7 +32,9 @@ function Settings() {
           aria-describedby="modal-modal-description"
         >
           <ModalBox
-            content={<ConfirmModal heading="Are you sure?" handleYes={handleYes} />}
+            content={
+              <ConfirmModal heading="Are you sure?" handleYes={handleYes} />
+            }
             height="h-auto"
             width="w-auto"
           />

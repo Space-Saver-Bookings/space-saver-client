@@ -10,7 +10,7 @@ import {useAssignHandler} from '../features/space/useAssignHandler.js';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import ShareCodeModalContent from '../features/space/ShareCodeModalContent.jsx';
-import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
+// import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
 import EditDescriptionModalContent from '../features/space/EditDescriptionModalContent.jsx';
 import EditCapacityModalContent from '../features/space/EditCapcityModalContent.jsx';
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
@@ -84,8 +84,8 @@ function Space() {
       case 'Share Access Code':
         // TODO: pass down access code?
         return <ShareCodeModalContent heading="Share Access Code" />;
-      case 'Edit Access Code':
-        return <EditCodeModalContent heading="Edit Access Code" />;
+      // case 'Edit Access Code':
+      //   return <EditCodeModalContent heading="Edit Access Code" />;
       case 'Edit Capacity':
         return <EditCapacityModalContent heading="Edit Capacity" />;
       // case 'View All Rooms':

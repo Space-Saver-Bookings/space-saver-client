@@ -2,7 +2,7 @@ import {Button, TextField} from '@mui/material';
 import {Link} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
-import api from '../services/axios';
+import api from '../services/api';
 import toast from 'react-hot-toast';
 
 function Register() {
@@ -26,7 +26,9 @@ function Register() {
         console.error('Register error:', err);
 
         if (err.response.status === 500) {
-          toast.error('An error occurred on the server. Please try again later.');
+          toast.error(
+            'An error occurred on the server. Please try again later.'
+          );
         } else if (err.response.status === 409) {
           toast.error('The email address you entered is already registered.');
         } else {

@@ -1,15 +1,14 @@
 import {Button, TextField} from '@mui/material';
-// import {Link, useNavigate} from 'react-router-dom';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
-import api from '../services/axios';
-import useAuth from '../contexts/useAuth';
+import api from '../services/api';
+import useAuth from '../auth/useAuth';
 import toast from 'react-hot-toast';
 
 function LogIn() {
   const {login} = useAuth();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const {
     control,
@@ -25,9 +24,10 @@ function LogIn() {
         data: {jwt},
       } = await api.post('/users/login', data);
       console.log('Login successful');
-      console.log(jwt)
+      // console.log(jwt);
       login(jwt);
-      // navigate('/home');
+      // console.log('default headers:', api.defaults.headers);
+      navigate('/');
     } catch (err) {
       if (err.response) {
         console.error('Login error:', err.response || err);
@@ -114,7 +114,6 @@ function LogIn() {
           />
 
           <div className="mb-4">
-            {/* TODO: Add logic for hitting login endpoint */}
             <Button variant="contained" size="large" type="submit">
               Sign in to account
             </Button>

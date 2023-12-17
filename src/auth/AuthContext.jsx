@@ -1,6 +1,6 @@
-import {jwtDecode} from 'jwt-decode';
+// import {jwtDecode} from 'jwt-decode';
 import PropTypes from 'prop-types';
-import {createContext, useState} from 'react';
+import {createContext, useEffect, useState} from 'react';
 
 export const AuthContext = createContext();
 
@@ -11,18 +11,23 @@ export function AuthProvider({children}) {
     // user: null,
   });
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setAuth({isAuthenticated: true, token: storedToken});
+    }
+  }, []);
+
   const login = (token) => {
     // TODO: userId or user details required in jwt token or add userId in response along with jwt
-    const decodedToken = jwtDecode(token);
-    console.log(decodedToken)
-    const nestedToken = decodedToken.data;
-    const decodedNestedToken = jwtDecode(nestedToken);
-
-    console.log(decodedNestedToken);
+    // const decodedToken = jwtDecode(token);
+    // console.log(decodedToken);
+    localStorage.setItem('token', token);
     setAuth({isAuthenticated: true, token});
   };
 
   const logout = () => {
+    localStorage.removeItem('token');
     setAuth({isAuthenticated: false, token: null});
   };
 
