@@ -6,7 +6,7 @@ import useAuth from '../auth/useAuth';
 import {loginUser} from '../services/apiUsers';
 
 function LogIn() {
-  const {login} = useAuth();
+  const {login, logout} = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -17,7 +17,7 @@ function LogIn() {
 
   const onSubmit = async (data) => {
     console.log('Submitted');
-    loginUser(login, navigate, data);
+    loginUser(login, logout, navigate, data);
   };
 
   return (

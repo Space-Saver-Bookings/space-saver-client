@@ -1,13 +1,13 @@
 import toast from 'react-hot-toast';
 import api from './api';
 
-export async function loginUser(login, navigate, data) {
+export async function loginUser(login, logout, navigate, data) {
   try {
     const {
       data: {jwt},
     } = await api.post('/users/login', data);
     console.log('Login successful');
-    login(jwt);
+    await login(jwt);
     // console.log('default headers:', api.defaults.headers);
     navigate('/');
     toast.success('Logged in! Welcome to SpaceSaver.');
@@ -17,7 +17,11 @@ export async function loginUser(login, navigate, data) {
 
       if (err.response.status === 500) {
         toast.error('An error occurred on the server. Please try again later.');
-      } else {
+      } else if(err.response.status === 401) {
+        toast.error('Session expired. Please log in again.');
+        logout(); // Make sure this function clears all relevant auth state and storage
+      }
+       else {
         // toast.error('Failed to login: ' + err.response.data.message);
         toast.error('Failed to login, incorrect email or password.');
       }
