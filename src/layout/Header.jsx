@@ -16,8 +16,8 @@ function Header() {
 
   // TODO: user fetch on mount null
   if (user) {
-     fullName = `${user.first_name} ${user.last_name}`;
-     firstName = user.first_name;
+    fullName = `${user.first_name} ${user.last_name}`;
+    firstName = user.first_name;
   }
 
   if (pathnameArr.length <= 2) {

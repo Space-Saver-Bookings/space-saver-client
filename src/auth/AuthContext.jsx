@@ -3,6 +3,7 @@ import {jwtDecode} from 'jwt-decode';
 import PropTypes from 'prop-types';
 import {createContext, useEffect, useState} from 'react';
 import {getUser} from '../services/apiUsers';
+import {setAuthToken} from '../services/api';
 
 export const AuthContext = createContext();
 
@@ -17,22 +18,23 @@ export function AuthProvider({children}) {
 
   useEffect(() => {
     const checkToken = async () => {
-      // TODO: remove in production?
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
         try {
           // Decode the stored token to extract the user ID
           const decodedToken = jwtDecode(storedToken);
-          const userId = decodedToken.userId;
-          const userDetails = await getUser(userId);
+          if (decodedToken && decodedToken.userId) {
+            const userId = decodedToken.userId;
+            const userDetails = await getUser(userId);
 
-          // Set both the token and the user ID in the auth state
-          setAuth({
-            isAuthenticated: true,
-            token: storedToken,
-            user: userDetails,
-          });
+            // Set both the token and the user ID in the auth state
+            setAuth({
+              isAuthenticated: true,
+              token: storedToken,
+              user: userDetails,
+            });
+          }
         } catch (error) {
           console.error('Error decoding token:', error);
           // Handle invalid token, e.g. by logging out the user
@@ -48,16 +50,24 @@ export function AuthProvider({children}) {
   // TODO: after user logs in, load page stops had to refresh
   const login = async (token) => {
     const decodedToken = jwtDecode(token);
-    const userId = decodedToken.userId;
-    const userDetails = await getUser(userId);
+    try {
+      const userId = decodedToken.userId;
+      setAuthToken(token);
+      const userDetails = await getUser(userId);
 
-    localStorage.setItem('token', token);
-    setAuth({isAuthenticated: true, token, user: userDetails});
-    setIsLoading(false);
+      localStorage.setItem('token', token);
+      setAuth({isAuthenticated: true, token, user: userDetails});
+    } catch (err) {
+      console.error('Error decoding token: ', err);
+      logout();
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    setAuthToken(null);
     setAuth({isAuthenticated: false, token: null, user: null});
     setIsLoading(false);
   };
