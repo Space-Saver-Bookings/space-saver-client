@@ -11,9 +11,14 @@ function Header() {
   const {pathname} = useLocation();
   const pathnameArr = pathname.split('/');
   let pageHeading;
+  let fullName = null;
+  let firstName = null;
 
-  const fullName = `${user.first_name} ${user.last_name}`;
-  const firstName = user.first_name;
+  // TODO: user fetch on mount null
+  if (user) {
+     fullName = `${user.first_name} ${user.last_name}`;
+     firstName = user.first_name;
+  }
 
   if (pathnameArr.length <= 2) {
     pageHeading = pathname.slice(1);

@@ -45,6 +45,7 @@ export function AuthProvider({children}) {
     checkToken();
   }, []);
 
+  // TODO: after user logs in, load page stops had to refresh
   const login = async (token) => {
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.userId;
