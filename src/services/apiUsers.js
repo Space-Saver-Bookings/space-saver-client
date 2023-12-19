@@ -24,3 +24,20 @@ export async function loginUser(login, navigate, data) {
     }
   }
 }
+
+export async function getUser(userId) {
+  try {
+    const {data} = await api.get(`/users/${userId}`);
+    return data;
+  } catch (err) {
+    if (err.response) {
+      console.error('Get user error:', err.response || err);
+    }
+
+    if (err.response.status === 500) {
+      toast.error('An error occurred on the server. Please try again later.');
+    } else {
+      toast.error('Failed to fetch user: ' + err.response.data.message);
+    }
+  }
+}
