@@ -3,19 +3,20 @@ import {usePageHeading} from '../contexts/usePageHeading';
 import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import AccountMenu from '../components/menu/AccountMenu';
+import useAuth from '../auth/useAuth';
 
 function Header() {
+  const {user} = useAuth();
   const {heading, setHeading} = usePageHeading();
   const {pathname} = useLocation();
   const pathnameArr = pathname.split('/');
   let pageHeading;
 
-  const fullName = 'Alex Holder';
-  const firstName = fullName.split(' ').at(0);
+  const fullName = `${user.first_name} ${user.last_name}`;
+  const firstName = user.first_name;
 
   if (pathnameArr.length <= 2) {
     pageHeading = pathname.slice(1);
-    // console.log(pageHeading);
   } else if (pathnameArr.length > 2) {
     pageHeading = decodeURI(pathname.split('/').at(2));
   }

@@ -1,11 +1,13 @@
 import {Button, TextField} from '@mui/material';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 
 function Register() {
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -16,11 +18,10 @@ function Register() {
     console.log(data);
 
     try {
-      // const {data: userDetails} = await api.post('/users/register', data);
       const res = await api.post('/users/register', data);
       console.log('Register successful:', res);
-      // TODO: either redirect to login or straight to app
-      // toast.success('Register successful!');
+      navigate('/login');
+      toast.success('Register successful!');
     } catch (err) {
       if (err.response) {
         console.error('Register error:', err);
@@ -55,7 +56,7 @@ function Register() {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
           <div className="flex justify-between">
             <Controller
-              name="firstName"
+              name="first_name"
               control={control}
               defaultValue=""
               rules={{
@@ -66,10 +67,10 @@ function Register() {
                   <label htmlFor="first-name">First Name</label>
                   <TextField
                     {...field}
-                    error={!!errors.firstName}
-                    helperText={errors.firstName?.message}
+                    error={!!errors.first_name}
+                    helperText={errors.first_name?.message}
                     id="first-name"
-                    label="required"
+                    placeholder='Mary'
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -79,7 +80,7 @@ function Register() {
             />
 
             <Controller
-              name="lastName"
+              name="last_name"
               control={control}
               defaultValue=""
               rules={{
@@ -90,10 +91,10 @@ function Register() {
                   <label htmlFor="last-name">Last Name</label>
                   <TextField
                     {...field}
-                    error={!!errors.lastName}
-                    helperText={errors.lastName?.message}
+                    error={!!errors.last_name}
+                    helperText={errors.last_name?.message}
                     id="last-name"
-                    label="required"
+                    placeholder='Smith'
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -122,7 +123,7 @@ function Register() {
                   error={!!errors.email}
                   helperText={errors.email?.message}
                   id="email"
-                  label="required"
+                  placeholder='maysmith@example.com'
                   variant="outlined"
                   size="small"
                   fullWidth
@@ -144,7 +145,7 @@ function Register() {
                   error={!!errors.password}
                   helperText={errors.password?.message}
                   id="password"
-                  label="required"
+                  placeholder='notpassword123'
                   variant="outlined"
                   size="small"
                   fullWidth
@@ -154,30 +155,6 @@ function Register() {
           />
 
           <div className="flex justify-between">
-            <Controller
-              name="country"
-              control={control}
-              defaultValue=""
-              rules={{
-                required: 'Country is required',
-              }}
-              render={({field}) => (
-                <div className=" flex h-20 w-[17rem] flex-col gap-2">
-                  <label htmlFor="country">Country</label>
-                  <TextField
-                    {...field}
-                    error={!!errors.country}
-                    helperText={errors.country?.message}
-                    id="country"
-                    label="required"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              )}
-            />
-
             <Controller
               name="postcode"
               control={control}
@@ -193,7 +170,31 @@ function Register() {
                     error={!!errors.postcode}
                     helperText={errors.postcode?.message}
                     id="postcode"
-                    label="required"
+                    placeholder='2000'
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                  />
+                </div>
+              )}
+            />
+
+            <Controller
+              name="country"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: 'Country is required',
+              }}
+              render={({field}) => (
+                <div className=" flex h-20 w-[17rem] flex-col gap-2">
+                  <label htmlFor="country">Country</label>
+                  <TextField
+                    {...field}
+                    error={!!errors.country}
+                    helperText={errors.country?.message}
+                    id="country"
+                    placeholder='Australia'
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -218,7 +219,7 @@ function Register() {
                   error={!!errors.position}
                   helperText={errors.position?.message}
                   id="position"
-                  label="required"
+                  placeholder='Manager'
                   variant="outlined"
                   size="small"
                   fullWidth
@@ -228,7 +229,6 @@ function Register() {
           />
 
           <div className="mb-3">
-            {/* TODO: Add logic for hitting register endpoint */}
             <Button variant="contained" size="large" type="submit">
               Create account
             </Button>

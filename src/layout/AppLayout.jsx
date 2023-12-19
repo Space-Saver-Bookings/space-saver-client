@@ -4,21 +4,17 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Main from './Main';
 import useAuthToken from '../hooks/useAuthToken';
-// import { useEffect } from 'react';
+import FullPageSpinner from '../components/spinner/FullPageSpinner';
+import useAuth from '../auth/useAuth';
 
 function AppLayout() {
+  const {isLoading} = useAuth();
   useAuthToken();
 
-  // useEffect(() => {
-  //   // This will run when the component mounts
-  //   console.log('AppLayout mounted');
+  if (isLoading) {
+    return <FullPageSpinner />;
+  }
 
-  //   // The cleanup function runs when the component unmounts
-  //   return () => {
-  //     console.log('AppLayout unmounted');
-  //   };
-  // }, []);
-  
   return (
     <div className="grid h-screen w-full grid-cols-[17rem_minmax(0,1fr)] grid-rows-[6.8rem_minmax(0,1fr)] bg-slate-100">
       <Header />
