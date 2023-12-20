@@ -3,9 +3,9 @@ import api from './api';
 
 export async function getAllSpaces() {
   try {
-    const {data} = await api.get(`/spaces`);
-    console.log(data);
-    return data;
+    const {data: {spaces}} = await api.get(`/spaces`);
+    console.log(spaces);
+    return spaces;
   } catch (err) {
     if (err.response) {
       console.error('Update user error:', err.response || err);
