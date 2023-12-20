@@ -8,12 +8,13 @@ import CreateSpaceModalContent from '../features/spaces/CreateSpaceModalContent'
 import {Link} from 'react-router-dom';
 import {getAllSpaces} from '../services/apiSpaces';
 import useAuth from '../auth/useAuth';
+import MainSectionSpinner from '../components/spinner/MainSectionSpinner';
 
 function Spaces() {
   const {user} = useAuth();
   const {open, handleOpen, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);
-  // const [spaces, setSpaces] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [ownedSpaces, setOwnedSpaces] = useState([]);
   const [joinedSpaces, setJoinedSpaces] = useState([]);
 
@@ -21,9 +22,13 @@ function Spaces() {
     const getSpaces = async () => {
       try {
         const spaces = await getAllSpaces();
-        // setSpaces(spaces);
-        setOwnedSpaces(spaces.filter((space) => user._id === space.admin_id._id));
-        setJoinedSpaces(spaces.filter((space) => user._id !== space.admin_id._id));
+        setOwnedSpaces(
+          spaces.filter((space) => user._id === space.admin_id._id)
+        );
+        setJoinedSpaces(
+          spaces.filter((space) => user._id !== space.admin_id._id)
+        );
+        setIsLoading(false);
       } catch (err) {
         console.error(err);
       }
@@ -37,7 +42,7 @@ function Spaces() {
   }
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-6 h-full w-full">
       <div className="flex justify-center">
         <Button variant="contained" onClick={handleToggle}>
           {toggle ? 'Owned Spaces' : 'Joined Spaces'}
@@ -48,80 +53,85 @@ function Spaces() {
                 might be an issue with the section or main container
       */}
       {/* TODO: This might be a grid container rather than flex, fix this last */}
-      <section className="flex flex-wrap gap-5">
-        {/* joined vs owned spaces */}
-        {toggle
-          ? ownedSpaces.map((space) => (
-              <Link to={`/spaces/${space.name}/${space._id}`} key={space._id}>
-                <DashItem
-                  key={space._id}
-                  styling="w-[20rem] h-[14.5rem]"
-                  heading={space.name}
-                  headingStyling="self-center my-auto"
-                />
-              </Link>
-            ))
-          : joinedSpaces.map((space) => (
-              <Link to={`/spaces/${space.name}/${space._id}`} key={space._id}>
-                <DashItem
-                  key={space._id}
-                  styling="w-[20rem] h-[14.5rem]"
-                  heading={space.name}
-                  headingStyling="self-center my-auto"
-                />
-              </Link>
-            ))}
 
-        {/* CONDITIONAL BTNS */}
-        {toggle ? (
-          <button onClick={handleOpen}>
-            <DashItem
-              styling="w-[20rem] h-[14.5rem]"
-              heading="Create Space +"
-              bgColor="bg-slate-300"
-              headingStyling="self-center my-auto"
-            />
-          </button>
-        ) : (
-          <button onClick={handleOpen}>
-            <DashItem
-              styling="w-[20rem] h-[14.5rem]"
-              heading="Join Space +"
-              bgColor="bg-slate-300"
-              headingStyling="self-center my-auto"
-            />
-          </button>
-        )}
+      {isLoading ? (
+        <MainSectionSpinner />
+      ) : (
+        <section className="flex flex-wrap gap-5">
+          {/* joined vs owned spaces */}
+          {toggle
+            ? ownedSpaces.map((space) => (
+                <Link to={`/spaces/${space.name}/${space._id}`} key={space._id}>
+                  <DashItem
+                    key={space._id}
+                    styling="w-[20rem] h-[14.5rem]"
+                    heading={space.name}
+                    headingStyling="self-center my-auto"
+                  />
+                </Link>
+              ))
+            : joinedSpaces.map((space) => (
+                <Link to={`/spaces/${space.name}/${space._id}`} key={space._id}>
+                  <DashItem
+                    key={space._id}
+                    styling="w-[20rem] h-[14.5rem]"
+                    heading={space.name}
+                    headingStyling="self-center my-auto"
+                  />
+                </Link>
+              ))}
 
-        {/* CONDITIONAL MODALS */}
-        {open && toggle ? (
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <ModalBox
-              content={<CreateSpaceModalContent heading="Create New Space" />}
-              height="h-auto"
-              width="w-[30rem]"
-            />
-          </Modal>
-        ) : (
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <ModalBox
-              content={<JoinSpaceModalContent heading="Join Space" />}
-              height="h-auto"
-              width="w-[27rem]"
-            />
-          </Modal>
-        )}
-      </section>
+          {/* CONDITIONAL BTNS */}
+          {toggle ? (
+            <button onClick={handleOpen}>
+              <DashItem
+                styling="w-[20rem] h-[14.5rem]"
+                heading="Create Space +"
+                bgColor="bg-slate-300"
+                headingStyling="self-center my-auto"
+              />
+            </button>
+          ) : (
+            <button onClick={handleOpen}>
+              <DashItem
+                styling="w-[20rem] h-[14.5rem]"
+                heading="Join Space +"
+                bgColor="bg-slate-300"
+                headingStyling="self-center my-auto"
+              />
+            </button>
+          )}
+
+          {/* CONDITIONAL MODALS */}
+          {open && toggle ? (
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox
+                content={<CreateSpaceModalContent heading="Create New Space" />}
+                height="h-auto"
+                width="w-[30rem]"
+              />
+            </Modal>
+          ) : (
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox
+                content={<JoinSpaceModalContent heading="Join Space" />}
+                height="h-auto"
+                width="w-[27rem]"
+              />
+            </Modal>
+          )}
+        </section>
+      )}
     </section>
   );
 }
