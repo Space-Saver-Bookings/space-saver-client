@@ -1,16 +1,34 @@
 import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
-import {Controller, useForm} from 'react-hook-form';
+import {Controller, useForm, useWatch} from 'react-hook-form';
 import useModal from '../../contexts/useModal';
-
+import useAuth from '../../auth/useAuth';
+import {updateUser} from '../../services/apiUsers';
+import toast from 'react-hot-toast';
+import {useNavigate} from 'react-router-dom';
+// import {updateUser} from '../../services/apiUsers';
 function SettingsForm({isDisabled, onToggle, isToggle}) {
+  const {user, logout} = useAuth();
   const {handleOpen} = useModal();
   const {
     control,
     handleSubmit,
-    // reset,
     formState: {errors},
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      email: user?.email,
+      password: '',
+      country: user?.country,
+      post_code: user?.post_code,
+      position: user?.position,
+    },
+  });
+
+  const navigate = useNavigate();
+
+  // console.log(user);
 
   // const handleReset = () => {
   //   reset({
@@ -20,12 +38,35 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
   //   });
   // };
 
-  const onSubmit = (data) => {
-    console.log('Submitted');
-    console.log(data);
+  // Watch all fields
+  const values = useWatch({control});
+
+  const onSubmit = async () => {
+    const updatedData = Object.keys(values).reduce((acc, key) => {
+      // Include field in updatedData if it's different from the default value
+      if (values[key] !== control._defaultValues[key]) {
+        acc[key] = values[key];
+      }
+      return acc;
+    }, {});
+
+    console.log('Updated Fields:', updatedData);
+
+    try {
+      await updateUser(user._id, updatedData);
+
+      if (updatedData.email || updatedData.password) {
+        logout();
+        navigate('/login');
+        toast.success('Please log in with your new credentials.');
+      } else {
+        toast.success('User details updated.');
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  // TODO: react hook form needs to be implemented
   return (
     <section className="flex h-[45rem] w-[40rem] flex-col gap-2 rounded-lg border-2 bg-white p-8">
       <h3 className="self-center font-coplette text-4xl">Account</h3>
@@ -36,19 +77,17 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
       >
         <div className="flex justify-between">
           <Controller
-            name="firstName"
+            name="first_name"
             control={control}
-            defaultValue=""
-            rules={{required: 'First name is required'}}
+            defaultValue={user?.first_name}
             render={({field}) => (
               <div className="mt-5 flex h-20 w-[17rem] flex-col gap-2">
                 <label htmlFor="first-name">First Name</label>
                 <TextField
                   {...field}
-                  error={!!errors.firstName}
-                  helperText={errors.firstName?.message}
+                  error={!!errors.first_name}
+                  helperText={errors.first_name?.message}
                   id="first-name"
-                  label="required"
                   variant="outlined"
                   fullWidth
                   disabled={isDisabled}
@@ -58,19 +97,17 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
           />
 
           <Controller
-            name="lastName"
+            name="last_name"
             control={control}
-            defaultValue=""
-            rules={{required: 'Last name is required'}}
+            defaultValue={user?.last_name}
             render={({field}) => (
               <div className="mt-5 flex h-20 w-[17rem] flex-col gap-2">
                 <label htmlFor="last-name">Last Name</label>
                 <TextField
                   {...field}
-                  error={!!errors.lastName}
-                  helperText={errors.lastName?.message}
+                  error={!!errors.last_name}
+                  helperText={errors.last_name?.message}
                   id="last-name"
-                  label="required"
                   variant="outlined"
                   disabled={isDisabled}
                   fullWidth
@@ -83,14 +120,7 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
         <Controller
           name="email"
           control={control}
-          defaultValue=""
-          rules={{
-            required: 'Email is required',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Invalid email address',
-            },
-          }}
+          defaultValue={user?.email}
           render={({field}) => (
             <div className="flex h-20 flex-col gap-2">
               <label htmlFor="email">Your email</label>
@@ -99,7 +129,6 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
                 error={!!errors.email}
                 helperText={errors.email?.message}
                 id="email"
-                label="required"
                 variant="outlined"
                 disabled={isDisabled}
                 fullWidth
@@ -113,18 +142,15 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
           name="password"
           control={control}
           defaultValue=""
-          rules={{
-            required: 'Password is required',
-          }}
           render={({field}) => (
             <div className="flex h-20 flex-col gap-2">
-              <label htmlFor="password">Your password</label>
+              <label htmlFor="password">Your new password</label>
               <TextField
                 {...field}
                 error={!!errors.password}
                 helperText={errors.password?.message}
                 id="password"
-                label="required"
+                placeholder="some new password"
                 variant="outlined"
                 disabled={isDisabled}
                 fullWidth
@@ -138,10 +164,7 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
           <Controller
             name="country"
             control={control}
-            defaultValue=""
-            rules={{
-              required: 'Country is required',
-            }}
+            defaultValue={user?.country}
             render={({field}) => (
               <div className="flex h-20 w-[17rem] flex-col gap-2">
                 <label htmlFor="country">Country</label>
@@ -150,7 +173,6 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
                   error={!!errors.country}
                   helperText={errors.country?.message}
                   id="country"
-                  label="required"
                   variant="outlined"
                   disabled={isDisabled}
                   fullWidth
@@ -160,21 +182,17 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
           />
 
           <Controller
-            name="postcode"
+            name="post_code"
             control={control}
-            defaultValue=""
-            rules={{
-              required: 'Postcode is required',
-            }}
+            defaultValue={user?.post_code}
             render={({field}) => (
               <div className=" flex h-20 w-[17rem] flex-col gap-2">
                 <label htmlFor="postcode">Post Code</label>
                 <TextField
                   {...field}
-                  error={!!errors.postcode}
-                  helperText={errors.postcode?.message}
+                  error={!!errors.post_code}
+                  helperText={errors.post_code?.message}
                   id="postcode"
-                  label="required"
                   variant="outlined"
                   disabled={isDisabled}
                   fullWidth
@@ -187,10 +205,7 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
         <Controller
           name="position"
           control={control}
-          defaultValue=""
-          rules={{
-            required: 'Position is required',
-          }}
+          defaultValue={user?.position}
           render={({field}) => (
             <div className="mb-2 flex h-20 flex-col gap-2">
               <label htmlFor="position">Position</label>
@@ -199,7 +214,6 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
                 error={!!errors.position}
                 helperText={errors.position?.message}
                 id="position"
-                label="required"
                 variant="outlined"
                 disabled={isDisabled}
                 fullWidth

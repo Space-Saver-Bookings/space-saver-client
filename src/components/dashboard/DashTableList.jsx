@@ -9,13 +9,11 @@ import TableRow from '@mui/material/TableRow';
 import {Tooltip} from '@mui/material';
 // import Paper from '@mui/material/Paper';
 
-function DashTableList({height, columns, rows, toolTipTitle}) {
-  // TODO: get rid of the height + update components that uses it
-  console.log(height);
+function DashTableList({columns, rows, toolTipTitle}) {
   return (
     <TableContainer
       // component={Paper}
-      sx={{maxHeight: '100%', }}
+      sx={{maxHeight: '100%'}}
     >
       <Table stickyHeader aria-label="sticky table">
         <TableHead>
@@ -35,10 +33,10 @@ function DashTableList({height, columns, rows, toolTipTitle}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Tooltip key={row.roomNumber} title={toolTipTitle}>
+          {rows.map((row, idx) => (
+            <Tooltip key={idx} title={toolTipTitle}>
               <TableRow
-                key={row.roomNumber}
+                key={idx + 1}
                 className="list-hover"
                 sx={{
                   '&:last-child td, &:last-child th': {border: 0, pb: 3},
@@ -62,7 +60,6 @@ function DashTableList({height, columns, rows, toolTipTitle}) {
 }
 
 DashTableList.propTypes = {
-  height: PropTypes.number,
   columns: PropTypes.array,
   rows: PropTypes.array,
   toolTipTitle: PropTypes.string,
