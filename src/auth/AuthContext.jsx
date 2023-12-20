@@ -16,11 +16,21 @@ export function AuthProvider({children}) {
     user: null,
   });
 
+  const isTokenExpired = (token) => {
+    const now = Date.now() / 1000;
+    try {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.exp < now;
+    } catch (err) {
+      return false;
+    }
+  };
+
   useEffect(() => {
     const checkToken = async () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const storedToken = localStorage.getItem('token');
-      if (storedToken) {
+      if (storedToken && !isTokenExpired(storedToken)) {
         try {
           const decodedToken = jwtDecode(storedToken);
           if (decodedToken && decodedToken.userId) {
@@ -39,35 +49,41 @@ export function AuthProvider({children}) {
         } finally {
           setIsLoading(false);
         }
+      } else {
+        logout();
       }
     };
 
     checkToken();
   }, []);
 
-  const login = async (token) => {
-    const decodedToken = jwtDecode(token);
-    try {
-      const userId = decodedToken.userId;
-      setAuthToken(token);
-      const userDetails = await getUser(userId);
-      console.log(userDetails);
-
-      localStorage.setItem('token', token);
-      setAuth({isAuthenticated: true, token, user: userDetails});
-    } catch (err) {
-      console.error('Error decoding token: ', err);
-      logout();
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const logout = () => {
     localStorage.removeItem('token');
     setAuthToken(null);
     setAuth({isAuthenticated: false, token: null, user: null});
     setIsLoading(false);
+  };
+
+  const login = async (token) => {
+    if (isTokenExpired(token)) {
+      logout();
+    } else {
+      const decodedToken = jwtDecode(token);
+      try {
+        const userId = decodedToken.userId;
+        setAuthToken(token);
+        const userDetails = await getUser(userId);
+        console.log(userDetails);
+
+        localStorage.setItem('token', token);
+        setAuth({isAuthenticated: true, token, user: userDetails});
+      } catch (err) {
+        console.error('Error decoding token: ', err);
+        logout();
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
