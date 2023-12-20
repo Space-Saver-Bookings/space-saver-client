@@ -6,6 +6,7 @@ import ModalBox from '../components/modal/ModalBox';
 import JoinSpaceModalContent from '../features/spaces/JoinSpaceModalContent';
 import CreateSpaceModalContent from '../features/spaces/CreateSpaceModalContent';
 import {Link} from 'react-router-dom';
+// import {getAllSpaces} from '../services/apiSpaces';
 
 function Spaces() {
   const {open, handleOpen, handleClose} = useModal();
@@ -18,6 +19,7 @@ function Spaces() {
   // TODO: think about how to fetch and render joined vs owned spaces (use toggle?)
   // Hard coded spaces
   const spaces = Array.from(Array(4), (_, idx) => `Space ${idx + 1}`);
+  // const {spaces} = getAllSpaces();
 
   return (
     <section className="flex flex-col gap-6">
@@ -65,7 +67,7 @@ function Spaces() {
             />
           </button>
         )}
-        
+
         {/* CONDITIONAL MODALS */}
         {open && toggle ? (
           <Modal

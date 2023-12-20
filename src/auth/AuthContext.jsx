@@ -18,7 +18,7 @@ export function AuthProvider({children}) {
 
   useEffect(() => {
     const checkToken = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
         try {

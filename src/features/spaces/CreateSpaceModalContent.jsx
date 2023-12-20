@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
 import useModal from '../../contexts/useModal';
-import api from '../../services/api';
-import toast from 'react-hot-toast';
 import {Controller, useForm} from 'react-hook-form';
+import {createSpace} from '../../services/apiSpaces';
 
 function CreateSpaceModalContent({heading}) {
   const {handleClose} = useModal();
@@ -25,29 +24,10 @@ function CreateSpaceModalContent({heading}) {
 
   const onSubmit = async (data) => {
     console.log('Submitted');
-    console.log(data);
+    // console.log(data);
 
-    // console.log('default headers:', api.defaults.headers);
-
-    // TODO: when jwt is sorted
-    try {
-      const res = await api.post(`/spaces`, data);
-      console.log(res);
-    } catch (err) {
-      if (err.response) {
-        console.error('Booking error:', err.response || err);
-
-        if (err.response.status === 500) {
-          toast.error(
-            'An error occurred on the server. Please try again later.'
-          );
-        } else if (err.response.status === 401) {
-          toast.error('Unauthorised.');
-        } else {
-          toast.error('Failed to create space: ' + err.response.data.message);
-        }
-      }
-    }
+    await createSpace(data);
+    handleClose();
   };
 
   return (
@@ -59,7 +39,7 @@ function CreateSpaceModalContent({heading}) {
         className="flex w-[28rem] flex-col items-center gap-1 px-8"
       >
         <Controller
-          name="spaceName"
+          name="name"
           control={control}
           defaultValue=""
           rules={{required: 'Space name is required'}}
@@ -70,10 +50,10 @@ function CreateSpaceModalContent({heading}) {
               </label>
               <TextField
                 {...field}
-                error={!!errors.spaceName}
-                helperText={errors.spaceName?.message}
+                error={!!errors.name}
+                helperText={errors.name?.message}
                 id="space-name"
-                label="required"
+                placeholder="Office Space"
                 variant="outlined"
                 fullWidth
                 sx={{mb: '0.5rem'}}
@@ -112,7 +92,7 @@ function CreateSpaceModalContent({heading}) {
                 error={!!errors.capacity}
                 helperText={errors.capacity?.message}
                 id="capacity"
-                label="required"
+                placeholder="25"
                 variant="outlined"
                 fullWidth
                 sx={{mb: '0.5rem'}}
@@ -125,7 +105,11 @@ function CreateSpaceModalContent({heading}) {
           name="description"
           control={control}
           defaultValue=""
-          rules={{required: 'Description is required'}}
+          rules={{
+            required: 'Description is required',
+            valueAsNumber: true,
+            min: {value: 1, message: 'Capacity must be at least 1'},
+          }}
           render={({field}) => (
             <>
               <label className="self-start text-lg" htmlFor="description">
@@ -136,7 +120,7 @@ function CreateSpaceModalContent({heading}) {
                 error={!!errors.description}
                 helperText={errors.description?.message}
                 id="description"
-                label="required"
+                placeholder="Office space located on level 11."
                 variant="outlined"
                 fullWidth
                 sx={{mb: '0.5rem'}}
