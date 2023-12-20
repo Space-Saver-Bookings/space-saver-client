@@ -12,7 +12,7 @@ const rows = Array.from(Array(15), () =>
 function UpcomingBookings() {
   return (
     <section className="h-full">
-      <DashTableList height={220} columns={columns} rows={rows} />
+      <DashTableList columns={columns} rows={rows} />
     </section>
   );
 }
