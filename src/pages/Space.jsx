@@ -16,9 +16,46 @@ import EditCapacityModalContent from '../features/space/EditCapcityModalContent.
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
 import AddNewRoomModalContent from '../components/modal/AddNewRoomModalContent.jsx';
 import ConfirmModal from '../components/modal/ConfirmModal.jsx';
+import {useParams} from 'react-router-dom';
+import {getSingleSpace} from '../services/apiSpaces.js';
+import {useEffect, useState} from 'react';
+import useAuth from '../auth/useAuth.js';
+import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 
 function Space() {
+  const {user} = useAuth();
+  const {spaceId} = useParams();
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
+  const [isLoading, setIsLoading] = useState(true);
+  const [space, setSpace] = useState(null);
+  let isAdmin;
+  let accessCode;
+  let description;
+  let peopleCount;
+  // let roomsCount;
+
+  if (space) {
+    isAdmin = user._id === space.admin_id._id;
+    accessCode = space.invite_code;
+    peopleCount = space.capacity;
+    description = space.description;
+  }
+
+  useEffect(() => {
+    const getSpace = async (spaceId) => {
+      try {
+        const space = await getSingleSpace(spaceId);
+        setSpace(space);
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getSpace(spaceId);
+  }, [spaceId]);
+
+  // console.log(space);
 
   function handleRemoveSpace() {
     setModalName('Remove Space');
@@ -36,12 +73,10 @@ function Space() {
   // TODO: Add fecthing logic to dynamically display content of each space
   // Use the space ID from the url param to fetch the correct & desired space
 
-  const accessCode = 57493;
   const roomsCount = 25;
-  const peopleCount = 85;
 
-  const descriptionText =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend placerat malesuada. Etiam vitae justo maximus, vestibulum velit eu, mattis nibh. Ut rhoncus nibh id neque tempus, id fringilla velit ullamcorper. Aliquam fermentum vestibulum libero in porttitor. Mauris et rhoncus mi. Donec ac efficitur arcu. Ut ex leo, elementum ac varius posuere, sollicitudin suscipit nulla.';
+  // const descriptionText =
+  //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend placerat malesuada. Etiam vitae justo maximus, vestibulum velit eu, mattis nibh. Ut rhoncus nibh id neque tempus, id fringilla velit ullamcorper. Aliquam fermentum vestibulum libero in porttitor. Mauris et rhoncus mi. Donec ac efficitur arcu. Ut ex leo, elementum ac varius posuere, sollicitudin suscipit nulla.';
 
   function createUsersData(
     id,
@@ -75,8 +110,6 @@ function Space() {
     )
   );
 
-  const isAdmin = true;
-
   useAssignHandler(handleOpen, setModalName);
 
   const renderModalContent = () => {
@@ -108,107 +141,117 @@ function Space() {
   };
 
   return (
-    <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
-      <DashItem
-        heading="Access Code"
-        styling="col-start-1 col-end-8 row-span-5"
-        content={<AccessCode accessCode={accessCode} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.accessCode}
-      />
-
-      <DashItem
-        heading="Capacity"
-        styling="col-span-7 row-span-5"
-        content={<Capacity roomsCount={roomsCount} peopleCount={peopleCount} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.capacity}
-      />
-
-      <DashItem
-        heading="Rooms"
-        styling={`col-span-full col-start-[15] ${
-          isAdmin ? 'row-end-[17]' : 'row-span-full'
-        } row-start-1 rounded-xl`}
-        content={<ListContent contentType="rooms" toolTipTitle="Go to Room" />}
-      />
-
-      {/* CONDITIONAL BTN */}
-      {isAdmin && (
-        <>
-          <section className="col-span-full col-start-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
-            <Button
-              variant="contained"
-              startIcon={<AddRounded />}
-              onClick={handleNewRoom}
-            >
-              Add New Room
-            </Button>
-          </section>
-
-          <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
-            <Button
-              variant="contained"
-              color="error"
-              startIcon={<RemoveRounded />}
-              onClick={handleRemoveSpace}
-            >
-              Remove Space
-            </Button>
-          </section>
-        </>
-      )}
-
-      <DashItem
-        heading="Description"
-        styling={`col-start-1 col-end-[15] ${
-          isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
-        }`}
-        isScroll
-        content={<Description descriptionText={descriptionText} />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.description}
-      />
-
-      <DashItem
-        heading="Users"
-        styling={`col-start-1 col-end-[15] ${
-          isAdmin
-            ? 'row-start-[10] row-end-[17]'
-            : 'row-start-[11] row-span-full'
-        }`}
-        content={<ListContent contentType="spaceUsers" />}
-        isDropdown={isAdmin}
-        dropdownOptions={spaceDropdownOptions.users}
-      />
-
-      {/* CONDITIONAL MODAL */}
-      {modalName !== 'Edit Users' && open ? (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox
-            content={renderModalContent()}
-            height="h-auto"
-            width="w-auto"
-          />
-        </Modal>
+    <section className={isLoading ? 'h-full w-full' : `grid h-full gap-5 md:grid-cols-23 md:grid-rows-18`}>
+      {isLoading ? (
+        <MainSectionSpinner />
       ) : (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox
-            content={renderModalContent()}
-            height="h-[35.5rem]"
-            width="w-[63rem]"
+        <>
+          <DashItem
+            heading="Access Code"
+            styling="col-start-1 col-end-8 row-span-5"
+            content={<AccessCode accessCode={accessCode} />}
+            isDropdown={isAdmin}
+            dropdownOptions={spaceDropdownOptions.accessCode}
           />
-        </Modal>
+
+          <DashItem
+            heading="Capacity"
+            styling="col-span-7 row-span-5"
+            content={
+              <Capacity roomsCount={roomsCount} peopleCount={peopleCount} />
+            }
+            isDropdown={isAdmin}
+            dropdownOptions={spaceDropdownOptions.capacity}
+          />
+
+          <DashItem
+            heading="Rooms"
+            styling={`col-span-full col-start-[15] ${
+              isAdmin ? 'row-end-[17]' : 'row-span-full'
+            } row-start-1 rounded-xl`}
+            content={
+              <ListContent contentType="rooms" toolTipTitle="Go to Room" />
+            }
+          />
+
+          {/* CONDITIONAL BTN */}
+          {isAdmin && (
+            <>
+              <section className="col-span-full col-start-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
+                <Button
+                  variant="contained"
+                  startIcon={<AddRounded />}
+                  onClick={handleNewRoom}
+                >
+                  Add New Room
+                </Button>
+              </section>
+
+              <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
+                <Button
+                  variant="contained"
+                  color="error"
+                  startIcon={<RemoveRounded />}
+                  onClick={handleRemoveSpace}
+                >
+                  Remove Space
+                </Button>
+              </section>
+            </>
+          )}
+
+          <DashItem
+            heading="Description"
+            styling={`col-start-1 col-end-[15] ${
+              isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
+            }`}
+            isScroll
+            content={<Description descriptionText={description} />}
+            isDropdown={isAdmin}
+            dropdownOptions={spaceDropdownOptions.description}
+          />
+
+          <DashItem
+            heading="Users"
+            styling={`col-start-1 col-end-[15] ${
+              isAdmin
+                ? 'row-start-[10] row-end-[17]'
+                : 'row-start-[11] row-span-full'
+            }`}
+            content={<ListContent contentType="spaceUsers" />}
+            isDropdown={isAdmin}
+            dropdownOptions={spaceDropdownOptions.users}
+          />
+
+          {/* CONDITIONAL MODAL */}
+          {modalName !== 'Edit Users' && open ? (
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox
+                content={renderModalContent()}
+                height="h-auto"
+                width="w-auto"
+              />
+            </Modal>
+          ) : (
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox
+                content={renderModalContent()}
+                height="h-[35.5rem]"
+                width="w-[63rem]"
+              />
+            </Modal>
+          )}
+        </>
       )}
     </section>
   );
