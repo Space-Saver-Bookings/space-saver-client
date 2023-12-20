@@ -22,8 +22,8 @@ export async function getAllSpaces() {
 export async function createSpace(data) {
   try {
     const {data: spaceData} = await api.post(`/spaces`, data);
-    console.log(spaceData);
-    toast.success("Space successfully created!")
+    console.log('New space: ', spaceData);
+    toast.success('Space successfully created!');
   } catch (err) {
     if (err.response) {
       console.error('Space error:', err.response || err);
@@ -34,6 +34,29 @@ export async function createSpace(data) {
         toast.error('Unauthorised.');
       } else {
         toast.error('Failed to create space: ' + err.response.data.message);
+      }
+    }
+  }
+}
+
+export async function joinSpace(inviteCode) {
+  try {
+    const {
+      data: {
+        space: {name},
+      },
+    } = await api.post(`/spaces/code/${inviteCode}`);
+    toast.success(`Succesfully joined ${name}`);
+  } catch (err) {
+    if (err.response) {
+      console.error('Space code error:', err.response || err);
+
+      if (err.response.status === 500) {
+        toast.error('An error occurred on the server. Please try again later.');
+      } else if (err.response.status === 401) {
+        toast.error('Unauthorised.');
+      } else {
+        toast.error('Failed to join space: ' + err.response.data.message);
       }
     }
   }

@@ -16,16 +16,13 @@ function CreateSpaceModalContent({heading}) {
 
   const handleReset = () => {
     reset({
-      spaceName: '',
+      name: '',
       capacity: '',
       description: '',
     });
   };
 
   const onSubmit = async (data) => {
-    console.log('Submitted');
-    // console.log(data);
-
     await createSpace(data);
     handleClose();
   };

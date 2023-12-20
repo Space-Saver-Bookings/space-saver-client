@@ -22,13 +22,11 @@ export function AuthProvider({children}) {
       const storedToken = localStorage.getItem('token');
       if (storedToken) {
         try {
-          // Decode the stored token to extract the user ID
           const decodedToken = jwtDecode(storedToken);
           if (decodedToken && decodedToken.userId) {
             const userId = decodedToken.userId;
             const userDetails = await getUser(userId);
 
-            // Set both the token and the user ID in the auth state
             setAuth({
               isAuthenticated: true,
               token: storedToken,
@@ -37,11 +35,11 @@ export function AuthProvider({children}) {
           }
         } catch (error) {
           console.error('Error decoding token:', error);
-          // Handle invalid token, e.g. by logging out the user
-          logout(); // This function should clear the auth state and localStorage
+          logout();
+        } finally {
+          setIsLoading(false);
         }
       }
-      setIsLoading(false);
     };
 
     checkToken();
