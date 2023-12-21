@@ -15,11 +15,9 @@ function Register() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
 
     try {
-      const res = await api.post('/users/register', data);
-      console.log('Register successful:', res);
+      await api.post('/users/register', data);
       navigate('/login');
       toast.success('Register successful!');
     } catch (err) {
@@ -156,7 +154,7 @@ function Register() {
 
           <div className="flex justify-between">
             <Controller
-              name="postcode"
+              name="post_code"
               control={control}
               defaultValue=""
               rules={{
@@ -167,8 +165,8 @@ function Register() {
                   <label htmlFor="postcode">Post Code</label>
                   <TextField
                     {...field}
-                    error={!!errors.postcode}
-                    helperText={errors.postcode?.message}
+                    error={!!errors.post_code}
+                    helperText={errors.post_code?.message}
                     id="postcode"
                     placeholder='2000'
                     variant="outlined"

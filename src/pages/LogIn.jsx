@@ -4,6 +4,7 @@ import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
 import useAuth from '../auth/useAuth';
 import {loginUser} from '../services/apiUsers';
+import toast from 'react-hot-toast';
 
 function LogIn() {
   const {login} = useAuth();
@@ -16,8 +17,13 @@ function LogIn() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log('Submitted');
-    loginUser(login, navigate, data);
+    const jwt = await loginUser(data);
+
+    if (jwt) {
+      await login(jwt);
+      navigate('/');
+      toast.success('Logged in! Welcome to SpaceSaver.');
+    }
   };
 
   return (

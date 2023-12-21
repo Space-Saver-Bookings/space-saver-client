@@ -12,7 +12,7 @@ function AvailableRooms() {
 
   return (
     <section className="h-full">
-      <DashTableList height={660} columns={columns} rows={rows} />
+      <DashTableList columns={columns} rows={rows} />
     </section>
   );
 }

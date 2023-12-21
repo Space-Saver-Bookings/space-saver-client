@@ -19,6 +19,7 @@ export default function AccountMenu({name}) {
   const open = Boolean(anchorEl);
   const {logout} = useAuth();
   const navigate = useNavigate();
+  let userName = name || 'John Doe';
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,7 +43,7 @@ export default function AccountMenu({name}) {
           >
             {/* TODO: saved in case for future implementation */}
             {/* <Avatar sx={{width: 32, height: 32}} {...stringAvatar(name)} /> */}
-            <Avatar {...stringAvatar(name)} className="shadow-lg" />
+            <Avatar {...stringAvatar(userName)} className="shadow-lg" />
           </IconButton>
         </Tooltip>
       </Box>
