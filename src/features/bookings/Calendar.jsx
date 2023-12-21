@@ -1,21 +1,28 @@
 import {useEffect, useState} from 'react';
+import {Modal} from '@mui/material';
+import useModal from '../../contexts/useModal.js';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-// import api from '../../services/api';
 import {getBookings} from '../../services/apiBookings';
+import EditBookingModalContent from '../../features/bookings/EditBookingModalContent.jsx';
+import ModalBox from '../../components/modal/ModalBox.jsx';
 
-const Calendar = () => {
+const Calendar = (props) => {
+  const {open, handleOpen, handleClose} = useModal();
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const bookings = await getBookings();
+        // eslint-disable-next-line react/prop-types
+        const bookings = await getBookings(props.myBookingFilter);
 
+
+        // eslint-disable-next-line no-unused-vars
         const formattedEvents = bookings.map((booking, index) => {
           const firstName = booking.primary_user_id?.first_name || '';
           const lastName = booking.primary_user_id?.last_name || '';
-
+          
           return {
             id: booking._id,
             title: booking.title,
@@ -24,8 +31,8 @@ const Calendar = () => {
             start: new Date(booking.start_time),
             end: new Date(booking.end_time),
             roomId: booking.room_id._id,
-            backgroundColour: getCorporateColour(index),
-            textColour: getTextColour(getCorporateColour(index)),
+            backgroundColour: getCorporateColour(booking.room_id._id),
+            textColour: getTextColour(getCorporateColour(booking.room_id._id)),
           };
         });
 
@@ -36,8 +43,8 @@ const Calendar = () => {
     };
 
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react/prop-types
+  }, [props.myBookingFilter]);
 
   // Predefined set of corporate Colours
   const predefinedColours = [
@@ -49,9 +56,14 @@ const Calendar = () => {
     '#0d47a1', // Very Dark Blue
   ];
 
-  const getCorporateColour = (index) => {
-    // Use modulo to loop through colours
-    return predefinedColours[index % predefinedColours.length];
+  const getCorporateColour = (roomId) => {
+    // Use the room_id._id to generate a consistent color
+    const hash = roomId.split('').reduce((acc, char) => {
+      acc = (acc << 5) - acc + char.charCodeAt(0);
+      return acc & acc;
+    }, 0);
+
+    return predefinedColours[Math.abs(hash) % predefinedColours.length];
   };
 
   // return black or white depending on the generated eventBackground
@@ -85,14 +97,14 @@ const Calendar = () => {
   };
 
   const renderEventContent = (eventInfo) => {
-    const eventColour = eventInfo.event.backgroundColour;
-    const textColour = eventInfo.event.textColour;
+    const eventColour = eventInfo.event.extendedProps.backgroundColour;
+    const textColour = eventInfo.event.extendedProps.textColour;
 
     return (
       <div
         style={{
-          backgroundColour: eventColour,
-          Colour: textColour,
+          backgroundColor: eventColour,
+          color: textColour,
           padding: '5px',
           borderRadius: '3px',
         }}
@@ -104,14 +116,6 @@ const Calendar = () => {
         </div>
       </div>
     );
-  };
-
-  const handleEventClick = (clickInfo) => {
-    // Access additional event information using clickInfo
-    const {event} = clickInfo;
-    console.log('Event Clicked:', event);
-
-    // show module edit booking window!
   };
 
   return (
@@ -129,8 +133,31 @@ const Calendar = () => {
             center: 'title',
             right: 'timeGridWeek,timeGridDay',
           }}
-          eventClick={handleEventClick}
+          eventClick={handleOpen}
         />
+      </div>
+      <div>
+        {open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            {
+              <ModalBox
+                content={
+                  <EditBookingModalContent
+                    heading="Booking Details"
+                    handleClose={handleClose}
+                  />
+                }
+                height="h-auto"
+                width="w-[38rem]"
+              />
+            }
+          </Modal>
+        )}
       </div>
     </section>
   );

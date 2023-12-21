@@ -13,6 +13,7 @@ function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);
 
+
   function handleToggle() {
     setToggle((t) => !t);
   }
@@ -27,7 +28,7 @@ function Bookings() {
 
       <section className="col-start-1 col-end-[16] row-span-full row-start-2 rounded-xl border-2 bg-white shadow-xl">
         {/* TODO: Calendar logic is separated into its own component */}
-        <Calendar />
+        <Calendar myBookingFilter={toggle}/>
       </section>
 
       {/* TODO: figure out how to open a modal when a user clicks on an upcoming booking */}
