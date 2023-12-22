@@ -1,37 +1,31 @@
 import {useEffect, useState} from 'react';
-import {Modal} from '@mui/material';
-import useModal from '../../contexts/useModal.js';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {getBookings} from '../../services/apiBookings';
-import EditBookingModalContent from '../../features/bookings/EditBookingModalContent.jsx';
-import ModalBox from '../../components/modal/ModalBox.jsx';
+import {getBookings, getBookingById} from '../../services/apiBookings';
 
 const Calendar = (props) => {
-  const {open, handleOpen, handleClose} = useModal();
   const [events, setEvents] = useState([]);
+  const [currentView, setCurrentView] = useState('timeGridDay');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // eslint-disable-next-line react/prop-types
         const bookings = await getBookings(props.myBookingFilter);
-
-
-        // eslint-disable-next-line no-unused-vars
-        const formattedEvents = bookings.map((booking, index) => {
+        const formattedEvents = bookings.map((booking) => {
           const firstName = booking.primary_user_id?.first_name || '';
           const lastName = booking.primary_user_id?.last_name || '';
-          
+
           return {
             id: booking._id,
             title: booking.title,
+            description: booking.description,
             primaryUser: firstName + ' ' + lastName[0],
             room: booking.room_id.name,
-            start: new Date(booking.start_time),
-            end: new Date(booking.end_time),
+            start: booking.start_time,
+            end: booking.end_time,
             roomId: booking.room_id._id,
-            backgroundColour: getCorporateColour(booking.room_id._id),
+            eventBackgroundColor: getCorporateColour(booking.room_id._id),
             textColour: getTextColour(getCorporateColour(booking.room_id._id)),
           };
         });
@@ -43,21 +37,19 @@ const Calendar = (props) => {
     };
 
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps, react/prop-types
+    // eslint-disable-next-line react/prop-types, react-hooks/exhaustive-deps
   }, [props.myBookingFilter]);
 
-  // Predefined set of corporate Colours
   const predefinedColours = [
-    '#5d1b1f8', // Light Blue
-    '#1abc9c', // Turquoise
-    '#2980b9', // Blue
-    '#2078b4', // Medium Blue
-    '#1565c0', // Dark Blue
-    '#0d47a1', // Very Dark Blue
+    '#5d1b1f8',
+    '#1abc9c',
+    '#2980b9',
+    '#2078b4',
+    '#1565c0',
+    '#0d47a1',
   ];
 
   const getCorporateColour = (roomId) => {
-    // Use the room_id._id to generate a consistent color
     const hash = roomId.split('').reduce((acc, char) => {
       acc = (acc << 5) - acc + char.charCodeAt(0);
       return acc & acc;
@@ -66,7 +58,6 @@ const Calendar = (props) => {
     return predefinedColours[Math.abs(hash) % predefinedColours.length];
   };
 
-  // return black or white depending on the generated eventBackground
   const getTextColour = (backgroundColour) => {
     const hexToRgb = (hex) => {
       const bigint = parseInt(hex, 16);
@@ -76,7 +67,6 @@ const Calendar = (props) => {
       return `rgb(${r},${g},${b})`;
     };
 
-    // Calculate luminance
     const calculateLuminance = (rgb) => {
       const values = rgb.match(/\d+/g).map(Number);
       const [r, g, b] = values.map((val) => {
@@ -96,26 +86,54 @@ const Calendar = (props) => {
     return textColour;
   };
 
+  const handleEventClick = async (eventClickInfo) => {
+    const bookingId = eventClickInfo.event.id;
+    const booking = await getBookingById(bookingId);
+
+    // eslint-disable-next-line react/prop-types
+    props.onEditBooking(booking);
+  };
+
   const renderEventContent = (eventInfo) => {
-    const eventColour = eventInfo.event.extendedProps.backgroundColour;
+    const eventColour = eventInfo.event.extendedProps.eventBackgroundColor;
     const textColour = eventInfo.event.extendedProps.textColour;
 
     return (
       <div
         style={{
           backgroundColor: eventColour,
+          eventBorderColor: eventColour,
           color: textColour,
-          padding: '5px',
-          borderRadius: '3px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: '2px',
+          height: '100%',
+          overflowY: currentView === 'timeGridDay' ? 'auto' : false,
+          wordWrap: 'break-word',
         }}
       >
         <div>
-          <p>{eventInfo.event.extendedProps.room}</p>
-          <b>{eventInfo.timeText}</b>
-          <p>{eventInfo.event.extendedProps.primaryUser}</p>
+          <p>
+            {currentView === 'timeGridDay' ? (
+              <>
+                {`${eventInfo.event.extendedProps.room} ; booked by: ${eventInfo.event.extendedProps.primaryUser}`}
+                <br />
+                <b>Title:</b> {eventInfo.event.title}
+                <br />
+                {eventInfo.timeText}
+              </>
+            ) : (
+              eventInfo.event.extendedProps.room
+            )}
+          </p>
         </div>
       </div>
     );
+  };
+  // Allows the conditional rendering of the size of the booking details
+  const handleViewChange = (view) => {
+    setCurrentView(view.view.type);
   };
 
   return (
@@ -123,41 +141,24 @@ const Calendar = (props) => {
       <div style={{flex: 1, width: '100%', height: '100%', padding: '5%'}}>
         <FullCalendar
           plugins={[timeGridPlugin]}
-          initialView="timeGridWeek"
+          initialView="timeGridDay"
           weekends={false}
           events={events}
           eventContent={renderEventContent}
-          height="100%"
           headerToolbar={{
-            left: 'prev,next',
+            left: 'prev,next today',
             center: 'title',
             right: 'timeGridWeek,timeGridDay',
           }}
-          eventClick={handleOpen}
+          eventClick={handleEventClick}
+          scrollTime="09:00:00"
+          height="100%"
+          displayEventTime={true}
+          slotDuration="00:15:00"
+          slotEventOverlap={false}
+          timeZone="local"
+          datesSet={handleViewChange}
         />
-      </div>
-      <div>
-        {open && (
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            {
-              <ModalBox
-                content={
-                  <EditBookingModalContent
-                    heading="Booking Details"
-                    handleClose={handleClose}
-                  />
-                }
-                height="h-auto"
-                width="w-[38rem]"
-              />
-            }
-          </Modal>
-        )}
       </div>
     </section>
   );

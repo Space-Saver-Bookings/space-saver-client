@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {Button, Modal} from '@mui/material';
 import DashItem from '../components/dashboard/DashItem';
 import ListContent from '../components/dashboard/ListContent';
@@ -7,17 +8,30 @@ import ModalBox from '../components/modal/ModalBox.jsx';
 import {useState} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
 import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
-// import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
+import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);
-
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   function handleToggle() {
+    // Toggling between "My Bookings" and "All Bookings",
     setToggle((t) => !t);
   }
+  function handleAddNewBooking() {
+    // Open the modal for adding a new booking
+    setSelectedBooking(null);
+    handleOpen();
+  }
 
+
+  
+  function handleEditBooking(booking) {
+    // Open the modal for editing a booking
+    setSelectedBooking(booking);
+    handleOpen();
+  }
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
       <div className="col-start-1 col-end-[16] row-span-1 flex flex-col items-center justify-center">
@@ -27,20 +41,45 @@ function Bookings() {
       </div>
 
       <section className="col-start-1 col-end-[16] row-span-full row-start-2 rounded-xl border-2 bg-white shadow-xl">
-        {/* TODO: Calendar logic is separated into its own component */}
-        <Calendar myBookingFilter={toggle}/>
+        <Calendar myBookingFilter={toggle} onEditBooking={handleEditBooking} />
       </section>
 
-      {/* TODO: figure out how to open a modal when a user clicks on an upcoming booking */}
       <DashItem
         heading="Upcoming Bookings"
         content={<ListContent contentType="upcomingBookingsShort" />}
         styling="col-span-full col-start-[16] row-end-[17] row-start-1 rounded-xl"
       />
 
-      {open && (
+      {open && selectedBooking && (
         <Modal
-          open={open}
+          open={open && selectedBooking !== null}
+          onClose={() => {
+            setSelectedBooking(null);
+            handleClose();
+          }}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <ModalBox
+            content={
+              <EditBookingModalContent
+                heading="Booking Details"
+                booking={selectedBooking}
+                handleClose={() => {
+                  setSelectedBooking(null);
+                  handleClose();
+                }}
+              />
+            }
+            height="h-auto"
+            width="w-[38rem]"
+          />
+        </Modal>
+      )}
+
+      {open && !selectedBooking && (
+        <Modal
+          open={open && !selectedBooking}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -49,33 +88,23 @@ function Bookings() {
             content={
               <AddNewBookingModalContent
                 heading="Add New Booking"
-                handleClose={handleClose}
+                handleClose={() => {
+                  setSelectedBooking(null);
+                  handleClose();
+                }}
               />
             }
             height="h-auto"
             width="w-[40rem]"
           />
-          {/* TODO: this was used to check the modal through the add new booking btn, 
-          but it should come from clicking on a booking on the upcoming bookings list */}
-          {/* <ModalBox
-            content={
-              <EditBookingModalContent
-                heading="Booking Details"
-                handleClose={handleClose}
-              />
-            }
-            height="h-auto"
-            width="w-[38rem]"
-          /> */}
         </Modal>
       )}
 
       <div className="col-span-full col-start-[16] row-span-2 row-start-[17] flex flex-col items-center justify-center">
-        {/* TODO: change this to process and submit add new booking form */}
         <Button
           variant="contained"
           startIcon={<AddRounded />}
-          onClick={handleOpen}
+          onClick={handleAddNewBooking}
         >
           Add New Booking
         </Button>
