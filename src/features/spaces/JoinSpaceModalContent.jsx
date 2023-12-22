@@ -25,6 +25,9 @@ function JoinSpaceModalContent({heading}) {
     try {
       await joinSpace(data.code);
       handleClose();
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
     } catch (err) {
       console.error(err);
     }

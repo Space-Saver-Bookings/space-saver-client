@@ -59,6 +59,26 @@ export async function createSpace(data) {
   }
 }
 
+export async function updateSpace(data, spaceId) {
+  try {
+    const {data: spaceData} = await api.put(`/spaces/${spaceId}`, data);
+    console.log('Updated space: ', spaceData);
+    toast.success('Space successfully updated!');
+  } catch (err) {
+    if (err.response) {
+      console.error('Update space error:', err.response || err);
+
+      if (err.response.status === 500) {
+        toast.error('An error occurred on the server. Please try again later.');
+      } else if (err.response.status === 401) {
+        toast.error('Unauthorised.');
+      } else {
+        toast.error('Failed to update space: ' + err.response.data.message);
+      }
+    }
+  }
+}
+
 export async function joinSpace(inviteCode) {
   try {
     const {

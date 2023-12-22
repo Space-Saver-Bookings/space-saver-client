@@ -9,7 +9,7 @@ import {spaceDropdownOptions} from '../features/space/SpaceDropdownOptions';
 import {useAssignHandler} from '../features/space/useAssignHandler.js';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
-import ShareCodeModalContent from '../features/space/ShareCodeModalContent.jsx';
+// import ShareCodeModalContent from '../features/space/ShareCodeModalContent.jsx';
 // import EditCodeModalContent from '../features/space/EditCodeModalContent.jsx';
 import EditDescriptionModalContent from '../features/space/EditDescriptionModalContent.jsx';
 import EditCapacityModalContent from '../features/space/EditCapcityModalContent.jsx';
@@ -17,7 +17,7 @@ import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
 import AddNewRoomModalContent from '../components/modal/AddNewRoomModalContent.jsx';
 import ConfirmModal from '../components/modal/ConfirmModal.jsx';
 import {useParams} from 'react-router-dom';
-import {getSingleSpace} from '../services/apiSpaces.js';
+import {getSingleSpace, updateSpace} from '../services/apiSpaces.js';
 import {useEffect, useState} from 'react';
 import useAuth from '../auth/useAuth.js';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
@@ -27,35 +27,82 @@ function Space() {
   const {spaceId} = useParams();
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
   const [isLoading, setIsLoading] = useState(true);
-  const [space, setSpace] = useState(null);
-  let isAdmin;
-  let accessCode;
-  let description;
-  let peopleCount;
-  // let roomsCount;
+  // const [space, setSpace] = useState(null);
 
-  if (space) {
-    isAdmin = user._id === space.admin_id._id;
-    accessCode = space.invite_code;
-    peopleCount = space.capacity;
-    description = space.description;
-  }
+  const [spaceAdmin, setSpaceAdmin] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [usersEditRows, setUsersEditRows] = useState([]);
+  const [accessCode, setAccessCode] = useState('');
+  const [peopleCount, setPeopleCount] = useState(0);
+  const [description, setDescription] = useState('');
 
   useEffect(() => {
     const getSpace = async (spaceId) => {
       try {
-        const space = await getSingleSpace(spaceId);
-        setSpace(space);
+        const fetchedSpace = await getSingleSpace(spaceId);
+        // setSpace(fetchedSpace);
         setIsLoading(false);
+
+        if (fetchedSpace) {
+          // Set the admin ID
+          setSpaceAdmin(fetchedSpace.admin_id._id);
+          // Check if the current user is an admin
+          setIsAdmin(user._id === fetchedSpace.admin_id._id);
+          // Set the access code, capacity, and description
+          setUsers(fetchedSpace.user_ids);
+          setAccessCode(fetchedSpace.invite_code);
+          setPeopleCount(fetchedSpace.capacity);
+          setDescription(fetchedSpace.description);
+
+          // When space data is fetched, create the users data for the table.
+          if (fetchedSpace.user_ids) {
+            const newUsersEditRows = fetchedSpace.user_ids.map((user) =>
+              createUsersData(
+                user._id,
+                user.first_name,
+                user.last_name,
+                user.email,
+                user.post_code,
+                user.position
+              )
+            );
+            setUsersEditRows(newUsersEditRows);
+          }
+        }
       } catch (err) {
         console.error(err);
       }
     };
 
     getSpace(spaceId);
-  }, [spaceId]);
+  }, [spaceId, user._id]);
 
-  // console.log(space);
+  const handleDeleteUser = async (userIdsToDelete) => {
+    // Filter out the users you want to remove
+    const updatedUsers = usersEditRows.filter(
+      (userFromRow) => !userIdsToDelete.includes(userFromRow.id)
+    );
+
+    // Update the local state to reflect the user deletion
+    setUsersEditRows(updatedUsers);
+
+    // Prepare the data to be sent to the backend
+    // Assuming the backend expects an array of user IDs to be removed
+    const updateData = {
+      user_ids: updatedUsers, // Send the IDs to be deleted
+      // ...include any other data the backend requires...
+    };
+
+    // Call the API to update the space with the new users array
+    await updateSpace(updateData, spaceId);
+
+    // Optionally, if you have additional state for the space, update it as needed
+    // This would depend on whether your space state should reflect this deletion
+    // setSpace({ ...space, user_ids: updatedUsers });
+  };
+
+  const roomsCount = 25;
 
   function handleRemoveSpace() {
     setModalName('Remove Space');
@@ -69,54 +116,31 @@ function Space() {
 
   // TODO: Add handle yes/no here? after space is remove, users are returned to home?
 
-  // TODO: A nice to have to figure out a way for users to navigate back to spaces easily eg. header back to btn
-  // TODO: Add fecthing logic to dynamically display content of each space
-  // Use the space ID from the url param to fetch the correct & desired space
-
-  const roomsCount = 25;
-
-  // const descriptionText =
-  //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend placerat malesuada. Etiam vitae justo maximus, vestibulum velit eu, mattis nibh. Ut rhoncus nibh id neque tempus, id fringilla velit ullamcorper. Aliquam fermentum vestibulum libero in porttitor. Mauris et rhoncus mi. Donec ac efficitur arcu. Ut ex leo, elementum ac varius posuere, sollicitudin suscipit nulla.';
-
   function createUsersData(
     id,
-    firstName,
-    lastName,
+    first_name,
+    last_name,
     email,
-    dateJoined,
-    postCode,
+    post_code,
     position
   ) {
     return {
       id,
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
-      dateJoined,
-      postCode,
+      post_code,
       position,
     };
   }
-
-  const usersEditRows = Array.from(Array(13), (_, idx) =>
-    createUsersData(
-      Number(`${idx + 1}`),
-      'John',
-      'Doe',
-      'johndoe@gmail.com',
-      '28/11/23',
-      2001,
-      'Web Developer'
-    )
-  );
 
   useAssignHandler(handleOpen, setModalName);
 
   const renderModalContent = () => {
     switch (modalName) {
-      case 'Share Access Code':
-        // TODO: pass down access code?
-        return <ShareCodeModalContent heading="Share Access Code" />;
+      // case 'Share Access Code':
+      //   // TODO: pass down access code?
+      //   return <ShareCodeModalContent heading="Share Access Code" />;
       // case 'Edit Access Code':
       //   return <EditCodeModalContent heading="Edit Access Code" />;
       case 'Edit Capacity':
@@ -128,7 +152,7 @@ function Space() {
         return <EditDescriptionModalContent heading="Edit Description" />;
       case 'Edit Users':
         return (
-          <EditUsersModalContent heading="Edit Users" rows={usersEditRows} />
+          <EditUsersModalContent heading="Edit Users" rows={usersEditRows} handleDeleteUser={handleDeleteUser} />
         );
       case 'Remove Space':
         // TODO: Figure out handling yes/no logic
@@ -141,7 +165,13 @@ function Space() {
   };
 
   return (
-    <section className={isLoading ? 'h-full w-full' : `grid h-full gap-5 md:grid-cols-23 md:grid-rows-18`}>
+    <section
+      className={
+        isLoading
+          ? 'h-full w-full'
+          : `grid h-full gap-5 md:grid-cols-23 md:grid-rows-18`
+      }
+    >
       {isLoading ? (
         <MainSectionSpinner />
       ) : (
@@ -150,8 +180,6 @@ function Space() {
             heading="Access Code"
             styling="col-start-1 col-end-8 row-span-5"
             content={<AccessCode accessCode={accessCode} />}
-            isDropdown={isAdmin}
-            dropdownOptions={spaceDropdownOptions.accessCode}
           />
 
           <DashItem
@@ -218,7 +246,13 @@ function Space() {
                 ? 'row-start-[10] row-end-[17]'
                 : 'row-start-[11] row-span-full'
             }`}
-            content={<ListContent contentType="spaceUsers" />}
+            content={
+              <ListContent
+                contentType="spaceUsers"
+                spaceUsers={users}
+                spaceAdmin={spaceAdmin}
+              />
+            }
             isDropdown={isAdmin}
             dropdownOptions={spaceDropdownOptions.users}
           />

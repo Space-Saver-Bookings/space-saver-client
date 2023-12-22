@@ -161,7 +161,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const {numSelected, onDeleteUser, selectedId} = props;
+  const {numSelected} = props;
 
   return (
     <Toolbar
@@ -200,11 +200,7 @@ function EnhancedTableToolbar(props) {
       {numSelected > 0 ? (
         <>
           <Tooltip title="Delete">
-            <IconButton
-              onClick={() => {
-                onDeleteUser(selectedId);
-              }}
-            >
+            <IconButton>
               <DeleteIcon color="error" />
             </IconButton>
           </Tooltip>
@@ -227,11 +223,9 @@ function EnhancedTableToolbar(props) {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onDeleteUser: PropTypes.func,
-  selectedId: PropTypes.array,
 };
 
-export default function UsersTable({rows, onDeleteUser}) {
+export default function UsersTable({rows}) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -271,8 +265,6 @@ export default function UsersTable({rows, onDeleteUser}) {
       );
     }
     setSelected(newSelected);
-
-    return id;
   };
 
   const handleChangePage = (event, newPage) => {
@@ -305,11 +297,7 @@ export default function UsersTable({rows, onDeleteUser}) {
 
   return (
     <Box sx={{width: '100%'}}>
-      <EnhancedTableToolbar
-        numSelected={selected.length}
-        onDeleteUser={onDeleteUser}
-        selectedId={selected}
-      />
+      <EnhancedTableToolbar numSelected={selected.length} />
       <TableContainer>
         <Table
           sx={{minWidth: 750}}

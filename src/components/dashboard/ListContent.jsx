@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import DashTableList from '../../components/dashboard/DashTableList';
 import {createData} from '../../helpers/createData';
 
-function ListContent({toolTipTitle, contentType}) {
+function ListContent({toolTipTitle, contentType, spaceUsers, spaceAdmin}) {
   let columns, rows;
 
   // TODO: add custom hook for fetched data with react query instead of hard coded
@@ -18,9 +18,14 @@ function ListContent({toolTipTitle, contentType}) {
       );
       break;
     case 'spaceUsers':
-      columns = ['Name', 'Email', 'Date Added', 'Position'];
-      rows = Array.from(Array(10), () =>
-        createData('John Doe', 'johndoe@gmail.com', '28/11/23', 'Web Developer')
+      columns = ['Name', 'Email', 'Type', 'Position'];
+      rows = Array.from(spaceUsers, (user) =>
+        createData(
+          `${user.first_name} ${user.last_name}`,
+          user.email,
+          `${String(spaceAdmin) === String(user._id) ? 'Admin' : 'User'}`,
+          user.position
+        )
       );
       break;
     case 'roomUsers':
@@ -60,10 +65,10 @@ function ListContent({toolTipTitle, contentType}) {
 }
 
 ListContent.propTypes = {
-  columns: PropTypes.array,
-  rows: PropTypes.array,
   toolTipTitle: PropTypes.string,
   contentType: PropTypes.string,
+  spaceUsers: PropTypes.array,
+  spaceAdmin: PropTypes.bool,
 };
 
 export default ListContent;
