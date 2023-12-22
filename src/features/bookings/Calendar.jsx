@@ -134,7 +134,7 @@ const Calendar = (props) => {
         <FullCalendar
           plugins={[timeGridPlugin]}
           initialView="timeGridDay"
-          weekends={false}
+          weekends={true}
           events={events}
           eventContent={renderEventContent}
           headerToolbar={{
