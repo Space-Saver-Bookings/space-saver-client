@@ -161,7 +161,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const {numSelected, onDeleteUser, selectedId} = props;
+  const {numSelected, onDeleteUser, selectedId, onMakeAdmin} = props;
 
   return (
     <Toolbar
@@ -209,7 +209,11 @@ function EnhancedTableToolbar(props) {
             </IconButton>
           </Tooltip>
           <Tooltip title="Make Admin">
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                onMakeAdmin([selectedId]);
+              }}
+            >
               <AdminPanelSettingsRoundedIcon color="primary" />
             </IconButton>
           </Tooltip>
@@ -228,10 +232,11 @@ function EnhancedTableToolbar(props) {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onDeleteUser: PropTypes.func,
+  onMakeAdmin: PropTypes.func,
   selectedId: PropTypes.array,
 };
 
-export default function UsersTable({rows, onDeleteUser}) {
+export default function UsersTable({rows, onDeleteUser, onMakeAdmin}) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -308,6 +313,7 @@ export default function UsersTable({rows, onDeleteUser}) {
       <EnhancedTableToolbar
         numSelected={selected.length}
         onDeleteUser={onDeleteUser}
+        onMakeAdmin={onMakeAdmin}
         selectedId={selected}
       />
       <TableContainer>
@@ -398,4 +404,5 @@ export default function UsersTable({rows, onDeleteUser}) {
 UsersTable.propTypes = {
   rows: PropTypes.array,
   onDeleteUser: PropTypes.func,
+  onMakeAdmin: PropTypes.func,
 };

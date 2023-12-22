@@ -102,6 +102,17 @@ function Space() {
     // }, 800);
   };
 
+  const handleMakeAdmin = async (newAdminId) => {
+    const updatedData = {
+      admin_id: newAdminId,
+    };
+
+    await updateSpace(updatedData, spaceId);
+    handleClose();
+
+    navigate('/spaces');
+  };
+
   const roomsCount = 25;
 
   function handleRemoveSpace() {
@@ -161,6 +172,7 @@ function Space() {
             heading="Edit Users"
             rows={usersEditRows}
             handleDeleteUser={handleDeleteUser}
+            handleMakeAdmin={handleMakeAdmin}
           />
         );
       case 'Remove Space':
