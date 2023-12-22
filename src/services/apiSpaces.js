@@ -101,3 +101,23 @@ export async function joinSpace(inviteCode) {
     }
   }
 }
+
+export async function deleteSpace(spaceId) {
+  try {
+    const {data} = await api.delete(`/spaces/${spaceId}`);
+    console.log(data);
+    toast.success('Space successfully removed!');
+  } catch (err) {
+    if (err.response) {
+      console.error('Delete space error:', err.response || err);
+
+      if (err.response.status === 500) {
+        toast.error('An error occurred on the server. Please try again later.');
+      } else if (err.response.status === 401) {
+        toast.error('Unauthorised.');
+      } else {
+        toast.error('Failed to update space: ' + err.response.data.message);
+      }
+    }
+  }
+}

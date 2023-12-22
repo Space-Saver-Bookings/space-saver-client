@@ -16,13 +16,18 @@ import EditCapacityModalContent from '../features/space/EditCapcityModalContent.
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
 import AddNewRoomModalContent from '../components/modal/AddNewRoomModalContent.jsx';
 import ConfirmModal from '../components/modal/ConfirmModal.jsx';
-import {useParams} from 'react-router-dom';
-import {getSingleSpace, updateSpace} from '../services/apiSpaces.js';
+import {useNavigate, useParams} from 'react-router-dom';
+import {
+  deleteSpace,
+  getSingleSpace,
+  updateSpace,
+} from '../services/apiSpaces.js';
 import {useEffect, useState} from 'react';
 import useAuth from '../auth/useAuth.js';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 
 function Space() {
+  const navigate = useNavigate();
   const {user} = useAuth();
   const {spaceId} = useParams();
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
@@ -45,17 +50,13 @@ function Space() {
         setIsLoading(false);
 
         if (fetchedSpace) {
-          // Set the admin ID
           setSpaceAdmin(fetchedSpace.admin_id._id);
-          // Check if the current user is an admin
           setIsAdmin(user._id === fetchedSpace.admin_id._id);
-          // Set the access code, capacity, and description
           setUsers(fetchedSpace.user_ids);
           setAccessCode(fetchedSpace.invite_code);
           setPeopleCount(fetchedSpace.capacity);
           setDescription(fetchedSpace.description);
 
-          // When space data is fetched, create the users data for the table.
           if (fetchedSpace.user_ids) {
             const newUsersEditRows = fetchedSpace.user_ids.map((user) =>
               createUsersData(
@@ -79,27 +80,17 @@ function Space() {
   }, [spaceId, user._id]);
 
   const handleDeleteUser = async (userIdsToDelete) => {
-    // Filter out the users you want to remove
     const updatedUsers = usersEditRows.filter(
       (userFromRow) => !userIdsToDelete.includes(userFromRow.id)
     );
 
-    // Update the local state to reflect the user deletion
     setUsersEditRows(updatedUsers);
 
-    // Prepare the data to be sent to the backend
-    // Assuming the backend expects an array of user IDs to be removed
     const updateData = {
-      user_ids: updatedUsers, // Send the IDs to be deleted
-      // ...include any other data the backend requires...
+      user_ids: updatedUsers,
     };
 
-    // Call the API to update the space with the new users array
     await updateSpace(updateData, spaceId);
-
-    // Optionally, if you have additional state for the space, update it as needed
-    // This would depend on whether your space state should reflect this deletion
-    // setSpace({ ...space, user_ids: updatedUsers });
   };
 
   const roomsCount = 25;
@@ -107,6 +98,11 @@ function Space() {
   function handleRemoveSpace() {
     setModalName('Remove Space');
     handleOpen();
+  }
+
+  function handleConfirmRemoveSpace() {
+    deleteSpace(spaceId);
+    navigate('/spaces');
   }
 
   function handleNewRoom() {
@@ -152,11 +148,20 @@ function Space() {
         return <EditDescriptionModalContent heading="Edit Description" />;
       case 'Edit Users':
         return (
-          <EditUsersModalContent heading="Edit Users" rows={usersEditRows} handleDeleteUser={handleDeleteUser} />
+          <EditUsersModalContent
+            heading="Edit Users"
+            rows={usersEditRows}
+            handleDeleteUser={handleDeleteUser}
+          />
         );
       case 'Remove Space':
         // TODO: Figure out handling yes/no logic
-        return <ConfirmModal heading="Are you sure?" />;
+        return (
+          <ConfirmModal
+            heading="Are you sure?"
+            handleYes={handleConfirmRemoveSpace}
+          />
+        );
       case 'Add New Room':
         return <AddNewRoomModalContent heading="Add New Room" />;
       default:
