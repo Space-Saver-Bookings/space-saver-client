@@ -42,8 +42,8 @@ export async function getSingleSpace(spaceId) {
 export async function createSpace(data) {
   try {
     const {data: spaceData} = await api.post(`/spaces`, data);
-    console.log('New space: ', spaceData);
     toast.success('Space successfully created!');
+    return spaceData;
   } catch (err) {
     if (err.response) {
       console.error('Create space error:', err.response || err);
@@ -62,8 +62,9 @@ export async function createSpace(data) {
 export async function updateSpace(data, spaceId) {
   try {
     const {data: spaceData} = await api.put(`/spaces/${spaceId}`, data);
-    console.log('Updated space: ', spaceData);
+    // console.log('Updated space: ', spaceData);
     toast.success('Space successfully updated!');
+    return spaceData;
   } catch (err) {
     if (err.response) {
       console.error('Update space error:', err.response || err);

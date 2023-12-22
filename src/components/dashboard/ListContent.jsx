@@ -2,14 +2,16 @@ import PropTypes from 'prop-types';
 import DashTableList from '../../components/dashboard/DashTableList';
 import {createData} from '../../helpers/createData';
 
-function ListContent({toolTipTitle, contentType, spaceUsers, spaceAdmin}) {
+function ListContent({toolTipTitle, contentType, spaceUsers, spaceAdmin, rooms}) {
   let columns, rows;
 
   // TODO: add custom hook for fetched data with react query instead of hard coded
   switch (contentType) {
     case 'rooms':
       columns = ['Room', 'Next Available', 'Capacity'];
-      rows = Array.from(Array(15), () => createData(10310, '28/11/23', 4));
+      // rows = Array.from(Array(15), () => createData(10310, '28/11/23', 4));
+      // TODO: still need to fix hard coded next available
+      rows = Array.from(rooms, (room) => createData(room.name, '28/11/23', room.capacity));
       break;
     case 'roomAvailabilities':
       columns = ['Date', 'Time', 'Duration'];
@@ -68,7 +70,8 @@ ListContent.propTypes = {
   toolTipTitle: PropTypes.string,
   contentType: PropTypes.string,
   spaceUsers: PropTypes.array,
-  spaceAdmin: PropTypes.bool,
+  spaceAdmin: PropTypes.string,
+  rooms: PropTypes.array
 };
 
 export default ListContent;

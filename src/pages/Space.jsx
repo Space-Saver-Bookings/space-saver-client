@@ -25,6 +25,8 @@ import {
 import {useEffect, useState} from 'react';
 import useAuth from '../auth/useAuth.js';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
+import {getAllRooms} from '../services/apiRooms.js';
+import EmptyDashContent from '../components/dashboard/EmptyDashContent.jsx';
 
 function Space() {
   const navigate = useNavigate();
@@ -41,12 +43,25 @@ function Space() {
   const [accessCode, setAccessCode] = useState('');
   const [peopleCount, setPeopleCount] = useState(0);
   const [description, setDescription] = useState('');
+  const [rooms, setRooms] = useState([]);
+
+  const roomsUpdated = rooms.map((room) => {
+    return {
+      name: room.name,
+      nextAvailable: '28/11/23',
+      capacity: room.capacity,
+    };
+  });
+
+  const roomsCount = roomsUpdated.length;
 
   useEffect(() => {
     const getSpace = async (spaceId) => {
       try {
         const fetchedSpace = await getSingleSpace(spaceId);
         // setSpace(fetchedSpace);
+        const fetchedRooms = await getAllRooms();
+        const roomsInCurrentSpace = fetchedRooms.filter((room) => spaceId === room.space_id._id)
         setIsLoading(false);
 
         if (fetchedSpace) {
@@ -56,6 +71,7 @@ function Space() {
           setAccessCode(fetchedSpace.invite_code);
           setPeopleCount(fetchedSpace.capacity);
           setDescription(fetchedSpace.description);
+          setRooms(roomsInCurrentSpace);
 
           if (fetchedSpace.user_ids) {
             const newUsersEditRows = fetchedSpace.user_ids.map((user) =>
@@ -113,8 +129,6 @@ function Space() {
     navigate('/spaces');
   };
 
-  const roomsCount = 25;
-
   function handleRemoveSpace() {
     setModalName('Remove Space');
     handleOpen();
@@ -129,8 +143,6 @@ function Space() {
     setModalName('Add New Room');
     handleOpen();
   }
-
-  // TODO: Add handle yes/no here? after space is remove, users are returned to home?
 
   function createUsersData(
     id,
@@ -224,7 +236,15 @@ function Space() {
               isAdmin ? 'row-end-[17]' : 'row-span-full'
             } row-start-1 rounded-xl`}
             content={
-              <ListContent contentType="rooms" toolTipTitle="Go to Room" />
+              roomsCount < 1 ? (
+                <EmptyDashContent message="No rooms found in this space" />
+              ) : (
+                <ListContent
+                  contentType="rooms"
+                  toolTipTitle="Go to Room"
+                  rooms={roomsUpdated}
+                />
+              )
             }
           />
 
