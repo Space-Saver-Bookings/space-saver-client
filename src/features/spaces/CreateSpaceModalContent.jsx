@@ -25,6 +25,9 @@ function CreateSpaceModalContent({heading}) {
   const onSubmit = async (data) => {
     await createSpace(data);
     handleClose();
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   };
 
   return (

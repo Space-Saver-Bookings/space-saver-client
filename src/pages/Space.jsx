@@ -84,13 +84,22 @@ function Space() {
       (userFromRow) => !userIdsToDelete.includes(userFromRow.id)
     );
 
+    const updatedUserIds = users.filter(
+      (userAcc) => !userIdsToDelete.includes(userAcc._id)
+    );
+
     setUsersEditRows(updatedUsers);
 
     const updateData = {
-      user_ids: updatedUsers,
+      user_ids: updatedUserIds,
     };
 
     await updateSpace(updateData, spaceId);
+
+    // TODO: leave this?
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 800);
   };
 
   const roomsCount = 25;
