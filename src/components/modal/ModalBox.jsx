@@ -24,7 +24,7 @@ function ModalBox({content, width, height}) {
 }
 
 ModalBox.propTypes = {
-  content: PropTypes.element,
+  content: PropTypes.any,
   width: PropTypes.string,
   height: PropTypes.string,
 };

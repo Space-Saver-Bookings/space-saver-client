@@ -161,7 +161,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const {numSelected, onDeleteUser, selectedId, onMakeAdmin} = props;
+  const {numSelected} = props;
 
   return (
     <Toolbar
@@ -200,20 +200,12 @@ function EnhancedTableToolbar(props) {
       {numSelected > 0 ? (
         <>
           <Tooltip title="Delete">
-            <IconButton
-              onClick={() => {
-                onDeleteUser(selectedId);
-              }}
-            >
+            <IconButton>
               <DeleteIcon color="error" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Make Admin">
-            <IconButton
-              onClick={() => {
-                onMakeAdmin([selectedId]);
-              }}
-            >
+            <IconButton>
               <AdminPanelSettingsRoundedIcon color="primary" />
             </IconButton>
           </Tooltip>
@@ -231,12 +223,9 @@ function EnhancedTableToolbar(props) {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onDeleteUser: PropTypes.func,
-  onMakeAdmin: PropTypes.func,
-  selectedId: PropTypes.array,
 };
 
-export default function UsersTable({rows, onDeleteUser, onMakeAdmin}) {
+export default function UsersTable({rows}) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -276,8 +265,6 @@ export default function UsersTable({rows, onDeleteUser, onMakeAdmin}) {
       );
     }
     setSelected(newSelected);
-
-    return id;
   };
 
   const handleChangePage = (event, newPage) => {
@@ -310,12 +297,7 @@ export default function UsersTable({rows, onDeleteUser, onMakeAdmin}) {
 
   return (
     <Box sx={{width: '100%'}}>
-      <EnhancedTableToolbar
-        numSelected={selected.length}
-        onDeleteUser={onDeleteUser}
-        onMakeAdmin={onMakeAdmin}
-        selectedId={selected}
-      />
+      <EnhancedTableToolbar numSelected={selected.length} />
       <TableContainer>
         <Table
           sx={{minWidth: 750}}
@@ -404,5 +386,4 @@ export default function UsersTable({rows, onDeleteUser, onMakeAdmin}) {
 UsersTable.propTypes = {
   rows: PropTypes.array,
   onDeleteUser: PropTypes.func,
-  onMakeAdmin: PropTypes.func,
 };

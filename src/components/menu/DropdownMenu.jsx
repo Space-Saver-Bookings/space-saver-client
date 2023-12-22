@@ -65,4 +65,8 @@ DropdownMenu.propTypes = {
   options: PropTypes.array,
 };
 
+DropdownMenu.defaultProps = {
+  options: [],
+};
+
 export default DropdownMenu;

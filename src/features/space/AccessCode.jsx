@@ -11,7 +11,7 @@ function AccessCode({accessCode}) {
 }
 
 AccessCode.propTypes = {
-  accessCode: PropTypes.number,
+  accessCode: PropTypes.string,
 };
 
 export default AccessCode;

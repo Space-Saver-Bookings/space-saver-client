@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
 import {Controller, useForm} from 'react-hook-form';
 import useModal from '../../contexts/useModal';
+import {updateSpace} from '../../services/apiSpaces';
+import {useParams} from 'react-router-dom';
 
 function EditCapacityModalContent({heading}) {
   const {handleClose} = useModal();
-
+  const {spaceId} = useParams();
   const {
     control,
     handleSubmit,
@@ -19,29 +21,12 @@ function EditCapacityModalContent({heading}) {
     });
   };
 
-  const onSubmit = (data) => {
-    console.log('Submitted');
-    console.log(data);
-
-    // TODO: when jwt is sorted
-    // try {
-    //   const res = await api.post(`/spaces`, data);
-    //   console.log(res);
-    // } catch (err) {
-    //   if (err.response) {
-    //     console.error('Booking error:', err.response || err);
-
-    //     if (err.response.status === 500) {
-    //       toast.error(
-    //         'An error occurred on the server. Please try again later.'
-    //       );
-    //     } else if (err.response.status === 401) {
-    //       toast.error('Unauthorised.');
-    //     } else {
-    //       toast.error('Failed to create space: ' + err.response.data.message);
-    //     }
-    //   }
-    // }
+  const onSubmit = async (data) => {
+    await updateSpace(data, spaceId);
+    handleClose();
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   };
 
   return (
@@ -52,21 +37,6 @@ function EditCapacityModalContent({heading}) {
         onReset={handleReset}
         className="flex w-64 flex-col items-center justify-center gap-8"
       >
-        {/* <div className="flex flex-col gap-1">
-          <label className="text-lg" htmlFor="">
-            Rooms
-          </label>
-          <TextField
-            required
-            // defaultValue="Space Name"
-            id="outlined-basic"
-            label="amount"
-            variant="outlined"
-            fullWidth
-            // sx={{mb: '0.5rem'}}
-          />
-        </div> */}
-
         <Controller
           name="capacity"
           control={control}
