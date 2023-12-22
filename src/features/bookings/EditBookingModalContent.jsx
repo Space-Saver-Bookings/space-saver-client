@@ -23,12 +23,17 @@ function EditBookingModalContent({heading, handleClose, booking, ...props}) {
     setToggle((t) => !t);
   }
   // // TODO: figure out options and how to work with this data
-  const roomOptions = [
-    {identifier: 'Room 1', roomId: 1234},
-    {identifier: 'Room 2', roomId: 1234},
-    {identifier: 'Room 3', roomId: 1234},
-    {identifier: 'Room 4', roomId: 1234},
-  ];
+  // const roomOptions = [
+  //   {identifier: 'Room 1', roomId: 1234},
+  //   {identifier: 'Room 2', roomId: 1234},
+  //   {identifier: 'Room 3', roomId: 1234},
+  //   {identifier: 'Room 4', roomId: 1234},
+  // ];
+
+  const transformedRoomOptions = props.roomOptions.map((room) => ({
+    identifier: room.name,
+    roomId: room._id,
+  }));
 
   // const userOptions = [
   //   {identifier: 'User 1', userId: 1234},
@@ -105,7 +110,13 @@ function EditBookingModalContent({heading, handleClose, booking, ...props}) {
             <label className="self-start text-lg" htmlFor="">
               Room
             </label>
-            <Tag options={roomOptions} isDisabled={!toggle} />
+            <Tag
+              options={transformedRoomOptions}
+              isDisabled={!toggle}
+              // onChange={(selectedOption) =>
+              //   setFormData({...formData, room: selectedOption.identifier})
+              // }
+            />
           </div>
         </div>
 
@@ -211,6 +222,7 @@ EditBookingModalContent.propTypes = {
   heading: PropTypes.string,
   handleClose: PropTypes.func,
   booking: PropTypes.object,
+  roomOptions: PropTypes.array
 };
 
 export default EditBookingModalContent;

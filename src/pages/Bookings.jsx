@@ -9,7 +9,8 @@ import {useState, useEffect} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
 import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
 import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
-import {getBookings} from '../services/apiBookings.js';
+import { getBookings } from '../services/apiBookings.js';
+import { getAllRooms } from '../services/apiRooms.js';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
@@ -17,6 +18,7 @@ function Bookings() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [refresh, setRefresh] = useState(false)
+  const [rooms, setRooms] = useState([])
 
   function handleToggle() {
     // Toggling between "My Bookings" and "All Bookings",
@@ -51,6 +53,18 @@ function Bookings() {
     fetchBookings();
     setRefresh(false)
   }, [toggle, refresh]);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const fetchedRooms = await getAllRooms();
+        setRooms(fetchedRooms);
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+      }
+    };
+    fetchRooms();
+  }, []);
 
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
@@ -91,6 +105,7 @@ function Bookings() {
                   handleClose();
                 }}
                 handleRefreshBookings={handleRefreshBookings}
+                roomOptions={rooms}
               />
             }
             height="h-auto"
