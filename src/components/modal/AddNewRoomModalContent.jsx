@@ -35,6 +35,9 @@ function AddNewRoomModalContent({heading}) {
     await createRoom(updatedData);
 
     handleClose();
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   };
 
   return (
