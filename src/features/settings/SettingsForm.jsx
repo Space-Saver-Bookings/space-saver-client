@@ -13,6 +13,7 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
   const {
     control,
     handleSubmit,
+    reset,
     formState: {errors},
   } = useForm({
     defaultValues: {
@@ -30,13 +31,12 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
 
   // console.log(user);
 
-  // const handleReset = () => {
-  //   reset({
-  //     roomName: '',
-  //     capacity: '',
-  //     description: '',
-  //   });
-  // };
+  const handleReset = () => {
+    reset({
+      first_name: user.first_name,
+      password: '',
+    });
+  };
 
   // Watch all fields
   const values = useWatch({control});
@@ -59,7 +59,12 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
         logout();
         navigate('/login');
         toast.success('Please log in with your new credentials.');
+        
       } else {
+        onToggle();
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
         toast.success('User details updated.');
       }
     } catch (err) {
@@ -72,7 +77,7 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
       <h3 className="self-center font-coplette text-4xl">Account</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        // onReset={handleReset}
+        onReset={handleReset}
         className="flex flex-col gap-8"
       >
         <div className="flex justify-between">

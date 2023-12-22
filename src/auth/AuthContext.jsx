@@ -16,19 +16,27 @@ export function AuthProvider({children}) {
     user: null,
   });
 
+  const isTokenExpired = (token) => {
+    const now = Date.now() / 1000;
+    try {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.exp < now;
+    } catch (err) {
+      return false;
+    }
+  };
+
   useEffect(() => {
     const checkToken = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const storedToken = localStorage.getItem('token');
-      if (storedToken) {
+      if (storedToken && !isTokenExpired(storedToken)) {
         try {
-          // Decode the stored token to extract the user ID
           const decodedToken = jwtDecode(storedToken);
           if (decodedToken && decodedToken.userId) {
             const userId = decodedToken.userId;
             const userDetails = await getUser(userId);
 
-            // Set both the token and the user ID in the auth state
             setAuth({
               isAuthenticated: true,
               token: storedToken,
@@ -37,40 +45,45 @@ export function AuthProvider({children}) {
           }
         } catch (error) {
           console.error('Error decoding token:', error);
-          // Handle invalid token, e.g. by logging out the user
-          logout(); // This function should clear the auth state and localStorage
+          logout();
+        } finally {
+          setIsLoading(false);
         }
+      } else {
+        logout();
       }
-      setIsLoading(false);
     };
 
     checkToken();
   }, []);
-
-  // TODO: after user logs in, load page stops had to refresh
-  const login = async (token) => {
-    const decodedToken = jwtDecode(token);
-    try {
-      const userId = decodedToken.userId;
-      setAuthToken(token);
-      const userDetails = await getUser(userId);
-      console.log(userDetails);
-
-      localStorage.setItem('token', token);
-      setAuth({isAuthenticated: true, token, user: userDetails});
-    } catch (err) {
-      console.error('Error decoding token: ', err);
-      logout();
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const logout = () => {
     localStorage.removeItem('token');
     setAuthToken(null);
     setAuth({isAuthenticated: false, token: null, user: null});
     setIsLoading(false);
+  };
+
+  const login = async (token) => {
+    if (isTokenExpired(token)) {
+      logout();
+    } else {
+      const decodedToken = jwtDecode(token);
+      try {
+        const userId = decodedToken.userId;
+        setAuthToken(token);
+        const userDetails = await getUser(userId);
+        console.log(userDetails);
+
+        localStorage.setItem('token', token);
+        setAuth({isAuthenticated: true, token, user: userDetails});
+      } catch (err) {
+        console.error('Error decoding token: ', err);
+        logout();
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   return (

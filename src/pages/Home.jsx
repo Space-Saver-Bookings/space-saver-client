@@ -6,8 +6,32 @@ import DashItem from '../components/dashboard/DashItem';
 import Analytic from '../features/home/Analytic';
 import Book from '../features/home/Book';
 import ListContent from '../components/dashboard/ListContent';
+import {useEffect, useState} from 'react';
+import {getAllRooms} from '../services/apiRooms';
 
 function Home() {
+  const [rooms, setRooms] = useState([]);
+
+  const roomsUpdated = rooms.map((room) => {
+    return {
+      name: room.name,
+      nextAvailable: '28/11/23',
+      capacity: room.capacity,
+    };
+  });
+
+  useEffect(() => {
+    async function getRooms() {
+      const fetchedRooms = await getAllRooms();
+
+      if (fetchedRooms) {
+        setRooms(fetchedRooms);
+      }
+    }
+
+    getRooms();
+  }, []);
+
   return (
     // SECTION AS GRID CONTAINER
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
@@ -26,13 +50,19 @@ function Home() {
 
       <DashItem
         heading="Available Rooms"
-        content={<ListContent contentType="rooms" toolTipTitle="Go to room" />}
+        content={
+          <ListContent
+            contentType="rooms"
+            toolTipTitle="Go to room"
+            rooms={roomsUpdated}
+          />
+        }
         styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
       />
 
       <DashItem
         heading="Upcoming Bookings"
-        content={<ListContent contentType='upcomingBookings'/>}
+        content={<ListContent contentType="upcomingBookings" />}
         styling="col-start-1 col-end-[15] row-start-7 row-end-[14]"
       />
 
@@ -70,9 +100,7 @@ function Home() {
               }}
             />
           }
-          content={
-            <Analytic text="Most used room" size="text-6xl" />
-          }
+          content={<Analytic text="Most used room" size="text-6xl" />}
         />
       </section>
     </section>

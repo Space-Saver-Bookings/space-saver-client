@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
 import useModal from '../../contexts/useModal';
 import {Controller, useForm} from 'react-hook-form';
-import api from '../../services/api';
-import toast from 'react-hot-toast';
+import {useParams} from 'react-router-dom';
+import {createRoom} from '../../services/apiRooms';
 
 function AddNewRoomModalContent({heading}) {
   const {handleClose} = useModal();
+  const {spaceId} = useParams();
 
   const {
     control,
@@ -18,7 +19,7 @@ function AddNewRoomModalContent({heading}) {
 
   const handleReset = () => {
     reset({
-      roomName: '',
+      name: '',
       capacity: '',
       description: '',
     });
@@ -28,26 +29,15 @@ function AddNewRoomModalContent({heading}) {
     console.log('Submitted');
     console.log(data);
 
-    // TODO: when jwt is sorted
-    try {
-      // TODO: the space id is required in the request body
-      const res = await api.post(`/rooms`, data);
-      console.log(res);
-    } catch (err) {
-      if (err.response) {
-        console.error('Booking error:', err.response || err);
+    const updatedData = data;
+    updatedData['space_id'] = spaceId;
 
-        if (err.response.status === 500) {
-          toast.error(
-            'An error occurred on the server. Please try again later.'
-          );
-        } else if (err.response.status === 401) {
-          toast.error('Unauthorised.');
-        } else {
-          toast.error('Failed to create space: ' + err.response.data.message);
-        }
-      }
-    }
+    await createRoom(updatedData);
+
+    handleClose();
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   };
 
   return (
@@ -59,7 +49,7 @@ function AddNewRoomModalContent({heading}) {
         className="flex w-[23rem] flex-col items-center gap-1"
       >
         <Controller
-          name="roomName"
+          name="name"
           control={control}
           defaultValue=""
           rules={{required: 'Room name is required'}}
@@ -70,8 +60,8 @@ function AddNewRoomModalContent({heading}) {
               </label>
               <TextField
                 {...field}
-                error={!!errors.roomName}
-                helperText={errors.roomName?.message}
+                error={!!errors.name}
+                helperText={errors.name?.message}
                 id="room-name"
                 label="required"
                 variant="outlined"

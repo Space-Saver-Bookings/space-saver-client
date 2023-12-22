@@ -20,9 +20,11 @@ function Settings() {
 
   return (
     <section className="flex h-full flex-col items-center justify-center gap-8">
-      <SettingsForm isDisabled={!toggle} onToggle={handleToggle} isToggle={toggle} />
-
-      
+      <SettingsForm
+        isDisabled={!toggle}
+        onToggle={handleToggle}
+        isToggle={toggle}
+      />
 
       {open && (
         <Modal

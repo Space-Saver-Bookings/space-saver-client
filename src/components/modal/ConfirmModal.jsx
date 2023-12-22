@@ -13,7 +13,13 @@ function ConfirmModal({heading, handleYes}) {
         <Button variant="contained" color="error" onClick={handleClose}>
           No
         </Button>
-        <Button variant="contained" onClick={handleYes}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            handleClose();
+            handleYes();
+          }}
+        >
           Yes
         </Button>
       </div>
