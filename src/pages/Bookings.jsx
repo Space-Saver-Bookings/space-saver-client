@@ -5,15 +5,18 @@ import ListContent from '../components/dashboard/ListContent';
 import {AddRounded} from '@mui/icons-material';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
 import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
 import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
+import {getBookings} from '../services/apiBookings.js';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [bookings, setBookings] = useState([]);
+  const [refresh, setRefresh] = useState(false)
 
   function handleToggle() {
     // Toggling between "My Bookings" and "All Bookings",
@@ -25,13 +28,30 @@ function Bookings() {
     handleOpen();
   }
 
-
-  
   function handleEditBooking(booking) {
     // Open the modal for editing a booking
     setSelectedBooking(booking);
     handleOpen();
   }
+
+  function handleRefreshBookings() {
+    setRefresh(true);
+    handleOpen();
+  }
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const fetchedBookings = await getBookings(toggle);
+        setBookings(fetchedBookings);
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+      }
+    };
+    fetchBookings();
+    setRefresh(false)
+  }, [toggle, refresh]);
+
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
       <div className="col-start-1 col-end-[16] row-span-1 flex flex-col items-center justify-center">
@@ -41,7 +61,11 @@ function Bookings() {
       </div>
 
       <section className="col-start-1 col-end-[16] row-span-full row-start-2 rounded-xl border-2 bg-white shadow-xl">
-        <Calendar myBookingFilter={toggle} onEditBooking={handleEditBooking} />
+        <Calendar
+          myBookingFilter={toggle}
+          bookings={bookings}
+          onEditBooking={handleEditBooking}
+        />
       </section>
 
       <DashItem
@@ -53,10 +77,7 @@ function Bookings() {
       {open && selectedBooking && (
         <Modal
           open={open && selectedBooking !== null}
-          onClose={() => {
-            setSelectedBooking(null);
-            handleClose();
-          }}
+          onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -69,6 +90,7 @@ function Bookings() {
                   setSelectedBooking(null);
                   handleClose();
                 }}
+                handleRefreshBookings={handleRefreshBookings}
               />
             }
             height="h-auto"

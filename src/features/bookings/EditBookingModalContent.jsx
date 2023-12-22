@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {Button, TextField} from '@mui/material';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {TimePicker} from '@mui/x-date-pickers/TimePicker';
-// import Tag from '../../components/Tag';
+import Tag from '../../components/Tag';
 import {useState, useEffect} from 'react';
 import dayjs from 'dayjs';
 import {editBooking, deleteBooking} from '../../services/apiBookings';
 
-async function EditBookingModalContent({heading, handleClose, booking}) {
+function EditBookingModalContent({heading, handleClose, booking, ...props}) {
   const [toggle, setToggle] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -23,12 +23,12 @@ async function EditBookingModalContent({heading, handleClose, booking}) {
     setToggle((t) => !t);
   }
   // // TODO: figure out options and how to work with this data
-  // const roomOptions = [
-  //   {identifier: 'Room 1', roomId: 1234},
-  //   {identifier: 'Room 2', roomId: 1234},
-  //   {identifier: 'Room 3', roomId: 1234},
-  //   {identifier: 'Room 4', roomId: 1234},
-  // ];
+  const roomOptions = [
+    {identifier: 'Room 1', roomId: 1234},
+    {identifier: 'Room 2', roomId: 1234},
+    {identifier: 'Room 3', roomId: 1234},
+    {identifier: 'Room 4', roomId: 1234},
+  ];
 
   // const userOptions = [
   //   {identifier: 'User 1', userId: 1234},
@@ -49,20 +49,19 @@ async function EditBookingModalContent({heading, handleClose, booking}) {
         description: booking.description || '',
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking]);
-  console.log("{heading, handleClose, booking}");
-  console.log({heading, handleClose, booking});
 
   async function handleConfirmEdit() {
     try {
       const changes = {...formData};
+      console.log(changes);
 
       if (Object.keys(changes).length > 0) {
         await editBooking(booking?._id, changes);
         console.log('Confirmed Edit');
       }
-
+      // eslint-disable-next-line react/prop-types
+      props.handleRefreshBookings();
       handleClose();
     } catch (error) {
       console.error('Error confirming edit:', error);
@@ -102,12 +101,12 @@ async function EditBookingModalContent({heading, handleClose, booking}) {
             />
           </div>
 
-          {/* <div className="flex w-[15rem] flex-col">
+          <div className="flex w-[15rem] flex-col">
             <label className="self-start text-lg" htmlFor="">
               Room
             </label>
             <Tag options={roomOptions} isDisabled={!toggle} />
-          </div> */}
+          </div>
         </div>
 
         <div className="flex gap-3">
@@ -120,7 +119,7 @@ async function EditBookingModalContent({heading, handleClose, booking}) {
               value={dayjs(formData.date)}
               className="self-start"
               disabled={!toggle}
-              onAccept={(date) => {
+              onChange={(date) => {
                 setFormData({...formData, date: date.toDate()});
               }}
             />
@@ -135,7 +134,7 @@ async function EditBookingModalContent({heading, handleClose, booking}) {
               value={formData.startTime ? dayjs(formData.startTime) : null}
               className="w-[8.5rem] self-start"
               disabled={!toggle}
-              onAccept={(date) =>
+              onChange={(date) =>
                 setFormData({...formData, startTime: date.toDate()})
               }
             />
@@ -149,7 +148,7 @@ async function EditBookingModalContent({heading, handleClose, booking}) {
               value={formData.endTime ? dayjs(formData.endTime) : null}
               className="w-[8.5rem] self-start"
               disabled={!toggle}
-              onAccept={(date) =>
+              onChange={(date) =>
                 setFormData({...formData, endTime: date.toDate()})
               }
             />

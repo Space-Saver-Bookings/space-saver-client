@@ -1,44 +1,38 @@
+/* eslint-disable react/prop-types */
 import {useEffect, useState} from 'react';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {getBookings, getBookingById} from '../../services/apiBookings';
+import {getBookingById} from '../../services/apiBookings';
 
 const Calendar = (props) => {
   const [events, setEvents] = useState([]);
   const [currentView, setCurrentView] = useState('timeGridDay');
+  // eslint-disable-next-line no-unused-vars
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // eslint-disable-next-line react/prop-types
-        const bookings = await getBookings(props.myBookingFilter);
-        const formattedEvents = bookings.map((booking) => {
-          const firstName = booking.primary_user_id?.first_name || '';
-          const lastName = booking.primary_user_id?.last_name || '';
+    // eslint-disable-next-line react/prop-types
+    const formattedEvents = props.bookings.map((booking) => {
+      const firstName = booking.primary_user_id?.first_name || '';
+      const lastName = booking.primary_user_id?.last_name || '';
 
-          return {
-            id: booking._id,
-            title: booking.title,
-            description: booking.description,
-            primaryUser: firstName + ' ' + lastName[0],
-            room: booking.room_id.name,
-            start: booking.start_time,
-            end: booking.end_time,
-            roomId: booking.room_id._id,
-            eventBackgroundColor: getCorporateColour(booking.room_id._id),
-            textColour: getTextColour(getCorporateColour(booking.room_id._id)),
-          };
-        });
+      return {
+        id: booking._id,
+        title: booking.title,
+        description: booking.description,
+        primaryUser: firstName + ' ' + lastName[0],
+        room: booking.room_id.name,
+        start: booking.start_time,
+        end: booking.end_time,
+        roomId: booking.room_id._id,
+        eventBackgroundColor: getCorporateColour(booking.room_id._id),
+        textColour: getTextColour(getCorporateColour(booking.room_id._id)),
+      };
+    });
 
-        setEvents(formattedEvents);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-    // eslint-disable-next-line react/prop-types, react-hooks/exhaustive-deps
-  }, [props.myBookingFilter]);
+    setEvents(formattedEvents);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.bookings]);
 
   const predefinedColours = [
     '#5d1b1f8',
@@ -87,11 +81,9 @@ const Calendar = (props) => {
   };
 
   const handleEventClick = async (eventClickInfo) => {
-    const bookingId = eventClickInfo.event.id;
+    const bookingId = eventClickInfo.event._def.publicId;
     const booking = await getBookingById(bookingId);
-
-    // eslint-disable-next-line react/prop-types
-    props.onEditBooking(booking);
+    props.onEditBooking(await booking);
   };
 
   const renderEventContent = (eventInfo) => {
