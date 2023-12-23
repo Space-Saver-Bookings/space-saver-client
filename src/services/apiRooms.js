@@ -20,6 +20,25 @@ export async function getAllRooms() {
   }
 }
 
+export async function getSingleRoom(roomId) {
+  try {
+    const {
+      data,
+    } = await api.get(`/rooms/${roomId}`);
+    return data;
+  } catch (err) {
+    if (err.response) {
+      console.error('Get all rooms error:', err.response || err);
+    }
+
+    if (err.response.status === 500) {
+      toast.error('An error occurred on the server. Please try again later.');
+    } else {
+      toast.error('Failed to fetch rooms: ', +err.response.data.message);
+    }
+  }
+}
+
 export async function createRoom(data) {
   try {
     const {data: roomData} = await api.post(`/rooms`, data);
