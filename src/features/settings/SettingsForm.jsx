@@ -50,7 +50,7 @@ function SettingsForm({isDisabled, onToggle, isToggle}) {
       return acc;
     }, {});
 
-    console.log('Updated Fields:', updatedData);
+    // console.log('Updated Fields:', updatedData);
 
     try {
       await updateUser(user._id, updatedData);

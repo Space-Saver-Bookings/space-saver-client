@@ -4,167 +4,211 @@ import {Button, Modal, TextField} from '@mui/material';
 import useModal from '../../contexts/useModal';
 import ConfirmModal from '../../components/modal/ConfirmModal';
 import ModalBox from '../../components/modal/ModalBox';
-import {useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import {useEffect, useState} from 'react';
+import {Controller, useForm, useWatch} from 'react-hook-form';
+import {
+  deleteSingleRoom,
+  getSingleRoom,
+  updateRoom,
+} from '../../services/apiRooms';
+import {useNavigate, useParams} from 'react-router-dom';
+import MainSectionSpinner from '../../components/spinner/MainSectionSpinner';
 
 function EditRoomModalContent({heading}) {
   const {open, handleOpen, handleClose} = useModal();
+  const {roomId} = useParams();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteRoom, setDeleteRoom] = useState(false);
+  const [room, setRoom] = useState(null);
 
   const {
     control,
     handleSubmit,
-    // reset,
+    reset,
     formState: {errors},
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      name: room?.name,
+      capacity: room?.capacity,
+      description: room?.description,
+    },
+  });
 
-  // const handleReset = () => {
-  //   reset({
-  //     spaceName: '',
-  //     capacity: '',
-  //     description: '',
-  //   });
-  // };
+  useEffect(() => {
+    const getRoom = async () => {
+      const fetchedRoom = await getSingleRoom(roomId);
+
+      if (fetchedRoom) {
+        setRoom(fetchedRoom);
+        // reset function to update the form with the fetched values
+        reset({
+          name: fetchedRoom.name,
+          capacity: fetchedRoom.capacity,
+          description: fetchedRoom.description,
+        });
+        setIsLoading(false);
+      }
+    };
+
+    getRoom();
+  }, [roomId, reset]);
 
   function handleDeleteRoom() {
     setDeleteRoom(true);
     return handleOpen();
   }
 
-  const onSubmit = (data) => {
-    console.log('Submitted');
-    console.log(data);
+  const handleConfirmDeleteRoom = async () => {
+    await deleteSingleRoom(roomId);
+    setTimeout(() => {
+      navigate('/rooms');
+    }, 800);
+  };
 
-    // console.log('default headers:', api.defaults.headers);
+  // Watch all fields
+  const values = useWatch({control});
 
-    // TODO: when jwt is sorted
-    // try {
-    //   const res = await api.post(`/spaces`, data);
-    //   console.log(res);
-    // } catch (err) {
-    //   if (err.response) {
-    //     console.error('Booking error:', err.response || err);
+  const onSubmit = async () => {
+    const updatedData = Object.keys(values).reduce((acc, key) => {
+      // Include field in updatedData if it's different from the default value
+      if (values[key] !== control._defaultValues[key]) {
+        acc[key] = values[key];
+      }
+      return acc;
+    }, {});
 
-    //     if (err.response.status === 500) {
-    //       toast.error(
-    //         'An error occurred on the server. Please try again later.'
-    //       );
-    //     } else if (err.response.status === 401) {
-    //       toast.error('Unauthorised.');
-    //     } else {
-    //       toast.error('Failed to create space: ' + err.response.data.message);
-    //     }
-    //   }
-    // }
+    try {
+      await updateRoom(updatedData, roomId);
+      handleClose();
+      setTimeout(() => {
+        navigate('/rooms');
+      }, 800);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <>
       <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full flex-col items-center gap-1"
-      >
-        <Controller
-          name="name"
-          control={control}
-          defaultValue=""
-          rules={{required: 'Room name is required'}}
-          render={({field}) => (
-            <>
-              <label className="self-start text-lg" htmlFor="room-name">
-                Room Name
-              </label>
-              <TextField
-                {...field}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                id="room-name"
-                label="required"
-                variant="outlined"
-                fullWidth
-                sx={{mb: '0.5rem'}}
-              />
-            </>
-          )}
-        />
+      <section className="h-full w-full">
+        {isLoading ? (
+          <div className="p-[10rem]">
+            <MainSectionSpinner />
+          </div>
+        ) : (
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex w-full flex-col items-center gap-1"
+          >
+            <Controller
+              name="name"
+              control={control}
+              defaultValue={room?.name}
+              render={({field}) => (
+                <>
+                  <label className="self-start text-lg" htmlFor="room-name">
+                    Room Name
+                  </label>
+                  <TextField
+                    {...field}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                    id="room-name"
+                    variant="outlined"
+                    fullWidth
+                    sx={{mb: '0.5rem'}}
+                  />
+                </>
+              )}
+            />
 
-        <Controller
-          name="capacity"
-          control={control}
-          defaultValue=""
-          rules={{required: 'Capacity is required'}}
-          render={({field}) => (
-            <>
-              <label className="self-start text-lg" htmlFor="capacity">
-                Capacity
-              </label>
-              <TextField
-                {...field}
-                error={!!errors.capacity}
-                helperText={errors.capacity?.message}
-                id="capacity"
-                label="required"
-                variant="outlined"
-                fullWidth
-                sx={{mb: '0.5rem'}}
-              />
-            </>
-          )}
-        />
+            <Controller
+              name="capacity"
+              control={control}
+              defaultValue={room?.capacity}
+              render={({field}) => (
+                <>
+                  <label className="self-start text-lg" htmlFor="capacity">
+                    Capacity
+                  </label>
+                  <TextField
+                    {...field}
+                    error={!!errors.capacity}
+                    helperText={errors.capacity?.message}
+                    id="capacity"
+                    variant="outlined"
+                    fullWidth
+                    sx={{mb: '0.5rem'}}
+                  />
+                </>
+              )}
+            />
 
-        <Controller
-          name="description"
-          control={control}
-          defaultValue=""
-          rules={{required: 'description is required'}}
-          render={({field}) => (
-            <>
-              <label className="self-start text-lg" htmlFor="">
-                Description
-              </label>
-              <TextField
-                {...field}
-                error={!!errors.description}
-                helperText={errors.description?.message}
-                id="outlined-basic"
-                label="required"
-                variant="outlined"
-                fullWidth
-                sx={{mb: '0.5rem'}}
-                multiline
-                maxRows={8}
-              />
-            </>
-          )}
-        />
+            <Controller
+              name="description"
+              control={control}
+              defaultValue={room?.description}
+              render={({field}) => (
+                <>
+                  <label className="self-start text-lg" htmlFor="">
+                    Description
+                  </label>
+                  <TextField
+                    {...field}
+                    error={!!errors.description}
+                    helperText={errors.description?.message}
+                    id="outlined-basic"
+                    variant="outlined"
+                    fullWidth
+                    sx={{mb: '0.5rem'}}
+                    multiline
+                    maxRows={8}
+                  />
+                </>
+              )}
+            />
 
-        <div className="ml-auto mr-5 flex gap-4 mt-4">
-          <Button variant="contained" color="error" onClick={handleDeleteRoom}>
-            Delete Room
-          </Button>
-          <Button variant="outlined" color="error" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" type='submit'>Confirm</Button>
-        </div>
-      </form>
+            <div className="ml-auto mr-5 mt-4 flex gap-4">
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleDeleteRoom}
+              >
+                Delete Room
+              </Button>
+              <Button variant="outlined" color="error" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button variant="contained" type="submit">
+                Confirm
+              </Button>
+            </div>
+          </form>
+        )}
 
-      {deleteRoom && open && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox
-            // TODO: heading should be default and figure out handler yes/no logic to be contained within
-            content={<ConfirmModal heading="Are you sure?" />}
-            height="h-auto"
-            width="w-auto"
-          />
-        </Modal>
-      )}
+        {deleteRoom && open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <ModalBox
+              // TODO: heading should be default
+              content={
+                <ConfirmModal
+                  heading="Are you sure?"
+                  handleYes={handleConfirmDeleteRoom}
+                />
+              }
+              height="h-auto"
+              width="w-auto"
+            />
+          </Modal>
+        )}
+      </section>
     </>
   );
 }
