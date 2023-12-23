@@ -6,7 +6,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {useParams} from 'react-router-dom';
 import {createRoom} from '../../services/apiRooms';
 
-function AddNewRoomModalContent({heading}) {
+function AddNewRoomModalContent({heading, spaceIdFromRooms}) {
   const {handleClose} = useModal();
   const {spaceId} = useParams();
 
@@ -29,8 +29,8 @@ function AddNewRoomModalContent({heading}) {
     console.log('Submitted');
     console.log(data);
 
-    const updatedData = data;
-    updatedData['space_id'] = spaceId;
+    const updatedData = {...data, space_id: spaceId || spaceIdFromRooms};
+    console.log(updatedData)
 
     await createRoom(updatedData);
 
@@ -137,6 +137,7 @@ function AddNewRoomModalContent({heading}) {
 
 AddNewRoomModalContent.propTypes = {
   heading: PropTypes.string,
+  spaceIdFromRooms: PropTypes.string,
 };
 
 export default AddNewRoomModalContent;

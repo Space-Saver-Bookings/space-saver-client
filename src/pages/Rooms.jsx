@@ -47,8 +47,9 @@ function Rooms() {
   };
 
   const spaces = Array.from(spacess, (space) => ({
+    id: space._id,
     name: space.name,
-    admin: space.admin_id,
+    admin: space.admin_id._id,
     rooms: rooms.filter((room) => room.space_id._id === space._id),
   }));
 
@@ -59,7 +60,7 @@ function Rooms() {
   const currentOption = options.find((option) => option.name === menuOption);
   // console.log(currentOption);
 
-  const isAdmin = currentOption?.admin?._id === user._id;
+  const isAdmin = currentOption?.admin === user._id;
 
   return (
     <section className="flex h-full w-full flex-col gap-6">
@@ -87,7 +88,7 @@ function Rooms() {
                 </Link>
               ))
             ) : (
-              <div className="mx-auto self-center text-lg mt-[15rem]">
+              <div className="mx-auto mt-[15rem] self-center text-lg">
                 No rooms found in this space
               </div>
             )}
@@ -112,7 +113,12 @@ function Rooms() {
                 aria-describedby="modal-modal-description"
               >
                 <ModalBox
-                  content={<AddNewRoomModalContent heading="Add New Room" />}
+                  content={
+                    <AddNewRoomModalContent
+                      heading="Add New Room"
+                      spaceIdFromRooms={currentOption?.id}
+                    />
+                  }
                   height="h-auto"
                   width="w-auto"
                 />

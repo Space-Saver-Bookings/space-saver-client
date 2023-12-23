@@ -13,12 +13,13 @@ import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {getSingleRoom} from '../services/apiRooms.js';
 import useAuth from '../auth/useAuth.js';
+import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 
 function Room() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
   const {roomId} = useParams();
   const {user} = useAuth();
-
+  const [isLoading, setIsLoading] = useState(true);
   const [capacity, setCapacity] = useState(0);
   const [description, setDescription] = useState('');
   const [admin, setAdmin] = useState('');
@@ -29,6 +30,7 @@ function Room() {
     const getRoom = async () => {
       try {
         const fetchedRoom = await getSingleRoom(roomId);
+        setIsLoading(false);
 
         if (fetchedRoom) {
           console.log(fetchedRoom);
@@ -100,68 +102,85 @@ function Room() {
   };
 
   return (
-    <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
-      <DashItem
-        heading="Book Now"
-        styling="col-start-1 col-end-11 row-span-5"
-        content={<BookNow />}
-      />
+    <section
+      className={
+        isLoading
+          ? 'h-full w-full'
+          : `grid h-full gap-5 md:grid-cols-23 md:grid-rows-18`
+      }
+    >
+      {isLoading ? (
+        <MainSectionSpinner />
+      ) : (
+        <>
+          {/* TODO: still need to finish this after bookings is integrated */}
+          <DashItem
+            heading="Book Now"
+            styling="col-start-1 col-end-11 row-span-5"
+            content={<BookNow />}
+          />
 
-      {/* <DashItem
+          {/* <DashItem
         heading="Room"
         styling="col-span-5 row-span-5"
         content={<RoomName roomName={roomName} />}
       /> */}
 
-      <DashItem
-        heading="Availabilities"
-        styling={`col-span-full col-start-[16] ${
-          isAdmin ? 'row-end-[19]' : 'row-span-full'
-        } row-start-1 rounded-xl`}
-        content={
-          <ListContent
-            contentType="roomAvailabilities"
-            toolTipTitle="Go to bookings"
+          {/* TODO: still need to finish this after bookings is integrated */}
+          <DashItem
+            heading="Availabilities"
+            styling={`col-span-full col-start-[16] ${
+              isAdmin ? 'row-end-[19]' : 'row-span-full'
+            } row-start-1 rounded-xl`}
+            content={
+              <ListContent
+                contentType="roomAvailabilities"
+                toolTipTitle="Go to bookings"
+              />
+            }
           />
-        }
-      />
 
-      {isAdmin && (
-        <>
-          <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
-            <Button variant="contained" onClick={handleEditRoom}>
-              Edit Room
-            </Button>
-          </section>
+          {isAdmin && (
+            <>
+              <section className="col-start-1 col-end-[15] row-span-full row-start-[17] flex flex-col items-center justify-center">
+                <Button variant="contained" onClick={handleEditRoom}>
+                  Edit Room
+                </Button>
+              </section>
+            </>
+          )}
+
+          <DashItem
+            heading="Description"
+            styling={`col-start-1 col-end-[16] ${
+              isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
+            }`}
+            isScroll
+            content={<Description descriptionText={description} />}
+          />
+
+          <DashItem
+            heading="Capacity"
+            styling={'col-span-5 row-span-5'}
+            content={<CapacityRoom capacityAmount={capacity} />}
+          />
+
+          {/* TODO: still need to finish this after bookings is integrated */}
+          <DashItem
+            heading="Current Users"
+            styling={`col-start-1 col-end-[16] ${
+              isAdmin
+                ? 'row-start-[10] row-end-[17]'
+                : 'row-start-[11] row-span-full'
+            }`}
+            content={<ListContent contentType="roomUsers" />}
+            isDropdown={isAdmin}
+            dropdownOptions={[
+              {name: 'Edit Users', handleOpen: handleEditUsers},
+            ]}
+          />
         </>
       )}
-
-      <DashItem
-        heading="Description"
-        styling={`col-start-1 col-end-[16] ${
-          isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
-        }`}
-        isScroll
-        content={<Description descriptionText={description} />}
-      />
-
-      <DashItem
-        heading="Capacity"
-        styling={'col-span-5 row-span-5'}
-        content={<CapacityRoom capacityAmount={capacity} />}
-      />
-
-      <DashItem
-        heading="Current Users"
-        styling={`col-start-1 col-end-[16] ${
-          isAdmin
-            ? 'row-start-[10] row-end-[17]'
-            : 'row-start-[11] row-span-full'
-        }`}
-        content={<ListContent contentType="roomUsers" />}
-        isDropdown={isAdmin}
-        dropdownOptions={[{name: 'Edit Users', handleOpen: handleEditUsers}]}
-      />
 
       {modalName !== 'Edit Users' && open ? (
         <Modal
