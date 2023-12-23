@@ -57,9 +57,9 @@ function Rooms() {
 
   const {menuOption} = useMenuOptionStore();
   const currentOption = options.find((option) => option.name === menuOption);
-  console.log(currentOption);
+  // console.log(currentOption);
 
-  const isAdmin = currentOption.admin._id === user._id;
+  const isAdmin = currentOption?.admin?._id === user._id;
 
   return (
     <section className="flex h-full w-full flex-col gap-6">

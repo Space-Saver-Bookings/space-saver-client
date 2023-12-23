@@ -105,8 +105,8 @@ export async function joinSpace(inviteCode) {
 
 export async function deleteSpace(spaceId) {
   try {
-    const {data} = await api.delete(`/spaces/${spaceId}`);
-    console.log(data);
+    await api.delete(`/spaces/${spaceId}`);
+    // console.log(data);
     toast.success('Space successfully removed!');
   } catch (err) {
     if (err.response) {

@@ -6,7 +6,6 @@ export async function getAllRooms() {
     const {
       data: {rooms},
     } = await api.get(`/rooms`);
-    console.log(rooms);
     return rooms;
   } catch (err) {
     if (err.response) {

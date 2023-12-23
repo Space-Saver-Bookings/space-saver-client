@@ -5,7 +5,7 @@ import Description from '../features/space/Description';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import BookNow from '../features/room/BookNow.jsx';
-import RoomName from '../features/room/RoomName.jsx';
+// import RoomName from '../features/room/RoomName.jsx';
 import CapacityRoom from '../features/room/CapacityRoom.jsx';
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
 import EditRoomModalContent from '../features/room/EditRoomModalContent.jsx';
@@ -23,7 +23,7 @@ function Room() {
     return handleOpen();
   }
 
-  const roomName = '1569A';
+  // const roomName = '1569A';
   const capacityAmount = 10;
 
   const descriptionText =
@@ -82,11 +82,11 @@ function Room() {
         content={<BookNow />}
       />
 
-      <DashItem
+      {/* <DashItem
         heading="Room"
         styling="col-span-5 row-span-5"
         content={<RoomName roomName={roomName} />}
-      />
+      /> */}
 
       <DashItem
         heading="Availabilities"
@@ -116,7 +116,7 @@ function Room() {
 
       <DashItem
         heading="Description"
-        styling={`col-start-1 col-end-[11] ${
+        styling={`col-start-1 col-end-[16] ${
           isAdmin ? 'row-start-6 row-span-4' : 'row-start-6 row-span-5'
         }`}
         isScroll
@@ -125,7 +125,7 @@ function Room() {
 
       <DashItem
         heading="Capacity"
-        styling={`col-span-5 ${isAdmin ? 'row-span-4' : 'row-span-5'}`}
+        styling={'col-span-5 row-span-5'}
         content={<CapacityRoom capacityAmount={capacityAmount} />}
       />
 
