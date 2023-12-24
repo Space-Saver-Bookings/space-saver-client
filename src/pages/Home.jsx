@@ -8,8 +8,10 @@ import Book from '../features/home/Book';
 import ListContent from '../components/dashboard/ListContent';
 import {useEffect, useState} from 'react';
 import {getAllRooms} from '../services/apiRooms';
+import MainSectionSpinner from '../components/spinner/MainSectionSpinner';
 
 function Home() {
+  const [isLoading, setIsLoading] = useState(true);
   const [rooms, setRooms] = useState([]);
 
   const roomsUpdated = rooms.map((room) => {
@@ -23,6 +25,7 @@ function Home() {
   useEffect(() => {
     async function getRooms() {
       const fetchedRooms = await getAllRooms();
+      setIsLoading(false);
 
       if (fetchedRooms) {
         setRooms(fetchedRooms);
@@ -34,75 +37,87 @@ function Home() {
 
   return (
     // SECTION AS GRID CONTAINER
-    <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
+    <section
+      className={
+        isLoading
+          ? 'h-full w-full'
+          : `grid h-full gap-5 md:grid-cols-23 md:grid-rows-18`
+      }
+    >
       {/* DASH ITEMS AS GRID ITEMS */}
-      <DashItem
-        heading="Book Again"
-        styling="col-start-1 col-end-8 row-span-6"
-        content={<Book />}
-      />
-
-      <DashItem
-        heading="Quick Booking"
-        styling="col-span-7 row-span-6"
-        content={<Book isQuickBooking />}
-      />
-
-      <DashItem
-        heading="Available Rooms"
-        content={
-          <ListContent
-            contentType="rooms"
-            toolTipTitle="Go to room"
-            rooms={roomsUpdated}
+      {isLoading ? (
+        <MainSectionSpinner />
+      ) : (
+        <>
+          <DashItem
+            heading="Book Again"
+            styling="col-start-1 col-end-8 row-span-6"
+            content={<Book />}
           />
-        }
-        styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
-      />
 
-      <DashItem
-        heading="Upcoming Bookings"
-        content={<ListContent contentType="upcomingBookings" />}
-        styling="col-start-1 col-end-[15] row-start-7 row-end-[14]"
-      />
+          <DashItem
+            heading="Quick Booking"
+            styling="col-span-7 row-span-6"
+            content={<Book isQuickBooking />}
+          />
 
-      <section className="col-start-1 col-end-[15] row-span-5 grid grid-cols-3 gap-5">
-        <DashItem
-          heading={
-            <NoMeetingRoomRoundedIcon
-              sx={{
-                fontSize: '2.4rem',
-                color: 'rgb(30 64 175)',
-              }}
+          <DashItem
+            heading="Available Rooms"
+            content={
+              <ListContent
+                contentType="rooms"
+                toolTipTitle="Go to room"
+                rooms={roomsUpdated}
+              />
+            }
+            styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
+          />
+
+          <DashItem
+            heading="Upcoming Bookings"
+            content={<ListContent contentType="upcomingBookings" />}
+            styling="col-start-1 col-end-[15] row-start-7 row-end-[14]"
+          />
+
+          <section className="col-start-1 col-end-[15] row-span-5 grid grid-cols-3 gap-5">
+            <DashItem
+              heading={
+                <NoMeetingRoomRoundedIcon
+                  sx={{
+                    fontSize: '2.4rem',
+                    color: 'rgb(30 64 175)',
+                  }}
+                />
+              }
+              content={<Analytic text="Rooms in use" />}
             />
-          }
-          content={<Analytic text="Rooms in use" />}
-        />
 
-        <DashItem
-          heading={
-            <PeopleRoundedIcon
-              sx={{
-                fontSize: '2.4rem',
-                color: 'rgb(30 64 175)',
-              }}
+            <DashItem
+              heading={
+                <PeopleRoundedIcon
+                  sx={{
+                    fontSize: '2.4rem',
+                    color: 'rgb(30 64 175)',
+                  }}
+                />
+              }
+              content={<Analytic text="Users in rooms" />}
             />
-          }
-          content={<Analytic text="Users in rooms" />}
-        />
 
-        <DashItem
-          heading={
-            <EqualizerRoundedIcon
-              sx={{
-                fontSize: '2.4rem',
-                color: 'rgb(30 64 175)',
-              }}
+            <DashItem
+              heading={
+                <EqualizerRoundedIcon
+                  sx={{
+                    fontSize: '2.4rem',
+                    color: 'rgb(30 64 175)',
+                  }}
+                />
+              }
+              content={<Analytic text="Most used room" size="text-6xl" />}
             />
-          }
-          content={<Analytic text="Most used room" size="text-6xl" />}
-        />
-      </section>
+          </section>
+        </>
+      )}
     </section>
   );
 }

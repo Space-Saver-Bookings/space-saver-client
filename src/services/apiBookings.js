@@ -1,7 +1,6 @@
 import toast from 'react-hot-toast';
 import api from './api';
 
-
 /**
  * Fetches bookings from the server.
  * @param {boolean} myBookingFilter - Filter bookings based on the current user's primary or invited status.
@@ -48,7 +47,6 @@ export async function getBookingsParticipant() {
     handleApiError(error, 'Error fetching bookings');
   }
 }
-
 
 /**
  * Fetches a booking by its ID.
@@ -113,9 +111,9 @@ export async function createBooking(bookingData) {
  */
 export async function editBooking(bookingId, bookingData) {
   // Destructure bookingData object
-  const { roomId, title, description, startTime, endTime } = bookingData;
-  console.log(bookingData)
-  
+  const {roomId, title, description, startTime, endTime} = bookingData;
+  console.log(bookingData);
+
   // Convert times to UTC time
   const startUtcTime = new Date(startTime).toISOString();
   const endUtcTime = new Date(endTime).toISOString();
@@ -151,6 +149,38 @@ export async function deleteBooking(bookingId) {
     return response;
   } catch (error) {
     handleApiError(error, 'Error deleting booking');
+  }
+}
+
+export async function getAvailableTimeSlots() {
+  try {
+    const currentDate = new Date();
+    const startTime = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate(),
+      7,
+      0,
+      0
+    );
+    const endTime = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate(),
+      17,
+      0,
+      0
+    );
+
+    const formattedStartTime = startTime.toISOString();
+    const formattedEndTime = endTime.toISOString();
+
+    const {data} = await api.get(
+      `/bookings/available-time-slots?start_time=${formattedStartTime}&end_time=${formattedEndTime}&interval=60`
+    );
+    console.log(data);
+  } catch (err) {
+    console.error(err);
   }
 }
 

@@ -5,7 +5,6 @@ import Description from '../features/space/Description';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
 import BookNow from '../features/room/BookNow.jsx';
-// import RoomName from '../features/room/RoomName.jsx';
 import CapacityRoom from '../features/room/CapacityRoom.jsx';
 import EditUsersModalContent from '../features/space/EditUsersModalContent.jsx';
 import EditRoomModalContent from '../features/room/EditRoomModalContent.jsx';
@@ -14,6 +13,7 @@ import {useEffect, useState} from 'react';
 import {getSingleRoom} from '../services/apiRooms.js';
 import useAuth from '../auth/useAuth.js';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
+import {getAvailableTimeSlots} from '../services/apiBookings.js';
 
 function Room() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
@@ -30,13 +30,18 @@ function Room() {
     const getRoom = async () => {
       try {
         const fetchedRoom = await getSingleRoom(roomId);
+        const fetchedAvailabilities = await getAvailableTimeSlots();
         setIsLoading(false);
 
         if (fetchedRoom) {
-          console.log(fetchedRoom);
+          // console.log(fetchedRoom);
           setCapacity(fetchedRoom.capacity);
           setDescription(fetchedRoom.description);
           setAdmin(fetchedRoom.space_id.admin_id._id);
+        }
+
+        if (fetchedAvailabilities) {
+          console.log(fetchedAvailabilities);
         }
       } catch (err) {
         console.error(err);
@@ -116,7 +121,7 @@ function Room() {
           {/* TODO: still need to finish this after bookings is integrated */}
           <DashItem
             heading="Book Now"
-            styling="col-start-1 col-end-11 row-span-5"
+            styling="col-start-1 col-end-12 row-span-5"
             content={<BookNow />}
           />
 
@@ -161,7 +166,7 @@ function Room() {
 
           <DashItem
             heading="Capacity"
-            styling={'col-span-5 row-span-5'}
+            styling={'col-span-4 row-span-5'}
             content={<CapacityRoom capacityAmount={capacity} />}
           />
 
