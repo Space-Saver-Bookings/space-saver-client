@@ -100,13 +100,13 @@ function Bookings() {
 
   return (
     <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
-      <div className="col-start-1 col-end-[16] row-span-1 flex flex-col items-center justify-center">
+      <div className="col-start-1 col-span-full row-span-1 flex flex-col items-center justify-center">
         <Button variant="contained" onClick={handleToggle}>
           {toggle ? 'My Bookings' : 'All Bookings'}
         </Button>
       </div>
 
-      <section className="col-start-1 col-end-[16] row-span-full row-start-2 rounded-xl border-2 bg-white shadow-xl">
+      <section className="col-start-1 col-span-full row-end-[17] row-start-2 rounded-xl border-2 bg-white shadow-xl">
         <Calendar
           myBookingFilter={toggle}
           bookings={bookings}
@@ -114,11 +114,11 @@ function Bookings() {
         />
       </section>
 
-      <DashItem
+      {/* <DashItem
         heading="Upcoming Bookings"
         content={<ListContent contentType="upcomingBookingsShort" />}
         styling="col-span-full col-start-[16] row-end-[17] row-start-1 rounded-xl"
-      />
+      /> */}
 
       {open && selectedBooking && (
         <Modal
@@ -171,7 +171,7 @@ function Bookings() {
         </Modal>
       )}
 
-      <div className="col-span-full col-start-[16] row-span-2 row-start-[17] flex flex-col items-center justify-center">
+      <div className="col-span-full col-start-1 row-span-2 row-start-[17] flex flex-col items-center justify-center">
         <Button
           variant="contained"
           startIcon={<AddRounded />}
