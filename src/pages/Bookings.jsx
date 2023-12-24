@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {Button, Modal} from '@mui/material';
 import DashItem from '../components/dashboard/DashItem';
 import ListContent from '../components/dashboard/ListContent';

@@ -7,8 +7,6 @@ import {getBookingById} from '../../services/apiBookings';
 const Calendar = (props) => {
   const [events, setEvents] = useState([]);
   const [currentView, setCurrentView] = useState('timeGridDay');
-  // eslint-disable-next-line no-unused-vars
-  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     // eslint-disable-next-line react/prop-types
@@ -129,7 +127,10 @@ const Calendar = (props) => {
   };
 
   return (
-    <section className="flex h-full flex-col items-center justify-center">
+    <section
+      data-testid="calendar"
+      className="flex h-full flex-col items-center justify-center"
+    >
       <div style={{flex: 1, width: '100%', height: '100%', padding: '5%'}}>
         <FullCalendar
           plugins={[timeGridPlugin]}

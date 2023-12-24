@@ -33,7 +33,11 @@ function AddNewBookingModalContent({
 
   return (
     <>
-      <h4 className="mb-2 mt-[-.6rem] font-coplette text-3xl">{heading}</h4>
+      <h4
+        className="mb-2 mt-[-.6rem] font-coplette text-3xl"
+      >
+        {heading}
+      </h4>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
