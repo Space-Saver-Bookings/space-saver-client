@@ -1,14 +1,11 @@
-/* eslint-disable no-unused-vars */
-import {describe, it, expect, vi} from 'vitest';
+import {describe, it, expect} from 'vitest';
 
 import {render, screen} from '@testing-library/react';
 import LogoDesktop from '../../components/LogoDesktop';
 
 describe('LogoDesktop component', () => {
   it('renders HTML correctly', () => {
-    render(
-        <LogoDesktop />
-    );
+    render(<LogoDesktop />);
 
     const component = screen.getByAltText('SpaceSaver desktop logo');
 

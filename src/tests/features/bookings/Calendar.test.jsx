@@ -1,10 +1,7 @@
-/* eslint-disable no-unused-vars */
 import {describe, it, expect, vi} from 'vitest';
 
 import {render, screen} from '@testing-library/react';
 import Calendar from '../../../../src/features/bookings/Calendar';
-import ModalProvider from '../../../contexts/ModalContext';
-import ModalBox from '../../../components/modal/ModalBox.jsx';
 
 describe('Calendar component', () => {
   it('renders HTML correctly', () => {
