@@ -1,6 +1,6 @@
 import {Button, Modal} from '@mui/material';
-import DashItem from '../components/dashboard/DashItem';
-import ListContent from '../components/dashboard/ListContent';
+// import DashItem from '../components/dashboard/DashItem';
+// import ListContent from '../components/dashboard/ListContent';
 import {AddRounded} from '@mui/icons-material';
 import useModal from '../contexts/useModal.js';
 import ModalBox from '../components/modal/ModalBox.jsx';
