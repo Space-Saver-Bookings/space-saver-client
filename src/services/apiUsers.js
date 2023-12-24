@@ -1,6 +1,14 @@
 import toast from 'react-hot-toast';
 import api from './api';
 
+/**
+ * Attempts to log in a user using the provided credentials.
+ * It makes an API POST request to the login endpoint and, on success, returns the JWT token.
+ * 
+ * @param {Object} data - The login credentials, typically including email and password.
+ * @returns {Promise<string>} - A promise that resolves to the JWT token when login is successful.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function loginUser(data) {
   try {
     const {
@@ -24,6 +32,13 @@ export async function loginUser(data) {
   }
 }
 
+/**
+ * Fetches all user data from the server.
+ * It makes an API GET request to retrieve all users and returns them.
+ * 
+ * @returns {Promise<Array>} - A promise that resolves to an array of user objects when the request is successful.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function getUsers() {
   try {
     const {data: {users}} = await api.get(`/users`);
@@ -41,6 +56,14 @@ export async function getUsers() {
   }
 }
 
+/**
+ * Fetches data of a single user from the server by user ID.
+ * If the request is successful, it returns the user object.
+ * 
+ * @param {string} userId - The ID of the user to fetch.
+ * @returns {Promise<Object>} - A promise that resolves to a user object when the request is successful.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function getUser(userId) {
   try {
     const {data} = await api.get(`/users/${userId}`);
@@ -58,6 +81,15 @@ export async function getUser(userId) {
   }
 }
 
+/**
+ * Updates an existing user's data on the server by user ID.
+ * It makes an API PUT request to update the user and returns the updated user data.
+ * 
+ * @param {string} userId - The ID of the user to update.
+ * @param {Object} data - The updated data for the user.
+ * @returns {Promise<Object>} - A promise that resolves to the updated user object.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function updateUser(userId, data) {
   try {
     const {data: userData} = await api.put(`/users/${userId}`, data);

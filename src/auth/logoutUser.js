@@ -1,5 +1,12 @@
 import toast from "react-hot-toast";
 
+/**
+ * Logs out the current user and navigates to the login page.
+ * This function calls the passed logout function to clear user session and then navigates to the login page.
+ * 
+ * @param {Function} logout - The function to clear user session and state.
+ * @param {Function} navigate - The navigation function from React Router to redirect the user to a specified route.
+ */
 export function logoutUser(logout, navigate) {
   try {
     logout();
