@@ -1,5 +1,9 @@
 import {useMoveBack} from '../hooks/useMoveBack';
 
+/**
+ * PageNotFound is a simple component displayed when a user navigates to an undefined route.
+ * It provides a message indicating the page is not found and an option to navigate back.
+ */
 function PageNotFound() {
   const moveBack = useMoveBack();
   return (

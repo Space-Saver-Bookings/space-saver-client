@@ -1,6 +1,14 @@
 import toast from 'react-hot-toast';
 import api from './api';
 
+/**
+ * Fetches all room data from the server asynchronously.
+ * It makes an API call to retrieve all rooms and returns them.
+ * If the request is successful, it returns an array of rooms. 
+ * 
+ * @returns {Promise<Array>} - A promise that resolves to an array of room objects when the request is successful.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function getAllRooms() {
   try {
     const {
@@ -20,6 +28,14 @@ export async function getAllRooms() {
   }
 }
 
+/**
+ * Fetches data of a single room from the server by room ID.
+ * If the request is successful, it returns the room object.
+ * 
+ * @param {string} roomId - The ID of the room to fetch.
+ * @returns {Promise<Object>} - A promise that resolves to a room object when the request is successful.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function getSingleRoom(roomId) {
   try {
     const {data} = await api.get(`/rooms/${roomId}`);
@@ -37,6 +53,14 @@ export async function getSingleRoom(roomId) {
   }
 }
 
+/**
+ * Creates a new room on the server with the provided room data.
+ * It makes an API POST request to create a room and returns the newly created room data.
+ * 
+ * @param {Object} data - The data for the new room to be created.
+ * @returns {Promise<Object>} - A promise that resolves to the newly created room object.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function createRoom(data) {
   try {
     const {data: roomData} = await api.post(`/rooms`, data);
@@ -57,6 +81,15 @@ export async function createRoom(data) {
   }
 }
 
+/**
+ * Updates an existing room's data on the server by room ID.
+ * It makes an API PUT request to update the room and returns the updated room data.
+ * 
+ * @param {Object} data - The updated data for the room.
+ * @param {string} roomId - The ID of the room to update.
+ * @returns {Promise<Object>} - A promise that resolves to the updated room object.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function updateRoom(data, roomId) {
   try {
     const {data: roomData} = await api.put(`/rooms/${roomId}`, data);
@@ -77,6 +110,14 @@ export async function updateRoom(data, roomId) {
   }
 }
 
+/**
+ * Deletes a single room from the server by room ID.
+ * It makes an API DELETE request to remove the room.
+ * 
+ * @param {string} roomId - The ID of the room to delete.
+ * @returns {Promise<Object>} - A promise that resolves when the delete operation is successful.
+ * @throws Will log the error and display a toast message if the API call fails.
+ */
 export async function deleteSingleRoom(roomId) {
   try {
     const {data: roomData} = await api.delete(`/rooms/${roomId}`);

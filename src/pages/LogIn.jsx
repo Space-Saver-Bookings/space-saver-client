@@ -6,6 +6,11 @@ import useAuth from '../auth/useAuth';
 import {loginUser} from '../services/apiUsers';
 import toast from 'react-hot-toast';
 
+/**
+ * LogIn is a component for user authentication.
+ * It uses the useAuth hook to access the login functionality and useForm for form handling.
+ * Upon submitting valid credentials, it logs the user in and navigates to the home page.
+ */
 function LogIn() {
   const {login} = useAuth();
   const navigate = useNavigate();

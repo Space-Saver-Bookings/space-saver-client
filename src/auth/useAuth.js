@@ -1,6 +1,12 @@
 import {useContext} from 'react';
 import {AuthContext} from './AuthContext';
 
+/**
+ * Custom React hook that ensures components have access to the AuthContext.
+ * 
+ * @returns {Object} - The authentication context with user data and auth state.
+ * @throws {Error} - Throws an error if the hook is used outside of an AuthProvider.
+ */
 const useAuth = () => {
   const context = useContext(AuthContext);
 

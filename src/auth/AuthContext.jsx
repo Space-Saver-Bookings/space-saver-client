@@ -16,6 +16,15 @@ export function AuthProvider({children}) {
     user: null,
   });
 
+  /**
+   * Checks if a JWT token is expired.
+   * It decodes the token using jwtDecode to access its expiration time and compares it with the current time.
+   * If the token is expired or an error occurs in decoding, it returns true indicating the token is invalid.
+   * Otherwise, it returns false, indicating the token is still valid.
+   *
+   * @param {string} token - The JWT token to be checked.
+   * @returns {boolean} - Returns true if the token is expired, false otherwise.
+   */
   const isTokenExpired = (token) => {
     const now = Date.now() / 1000;
     try {
@@ -26,6 +35,11 @@ export function AuthProvider({children}) {
     }
   };
 
+  /**
+   * UseEffect is used so that it checks for a stored authentication token in localStorage on component mount.
+   * If a valid token exists, it fetches the user's details and sets authentication state accordingly.
+   * If the token is invalid or expired, it performs a logout to clear any stored credentials and reset state.
+   */
   useEffect(() => {
     const checkToken = async () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -57,6 +71,11 @@ export function AuthProvider({children}) {
     checkToken();
   }, []);
 
+  /**
+   * Logs out the user.
+   * This function clears the stored authentication token from localStorage, resets the authToken for API calls,
+   * and updates the authentication state to reflect that the user is no longer authenticated.
+   */
   const logout = () => {
     localStorage.removeItem('token');
     setAuthToken(null);
@@ -64,6 +83,15 @@ export function AuthProvider({children}) {
     setIsLoading(false);
   };
 
+  /**
+   * Logs in the user with a given JWT token.
+   * This function checks if the provided token is expired using isTokenExpired.
+   * If valid, it decodes the token to fetch the user's ID, retrieves user details, and updates the authentication state.
+   * It also sets the token for future API calls and stores it in localStorage.
+   * If the token is invalid or expired, it invokes logout to reset the user's state.
+   *
+   * @param {string} token - The JWT token for user authentication.
+   */
   const login = async (token) => {
     if (isTokenExpired(token)) {
       logout();

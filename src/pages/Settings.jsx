@@ -5,6 +5,10 @@ import ConfirmModal from '../components/modal/ConfirmModal';
 import ModalBox from '../components/modal/ModalBox';
 import useModal from '../contexts/useModal';
 
+/**
+ * Settings is a component that provides user-specific or app-wide settings.
+ * It might include toggles for themes, account management options, or other configurations.
+ */
 function Settings() {
   const {open, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);

@@ -16,6 +16,11 @@ import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 import {getAvailableTimeSlots} from '../services/apiBookings.js';
 import EmptyDashContent from '../components/dashboard/EmptyDashContent.jsx';
 
+/**
+ * Room is a component that displays details about a specific room.
+ * It includes room capacity, description, admin details, and availabilities.
+ * It allows for editing room details if the current user is the admin of the room.
+ */
 function Room() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
   const {roomId} = useParams();
