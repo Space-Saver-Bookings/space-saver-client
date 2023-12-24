@@ -75,7 +75,7 @@ function EditBookingModalContent({heading, handleClose, booking, ...props}) {
 
   async function handleRemoveBooking() {
     try {
-      await deleteBooking(booking?.id);
+      await deleteBooking(booking?._id);
       console.log('Remove Booking');
       handleClose();
     } catch (error) {

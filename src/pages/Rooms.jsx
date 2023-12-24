@@ -11,14 +11,23 @@ import {getAllSpaces} from '../services/apiSpaces';
 import {getAllRooms} from '../services/apiRooms';
 import useAuth from '../auth/useAuth';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner';
+import {getBookings} from '../services/apiBookings';
 
 function Rooms() {
   const {user} = useAuth();
   const {open, handleOpen, handleClose} = useModal();
   const [isLoading, setIsLoading] = useState(true);
-  // const [bookedRoomss, setBookedRooms] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [spacess, setSpaces] = useState([]);
+
+  const filteredBookedRooms = bookings.map((booking) => {
+    return {
+      name: booking.room_id.name,
+      _id: booking.room_id._id,
+    };
+  });
+  // console.log(bookings)
 
   useEffect(() => {
     const getSpaces = async () => {
@@ -33,17 +42,26 @@ function Rooms() {
       }
     };
 
+    const fetchBookings = async () => {
+      try {
+        const fetchedBookings = await getBookings(true);
+
+        if (fetchBookings) {
+          setBookings(fetchedBookings);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     getSpaces();
+    fetchBookings();
   }, []);
 
   const bookedRooms = {
     name: 'Booked Rooms',
-    admin: user._id,
-    rooms: Array.from(
-      // Array(Math.trunc(Math.random() * 5) + 1),
-      Array(4),
-      (_, idx) => ({name: `Room ${idx + 1}`})
-    ),
+    // admin: user._id,
+    rooms: filteredBookedRooms,
   };
 
   const spaces = Array.from(spacess, (space) => ({
@@ -87,6 +105,8 @@ function Rooms() {
                   />
                 </Link>
               ))
+            ) : isAdmin ? (
+              ''
             ) : (
               <div className="mx-auto mt-[15rem] self-center text-lg">
                 No rooms found in this space

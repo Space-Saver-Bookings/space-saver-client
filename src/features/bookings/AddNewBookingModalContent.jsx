@@ -3,10 +3,16 @@ import {Autocomplete, Button, TextField} from '@mui/material';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import {Controller, useForm} from 'react-hook-form';
-import api from '../../services/api';
-import toast from 'react-hot-toast';
+import {createBooking} from '../../services/apiBookings';
+// import api from '../../services/api';
+// import toast from 'react-hot-toast';
 
-function AddNewBookingModalContent({heading, handleClose}) {
+function AddNewBookingModalContent({
+  heading,
+  handleClose,
+  roomOptions,
+  userOptions,
+}) {
   const {
     control,
     handleSubmit,
@@ -14,45 +20,16 @@ function AddNewBookingModalContent({heading, handleClose}) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log('submitted');
-    console.log(data);
-    // console.log(data.date.format('YYYY-MM-DD'));
-
     try {
-      const res = await api.post('/bookings', data);
-      console.log('Booking Successful!');
-      console.log(res.data);
+      await createBooking(data);
+      handleClose();
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
     } catch (err) {
-      if (err.response) {
-        console.error('Booking error:', err.response || err);
-
-        if (err.response.status === 500) {
-          toast.error(
-            'An error occurred on the server. Please try again later.'
-          );
-        } else if (err.response.status === 401) {
-          toast.error('Unauthorised.');
-        } else {
-          toast.error('Failed to book: ' + err.response.data.message);
-        }
-      }
+      console.error(err);
     }
   };
-
-  // TODO: figure out options and how to work with this data
-  const roomOptions = [
-    {identifier: 'Room 1', roomId: 1234},
-    {identifier: 'Room 2', roomId: 1234},
-    {identifier: 'Room 3', roomId: 1234},
-    {identifier: 'Room 4', roomId: 1234},
-  ];
-
-  const userOptions = [
-    {identifier: 'User 1', userId: 1234},
-    {identifier: 'User 1', userId: 1234},
-    {identifier: 'User 1', userId: 1234},
-    {identifier: 'User 1', userId: 1234},
-  ];
 
   return (
     <>
@@ -68,7 +45,7 @@ function AddNewBookingModalContent({heading, handleClose}) {
       >
         <div className="flex w-full gap-3">
           <Controller
-            name="bookingTitle"
+            name="title"
             control={control}
             defaultValue=""
             rules={{required: 'Booking title is required'}}
@@ -79,10 +56,10 @@ function AddNewBookingModalContent({heading, handleClose}) {
                 </label>
                 <TextField
                   {...field}
-                  error={!!errors.bookingTitle}
-                  helperText={errors.bookingTitle?.message}
+                  error={!!errors.title}
+                  helperText={errors.title?.message}
                   id="booking-title"
-                  label="title"
+                  placeholder="title"
                   variant="outlined"
                   fullWidth
                 />
@@ -91,7 +68,7 @@ function AddNewBookingModalContent({heading, handleClose}) {
           />
 
           <Controller
-            name="room"
+            name="room_id"
             control={control}
             defaultValue={null}
             rules={{required: 'Room is required'}}
@@ -103,21 +80,21 @@ function AddNewBookingModalContent({heading, handleClose}) {
                 <Autocomplete
                   id="room"
                   options={roomOptions}
-                  getOptionLabel={(option) => option.identifier}
+                  getOptionLabel={(option) => option.identifier || ''}
                   onChange={(event, item) => {
-                    onChange(item ? item.identifier : null);
+                    onChange(item.roomId || '');
                   }}
                   value={
                     value
                       ? roomOptions.find(
-                          (option) => option.identifier === value
-                        )
-                      : null
+                          (option) => option.identifier === value.identifier
+                        ) || ''
+                      : ''
                   }
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Room"
+                      placeholder="room to book"
                       error={!!error}
                       helperText={error ? error.message : null}
                     />
@@ -218,30 +195,33 @@ function AddNewBookingModalContent({heading, handleClose}) {
         </div>
 
         <Controller
-          name="invite"
+          name="invited_user_ids"
           control={control}
-          defaultValue={null}
+          defaultValue={[]}
           render={({field: {onChange, value}, fieldState: {error}}) => (
             <div className="flex w-full flex-col gap-1">
               <label className="self-start text-lg" htmlFor="invite">
                 Invite
               </label>
               <Autocomplete
+                multiple
                 id="invite"
                 options={userOptions}
-                getOptionLabel={(option) => option.identifier}
-                onChange={(event, item) => {
-                  onChange(item ? item.identifier : null);
+                getOptionLabel={(option) => option.identifier || ''}
+                onChange={(event, items) => {
+                  onChange(items.map((item) => item.userId));
                 }}
                 value={
                   value
-                    ? userOptions.find((option) => option.identifier === value)
-                    : null
+                    ? userOptions.filter((option) =>
+                        value.includes(option.userId)
+                      )
+                    : []
                 }
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Invite"
+                    placeholder="invite users"
                     error={!!error}
                     helperText={error ? error.message : null}
                   />
@@ -265,7 +245,7 @@ function AddNewBookingModalContent({heading, handleClose}) {
                 // error={!!errors.description}
                 // helperText={errors.description?.message}
                 id="description"
-                label="description"
+                placeholder="booking description"
                 variant="outlined"
                 fullWidth
                 sx={{mb: '0.5rem'}}
@@ -292,6 +272,8 @@ function AddNewBookingModalContent({heading, handleClose}) {
 AddNewBookingModalContent.propTypes = {
   heading: PropTypes.string,
   handleClose: PropTypes.func,
+  userOptions: PropTypes.array,
+  roomOptions: PropTypes.array,
 };
 
 export default AddNewBookingModalContent;

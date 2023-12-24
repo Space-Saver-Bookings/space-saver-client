@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 
-function Analytic({text, size}) {
+function Analytic({text, size, mostUsedRoom, roomsInUse, usersInRooms}) {
   let data;
 
   switch (text) {
     case 'Rooms in use':
-      data = 8;
+      data = roomsInUse;
       break;
     case 'Users in rooms':
-      data = 16;
+      data = usersInRooms || 0;
       break;
     case 'Most used room':
-      data = 3023;
+      data = mostUsedRoom || 'Not enough rooms';
       break;
     default:
       throw new Error(`Unrecognized text: ${text}`);
@@ -30,6 +30,9 @@ function Analytic({text, size}) {
 Analytic.propTypes = {
   text: PropTypes.string,
   size: PropTypes.string,
+  mostUsedRoom: PropTypes.string,
+  roomsInUse: PropTypes.any,
+  usersInRooms: PropTypes.any
 };
 
 export default Analytic;
