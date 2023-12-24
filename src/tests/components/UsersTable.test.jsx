@@ -32,7 +32,6 @@ describe('UsersTable component', () => {
     );
 
     const component = screen.getByText('Jane');
-    console.log(component);
 
     expect(component).toBeDefined();
     expect(component.className).toBe(
