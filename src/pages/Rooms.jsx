@@ -13,6 +13,10 @@ import useAuth from '../auth/useAuth';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner';
 import {getBookings} from '../services/apiBookings';
 
+/**
+ * Rooms is a component that displays a list or grid of rooms, including booked rooms and available rooms.
+ * It fetches and lists all spaces and rooms, and also shows the bookings related to those rooms.
+ */
 function Rooms() {
   const {user} = useAuth();
   const {open, handleOpen, handleClose} = useModal();

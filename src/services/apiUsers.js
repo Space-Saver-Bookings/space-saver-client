@@ -32,6 +32,25 @@ export async function loginUser(data) {
   }
 }
 
+export const registerUser = async (data) => {
+  try {
+    await api.post('/users/register', data);
+    toast.success('Register successful!');
+  } catch (err) {
+    if (err.response) {
+      console.error('Register error:', err);
+
+      if (err.response.status === 500) {
+        toast.error('An error occurred on the server. Please try again later.');
+      } else if (err.response.status === 409) {
+        toast.error('The email address you entered is already registered.');
+      } else {
+        toast.error('Failed to register: ' + err.response.data.message);
+      }
+    }
+  }
+};
+
 /**
  * Fetches all user data from the server.
  * It makes an API GET request to retrieve all users and returns them.

@@ -2,9 +2,13 @@ import {Button, TextField} from '@mui/material';
 import {Link, useNavigate} from 'react-router-dom';
 import LogoDesktop from '../components/LogoDesktop';
 import {Controller, useForm} from 'react-hook-form';
-import api from '../services/api';
-import toast from 'react-hot-toast';
+import {registerUser} from '../services/apiUsers';
 
+/**
+ * Register is a component for user registration.
+ * It uses the useForm hook from react-hook-form for handling form data and validation.
+ * Upon successful registration, it navigates the user to the login page.
+ */
 function Register() {
   const navigate = useNavigate();
 
@@ -15,26 +19,8 @@ function Register() {
   } = useForm();
 
   const onSubmit = async (data) => {
-
-    try {
-      await api.post('/users/register', data);
-      navigate('/login');
-      toast.success('Register successful!');
-    } catch (err) {
-      if (err.response) {
-        console.error('Register error:', err);
-
-        if (err.response.status === 500) {
-          toast.error(
-            'An error occurred on the server. Please try again later.'
-          );
-        } else if (err.response.status === 409) {
-          toast.error('The email address you entered is already registered.');
-        } else {
-          toast.error('Failed to register: ' + err.response.data.message);
-        }
-      }
-    }
+    await registerUser(data);
+    navigate('/login');
   };
 
   return (
@@ -68,7 +54,7 @@ function Register() {
                     error={!!errors.first_name}
                     helperText={errors.first_name?.message}
                     id="first-name"
-                    placeholder='Mary'
+                    placeholder="Mary"
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -92,7 +78,7 @@ function Register() {
                     error={!!errors.last_name}
                     helperText={errors.last_name?.message}
                     id="last-name"
-                    placeholder='Smith'
+                    placeholder="Smith"
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -121,7 +107,7 @@ function Register() {
                   error={!!errors.email}
                   helperText={errors.email?.message}
                   id="email"
-                  placeholder='maysmith@example.com'
+                  placeholder="maysmith@example.com"
                   variant="outlined"
                   size="small"
                   fullWidth
@@ -143,7 +129,7 @@ function Register() {
                   error={!!errors.password}
                   helperText={errors.password?.message}
                   id="password"
-                  placeholder='notpassword123'
+                  placeholder="notpassword123"
                   variant="outlined"
                   size="small"
                   fullWidth
@@ -168,7 +154,7 @@ function Register() {
                     error={!!errors.post_code}
                     helperText={errors.post_code?.message}
                     id="postcode"
-                    placeholder='2000'
+                    placeholder="2000"
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -192,7 +178,7 @@ function Register() {
                     error={!!errors.country}
                     helperText={errors.country?.message}
                     id="country"
-                    placeholder='Australia'
+                    placeholder="Australia"
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -217,7 +203,7 @@ function Register() {
                   error={!!errors.position}
                   helperText={errors.position?.message}
                   id="position"
-                  placeholder='Manager'
+                  placeholder="Manager"
                   variant="outlined"
                   size="small"
                   fullWidth

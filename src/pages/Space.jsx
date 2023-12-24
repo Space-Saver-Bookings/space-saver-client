@@ -28,6 +28,11 @@ import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 import {getAllRooms} from '../services/apiRooms.js';
 import EmptyDashContent from '../components/dashboard/EmptyDashContent.jsx';
 
+/**
+ * Space is a component that displays details about a specific space and its rooms.
+ * It allows for managing users, access codes, and rooms within the space.
+ * Admin users can edit space details or remove the space entirely.
+ */
 function Space() {
   const navigate = useNavigate();
   const {user} = useAuth();

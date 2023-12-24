@@ -10,6 +10,11 @@ import {getAllSpaces} from '../services/apiSpaces';
 import useAuth from '../auth/useAuth';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner';
 
+/**
+ * Spaces is a component that displays a list of all spaces the user is associated with.
+ * It differentiates between spaces owned by the user and spaces where the user is a member.
+ * Users can toggle between viewing owned or joined spaces.
+ */
 function Spaces() {
   const {user} = useAuth();
   const {open, handleOpen, handleClose} = useModal();

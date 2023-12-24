@@ -13,6 +13,12 @@ import {getAllRooms} from '../services/apiRooms.js';
 import {getUsers} from '../services/apiUsers.js';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 
+/**
+ * Bookings is a component responsible for displaying and managing bookings.
+ * It provides functionality for viewing all bookings or filtered "My Bookings",
+ * adding new bookings, and editing existing bookings. It also handles fetching and updating
+ * bookings, users, and rooms data.
+ */
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);

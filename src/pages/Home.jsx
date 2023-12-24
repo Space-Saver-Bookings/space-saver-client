@@ -12,6 +12,10 @@ import MainSectionSpinner from '../components/spinner/MainSectionSpinner';
 import {getAvailableTimeSlots, getBookings} from '../services/apiBookings';
 import EmptyDashContent from '../components/dashboard/EmptyDashContent';
 
+/**
+ * Home is the main dashboard component displaying the summary of bookings, rooms, and other analytics.
+ * It provides an overview of the most used room, rooms in use, users in rooms, and allows for quick booking actions.
+ */
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [rooms, setRooms] = useState([]);
