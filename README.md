@@ -253,6 +253,8 @@ SpaceSaver's user stories outline a comprehensive set of features and functional
 
 While the primary features were successfully addressed, it's noted that certain "nice-to-have" or optional features, such as additional authentication methods, robust user access management, notifications for bookings, and analytics in the dashboard, were not fully implemented due to time constraints.
 
+[Back to contents](#table-of-contents)
+
 ---
 
 ### Retrospective
@@ -262,3 +264,5 @@ Edward and Jordan take immense pride in the successful completion of this projec
 Despite the challenge of coordinating work across different continents, with Edward based in Europe and Jordan in Australia, they faced a critical bug the day before the handover with humour and resilience. Navigating through the debugging process together, they demonstrated exceptional teamwork and adaptability, overcoming the obstacle despite the geographical distance.
 
 The client expressed such satisfaction with the final product that discussions for potential future projects are already underway. Discussions already for the additional functionality of a tablet display which would work in tandem with the current SpaceSaver application.
+
+[Back to contents](#table-of-contents)
