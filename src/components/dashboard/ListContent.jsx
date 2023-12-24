@@ -52,7 +52,7 @@ function ListContent({
         createData('John Doe', 'johndoe@gmail.com', 'Guest', 'Web Developer')
       );
       rows.unshift(
-        createData('John Doe', 'johndoe@gmail.com', 'Resever', 'Web Developer')
+        createData('John Doe', 'johndoe@gmail.com', 'Reserver', 'Web Developer')
       );
       break;
     case 'upcomingBookings':
