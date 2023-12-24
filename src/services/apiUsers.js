@@ -24,6 +24,23 @@ export async function loginUser(data) {
   }
 }
 
+export async function getUsers() {
+  try {
+    const {data: {users}} = await api.get(`/users`);
+    return users;
+  } catch (err) {
+    if (err.response) {
+      console.error('Get users error:', err.response || err);
+    }
+
+    if (err.response.status === 500) {
+      toast.error('An error occurred on the server. Please try again later.');
+    } else {
+      toast.error('Failed to fetch user: ' + err.response.data.message);
+    }
+  }
+}
+
 export async function getUser(userId) {
   try {
     const {data} = await api.get(`/users/${userId}`);

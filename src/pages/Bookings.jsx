@@ -9,16 +9,48 @@ import {useState, useEffect} from 'react';
 import Calendar from '../features/bookings/Calendar.jsx';
 import AddNewBookingModalContent from '../features/bookings/AddNewBookingModalContent.jsx';
 import EditBookingModalContent from '../features/bookings/EditBookingModalContent.jsx';
-import { getBookings } from '../services/apiBookings.js';
-import { getAllRooms } from '../services/apiRooms.js';
+import {getBookings} from '../services/apiBookings.js';
+import {getAllRooms} from '../services/apiRooms.js';
+import {getUsers} from '../services/apiUsers.js';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [bookings, setBookings] = useState([]);
-  const [refresh, setRefresh] = useState(false)
-  const [rooms, setRooms] = useState([])
+  const [refresh, setRefresh] = useState(false);
+  const [rooms, setRooms] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const roomOptions = rooms.map((room) => {
+    return {
+      identifier: room.name,
+      roomId: room._id,
+    };
+  });
+
+  const userOptions = users.map((user) => {
+    return {
+      identifier: `${user.first_name} ${user.last_name}`,
+      userId: user._id,
+    };
+  });
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const fetchedUsers = await getUsers();
+
+        if (fetchedUsers) {
+          setUsers(fetchedUsers);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   function handleToggle() {
     // Toggling between "My Bookings" and "All Bookings",
@@ -51,7 +83,7 @@ function Bookings() {
       }
     };
     fetchBookings();
-    setRefresh(false)
+    setRefresh(false);
   }, [toggle, refresh]);
 
   useEffect(() => {
@@ -129,6 +161,8 @@ function Bookings() {
                   setSelectedBooking(null);
                   handleClose();
                 }}
+                roomOptions={roomOptions}
+                userOptions={userOptions}
               />
             }
             height="h-auto"

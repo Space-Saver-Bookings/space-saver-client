@@ -77,26 +77,29 @@ export async function getBookingById(bookingId) {
  */
 export async function createBooking(bookingData) {
   // Destructure bookingData object
-  const {roomId, primaryUserId, title, description, startTime, endTime} =
-    bookingData;
-
-  // Convert times to UTC time
-  const startUtcTime = new Date(startTime).toISOString();
-  const endUtcTime = new Date(endTime).toISOString();
+  const {
+    room_id,
+    title,
+    description,
+    startTime,
+    endTime,
+    invited_user_ids,
+  } = bookingData;
 
   // Create booking object
   const booking = {
-    room_id: roomId,
-    primary_user_id: primaryUserId,
-    invited_user_ids: [],
-    title: title,
-    description: description,
-    start_time: startUtcTime,
-    end_time: endUtcTime,
+    room_id,
+    title,
+    invited_user_ids,
+    description,
+    start_time: startTime.toISOString(),
+    end_time: endTime.toISOString(),
   };
 
   try {
     const response = await api.post('/bookings', booking);
+    console.log(response);
+    toast.success('Booking successfully created!');
     return response;
   } catch (error) {
     handleApiError(error, 'Error creating booking');
