@@ -8,6 +8,7 @@ function ListContent({
   spaceUsers,
   spaceAdmin,
   rooms,
+  roomAvailabilities,
 }) {
   let columns, rows;
 
@@ -26,10 +27,18 @@ function ListContent({
       }
       break;
     case 'roomAvailabilities':
-      columns = ['Date', 'Time', 'Duration'];
-      rows = Array.from(Array(15), () =>
-        createData('28/11/23', '4:19pm', '1hr')
-      );
+      if (!roomAvailabilities) {
+        return <div>Loading...</div>;
+      } else {
+        columns = ['Date', 'Time', 'Duration'];
+        rows = Array.from(roomAvailabilities, (availability) =>
+          createData(
+            availability.date,
+            availability.time,
+            availability.duration
+          )
+        );
+      }
       break;
     case 'spaceUsers':
       if (!spaceUsers) {
@@ -88,6 +97,7 @@ ListContent.propTypes = {
   spaceUsers: PropTypes.array,
   spaceAdmin: PropTypes.string,
   rooms: PropTypes.array,
+  roomAvailabilities: PropTypes.array,
 };
 
 export default ListContent;

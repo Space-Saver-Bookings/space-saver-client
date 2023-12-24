@@ -178,7 +178,8 @@ export async function getAvailableTimeSlots() {
     const {data} = await api.get(
       `/bookings/available-time-slots?start_time=${formattedStartTime}&end_time=${formattedEndTime}&interval=60`
     );
-    console.log(data);
+    // console.log(data);
+    return data;
   } catch (err) {
     console.error(err);
   }
