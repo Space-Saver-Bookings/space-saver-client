@@ -12,10 +12,12 @@ import EditBookingModalContent from '../features/bookings/EditBookingModalConten
 import {getBookings} from '../services/apiBookings.js';
 import {getAllRooms} from '../services/apiRooms.js';
 import {getUsers} from '../services/apiUsers.js';
+import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 
 function Bookings() {
   const {open, handleOpen, handleClose} = useModal();
   const [toggle, setToggle] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -78,6 +80,7 @@ function Bookings() {
       try {
         const fetchedBookings = await getBookings(toggle);
         setBookings(fetchedBookings);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching bookings:', error);
       }
@@ -99,87 +102,99 @@ function Bookings() {
   }, []);
 
   return (
-    <section className="grid h-full gap-5 md:grid-cols-23 md:grid-rows-18">
-      <div className="col-start-1 col-span-full row-span-1 flex flex-col items-center justify-center">
-        <Button variant="contained" onClick={handleToggle}>
-          {toggle ? 'My Bookings' : 'All Bookings'}
-        </Button>
-      </div>
+    <section
+      className={
+        isLoading
+          ? 'h-full w-full'
+          : `grid h-full gap-5 md:grid-cols-23 md:grid-rows-18`
+      }
+    >
+      {isLoading ? (
+        <MainSectionSpinner />
+      ) : (
+        <>
+          <div className="col-span-full col-start-1 row-span-1 flex flex-col items-center justify-center">
+            <Button variant="contained" onClick={handleToggle}>
+              {toggle ? 'My Bookings' : 'All Bookings'}
+            </Button>
+          </div>
 
-      <section className="col-start-1 col-span-full row-end-[17] row-start-2 rounded-xl border-2 bg-white shadow-xl">
-        <Calendar
-          myBookingFilter={toggle}
-          bookings={bookings}
-          onEditBooking={handleEditBooking}
-        />
-      </section>
+          <section className="col-span-full col-start-1 row-start-2 row-end-[17] rounded-xl border-2 bg-white shadow-xl">
+            <Calendar
+              myBookingFilter={toggle}
+              bookings={bookings}
+              onEditBooking={handleEditBooking}
+            />
+          </section>
 
-      {/* <DashItem
-        heading="Upcoming Bookings"
-        content={<ListContent contentType="upcomingBookingsShort" />}
-        styling="col-span-full col-start-[16] row-end-[17] row-start-1 rounded-xl"
-      /> */}
+          {/* <DashItem
+      heading="Upcoming Bookings"
+      content={<ListContent contentType="upcomingBookingsShort" />}
+      styling="col-span-full col-start-[16] row-end-[17] row-start-1 rounded-xl"
+    /> */}
 
-      {open && selectedBooking && (
-        <Modal
-          open={open && selectedBooking !== null}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox
-            content={
-              <EditBookingModalContent
-                heading="Booking Details"
-                booking={selectedBooking}
-                handleClose={() => {
-                  setSelectedBooking(null);
-                  handleClose();
-                }}
-                handleRefreshBookings={handleRefreshBookings}
-                roomOptions={rooms}
+          {open && selectedBooking && (
+            <Modal
+              open={open && selectedBooking !== null}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox
+                content={
+                  <EditBookingModalContent
+                    heading="Booking Details"
+                    booking={selectedBooking}
+                    handleClose={() => {
+                      setSelectedBooking(null);
+                      handleClose();
+                    }}
+                    handleRefreshBookings={handleRefreshBookings}
+                    roomOptions={rooms}
+                  />
+                }
+                height="h-auto"
+                width="w-[38rem]"
               />
-            }
-            height="h-auto"
-            width="w-[38rem]"
-          />
-        </Modal>
-      )}
+            </Modal>
+          )}
 
-      {open && !selectedBooking && (
-        <Modal
-          open={open && !selectedBooking}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox
-            content={
-              <AddNewBookingModalContent
-                heading="Add New Booking"
-                handleClose={() => {
-                  setSelectedBooking(null);
-                  handleClose();
-                }}
-                roomOptions={roomOptions}
-                userOptions={userOptions}
+          {open && !selectedBooking && (
+            <Modal
+              open={open && !selectedBooking}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox
+                content={
+                  <AddNewBookingModalContent
+                    heading="Add New Booking"
+                    handleClose={() => {
+                      setSelectedBooking(null);
+                      handleClose();
+                    }}
+                    roomOptions={roomOptions}
+                    userOptions={userOptions}
+                  />
+                }
+                height="h-auto"
+                width="w-[40rem]"
               />
-            }
-            height="h-auto"
-            width="w-[40rem]"
-          />
-        </Modal>
-      )}
+            </Modal>
+          )}
 
-      <div className="col-span-full col-start-1 row-span-2 row-start-[17] flex flex-col items-center justify-center">
-        <Button
-          variant="contained"
-          startIcon={<AddRounded />}
-          onClick={handleAddNewBooking}
-        >
-          Add New Booking
-        </Button>
-      </div>
+          <div className="col-span-full col-start-1 row-span-2 row-start-[17] flex flex-col items-center justify-center">
+            <Button
+              variant="contained"
+              startIcon={<AddRounded />}
+              onClick={handleAddNewBooking}
+            >
+              Add New Booking
+            </Button>
+          </div>
+        </>
+      )}
     </section>
   );
 }

@@ -9,10 +9,44 @@ import ListContent from '../components/dashboard/ListContent';
 import {useEffect, useState} from 'react';
 import {getAllRooms} from '../services/apiRooms';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner';
+import {getAvailableTimeSlots, getBookings} from '../services/apiBookings';
+import EmptyDashContent from '../components/dashboard/EmptyDashContent';
 
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [rooms, setRooms] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [mostUsedRoom, setMostUsedRoom] = useState('');
+  const [roomsInUse, setRoomsInUse] = useState(0);
+  const [usersInRooms, setUsersInRooms] = useState(0);
+  // const [availabilities, setAvailabilities] = useState([]);
+
+  let mostUsedRoomName = '';
+  if (rooms && mostUsedRoom) {
+    const foundRoom = rooms.find((room) => room._id === mostUsedRoom);
+    if (foundRoom) {
+      mostUsedRoomName = foundRoom.name;
+    }
+  }
+
+  let isNoBooking;
+  // let bookAgainName;
+  // let bookAgainDate;
+  // if (bookings) {
+  //   isNoBooking = bookings?.length < 1;
+  //   bookAgainName = bookings?.at(-1)?.room_id?.name;
+  //   bookAgainDate = bookings?.at(-1)?.start_time.toLocaleDateString();
+  // }
+
+  let bookAgainName;
+  let bookAgainDate;
+  if (bookings && bookings.length > 0) {
+    const lastBooking = bookings.at(-1);
+    if (lastBooking) {
+      bookAgainName = lastBooking.room_id?.name;
+      bookAgainDate = new Date(lastBooking.start_time).toLocaleDateString();
+    }
+  }
 
   const roomsUpdated = rooms.map((room) => {
     return {
@@ -25,14 +59,66 @@ function Home() {
   useEffect(() => {
     async function getRooms() {
       const fetchedRooms = await getAllRooms();
-      setIsLoading(false);
 
       if (fetchedRooms) {
         setRooms(fetchedRooms);
       }
+      setIsLoading(false);
     }
 
+    async function fetchBookings() {
+      try {
+        const fetchedBookings = await getBookings();
+
+        if (fetchedBookings) {
+          setBookings(fetchedBookings);
+        }
+
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function fetchData() {
+      try {
+        const data = await getAvailableTimeSlots();
+        console.log(data);
+        if (data) {
+          setMostUsedRoom(data.mostUsedRoom);
+          setRoomsInUse(data.numberOfRoomsInUse);
+          setUsersInRooms(data.numberOfUsersInRooms.totalNumberOfUsers);
+        }
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // async function fetchAvailabilities() {
+    //   try {
+    //     const fetchedAvailabilities = await getAvailableTimeSlots();
+
+    //     if (fetchAvailabilities) {
+    //       console.log(fetchedAvailabilities);
+    //       // const currentRoomTimeSlot =
+    //       //   fetchedAvailabilities.availableTimeSlots.filter(
+    //       //     (room) => room.room_id === roomId
+    //       //   );
+
+    //       // if (currentRoomTimeSlot) {
+    //       //   setAvailabilities(currentRoomTimeSlot?.at(0)?.time_slots || []);
+    //       // }
+    //     }
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
+    // }
+
+    fetchBookings();
     getRooms();
+    fetchData();
+    // fetchAvailabilities();
   }, []);
 
   return (
@@ -51,31 +137,63 @@ function Home() {
         <>
           <DashItem
             heading="Book Again"
-            styling="col-start-1 col-end-8 row-span-6"
-            content={<Book />}
+            styling="col-start-1 col-end-[15] row-span-6"
+            content={
+              isNoBooking ? (
+                <EmptyDashContent message="No booking found" />
+              ) : (
+
+                bookAgainDate && bookAgainName ? 
+                <Book
+                  bookAgainName={bookAgainName}
+                  bookAgainDate={bookAgainDate}
+                />
+                :
+                <EmptyDashContent message='Not enough data to show'/>
+              )
+            }
           />
 
-          <DashItem
+          {/* <DashItem
             heading="Quick Booking"
             styling="col-span-7 row-span-6"
-            content={<Book isQuickBooking />}
-          />
+            content={
+              isNoBooking ? (
+                <EmptyDashContent message="No booking found" />
+              ) : (
+                <Book isQuickBooking />
+              )
+            }
+          /> */}
 
           <DashItem
             heading="Available Rooms"
             content={
-              <ListContent
-                contentType="rooms"
-                toolTipTitle="Go to room"
-                rooms={roomsUpdated}
-              />
+              rooms.length < 1 ? (
+                <EmptyDashContent message="No rooms found" />
+              ) : (
+                <ListContent
+                  contentType="rooms"
+                  toolTipTitle="Go to room"
+                  rooms={roomsUpdated}
+                />
+              )
             }
             styling="col-span-full col-start-[15] row-span-full row-start-1 rounded-xl"
           />
 
           <DashItem
             heading="Upcoming Bookings"
-            content={<ListContent contentType="upcomingBookings" />}
+            content={
+              bookings.length < 1 ? (
+                <EmptyDashContent message="No upcoming bookings" />
+              ) : (
+                <ListContent
+                  contentType="upcomingBookings"
+                  bookings={bookings}
+                />
+              )
+            }
             styling="col-start-1 col-end-[15] row-start-7 row-end-[14]"
           />
 
@@ -89,7 +207,7 @@ function Home() {
                   }}
                 />
               }
-              content={<Analytic text="Rooms in use" />}
+              content={<Analytic text="Rooms in use" roomsInUse={roomsInUse} />}
             />
 
             <DashItem
@@ -101,7 +219,9 @@ function Home() {
                   }}
                 />
               }
-              content={<Analytic text="Users in rooms" />}
+              content={
+                <Analytic text="Users in rooms" usersInRooms={usersInRooms} />
+              }
             />
 
             <DashItem
@@ -113,7 +233,13 @@ function Home() {
                   }}
                 />
               }
-              content={<Analytic text="Most used room" size="text-6xl" />}
+              content={
+                <Analytic
+                  text="Most used room"
+                  size="text-xl"
+                  mostUsedRoom={mostUsedRoomName}
+                />
+              }
             />
           </section>
         </>

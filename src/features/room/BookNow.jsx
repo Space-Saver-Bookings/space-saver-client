@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-function BookNow() {
-  const date = '30/11/23';
-  const time = '4:20pm';
+function BookNow({date, time}) {
+  // const date = '30/11/23';
+  // const time = '4:20pm';
   return (
-    <Link to='/bookings'>
+    <Link to="/bookings">
       <section className="flex h-full w-full items-center justify-center gap-6 p-2">
         <p className="w-44 font-coplette text-4xl text-blue-700">
           Next Available
@@ -16,6 +17,11 @@ function BookNow() {
       </section>
     </Link>
   );
+}
+
+BookNow.propTypes = {
+  date: PropTypes.any,
+  time: PropTypes.any
 }
 
 export default BookNow;

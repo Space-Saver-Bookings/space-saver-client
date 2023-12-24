@@ -135,6 +135,7 @@ export async function editBooking(bookingId, bookingData) {
 
   try {
     const response = await api.put(`/bookings/${bookingId}`, updatedBooking);
+    toast.success('Booking successfully updated!')
     return response;
   } catch (error) {
     handleApiError(error, 'Error editing booking');

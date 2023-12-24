@@ -14,6 +14,7 @@ import {getSingleRoom} from '../services/apiRooms.js';
 import useAuth from '../auth/useAuth.js';
 import MainSectionSpinner from '../components/spinner/MainSectionSpinner.jsx';
 import {getAvailableTimeSlots} from '../services/apiBookings.js';
+import EmptyDashContent from '../components/dashboard/EmptyDashContent.jsx';
 
 function Room() {
   const {open, handleOpen, handleClose, modalName, setModalName} = useModal();
@@ -25,6 +26,7 @@ function Room() {
   const [admin, setAdmin] = useState('');
   const [availabilities, setAvailabilities] = useState([]);
   const isAdmin = admin === user._id;
+  const isWoo = true;
   let formattedAvailabilities;
 
   if (availabilities) {
@@ -58,19 +60,22 @@ function Room() {
         const fetchedAvailabilities = await getAvailableTimeSlots();
 
         if (fetchedRoom) {
-          // console.log(fetchedRoom);
+          console.log(fetchedRoom);
           setCapacity(fetchedRoom.capacity);
           setDescription(fetchedRoom.description);
           setAdmin(fetchedRoom.space_id.admin_id._id);
         }
 
         if (fetchedAvailabilities) {
-          // console.log(fetchedAvailabilities);
+          console.log(fetchedAvailabilities);
           const currentRoomTimeSlot =
             fetchedAvailabilities.availableTimeSlots.filter(
               (room) => room.room_id === roomId
             );
-          setAvailabilities(currentRoomTimeSlot.at(0).time_slots);
+
+          if (currentRoomTimeSlot) {
+            setAvailabilities(currentRoomTimeSlot?.at(0)?.time_slots || []);
+          }
         }
 
         setIsLoading(false);
@@ -87,10 +92,10 @@ function Room() {
     handleOpen();
   }
 
-  function handleEditUsers() {
-    setModalName('Edit Users');
-    return handleOpen();
-  }
+  // function handleEditUsers() {
+  //   setModalName('Edit Users');
+  //   return handleOpen();
+  // }
 
   function createUsersData(
     id,
@@ -153,7 +158,12 @@ function Room() {
           <DashItem
             heading="Book Now"
             styling="col-start-1 col-end-12 row-span-5"
-            content={<BookNow />}
+            content={
+              <BookNow
+                date={formattedAvailabilities.at(0).date}
+                time={formattedAvailabilities.at(0).time}
+              />
+            }
           />
 
           {/* <DashItem
@@ -210,11 +220,11 @@ function Room() {
                 ? 'row-start-[10] row-end-[17]'
                 : 'row-start-[11] row-span-full'
             }`}
-            content={<ListContent contentType="roomUsers" />}
-            isDropdown={isAdmin}
-            dropdownOptions={[
-              {name: 'Edit Users', handleOpen: handleEditUsers},
-            ]}
+            content={isWoo ? <EmptyDashContent message='No users currently in room'/> : <ListContent contentType="roomUsers" />}
+            // isDropdown={isAdmin}
+            // dropdownOptions={[
+            //   {name: 'Edit Users', handleOpen: handleEditUsers},
+            // ]}
           />
         </>
       )}
